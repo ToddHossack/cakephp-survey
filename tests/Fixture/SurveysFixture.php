@@ -28,7 +28,6 @@ class SurveysFixture extends TestFixture
         '_indexes' => [
             'name' => ['type' => 'index', 'columns' => ['name'], 'length' => []],
             'version' => ['type' => 'index', 'columns' => ['version'], 'length' => []],
-            'active' => ['type' => 'index', 'columns' => ['active'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],

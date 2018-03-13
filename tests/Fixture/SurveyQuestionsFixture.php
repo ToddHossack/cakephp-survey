@@ -26,7 +26,6 @@ class SurveyQuestionsFixture extends TestFixture
         'trashed' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         '_indexes' => [
             'survey_id' => ['type' => 'index', 'columns' => ['survey_id'], 'length' => []],
-            'active' => ['type' => 'index', 'columns' => ['active'], 'length' => []],
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
@@ -45,13 +44,13 @@ class SurveyQuestionsFixture extends TestFixture
      */
     public $records = [
         [
-            'id' => 'c2a43c3e-96c6-4eef-b258-06773a0fd32e',
-            'survey_id' => 'eb4ff5b9-3a38-4c7c-b023-71810440fc26',
-            'question' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+            'id' => '00000000-0000-0000-0000-000000000001',
+            'survey_id' => '00000000-0000-0000-0000-000000000001',
+            'question' => 'To be or not to be?',
             'active' => 1,
             'created' => '2018-03-13 15:47:20',
             'modified' => '2018-03-13 15:47:20',
-            'trashed' => '2018-03-13 15:47:20'
+            'trashed' => null,
         ],
     ];
 }
