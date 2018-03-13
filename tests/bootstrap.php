@@ -4,7 +4,7 @@
 use Cake\Core\Configure;
 use Cake\Filesystem\Folder;
 
-$pluginName = 'Survey';
+$pluginName = 'Qobo\Survey';
 if (empty($pluginName)) {
     throw new \Exception("Plugin name is not configured");
 }
