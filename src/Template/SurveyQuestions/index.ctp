@@ -31,7 +31,7 @@ $options['title'] = 'Survey Questions';
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($surveyQuestions as $surveyQuestion): ?>
+                    <?php foreach ($surveyQuestions as $surveyQuestion) : ?>
                     <tr>
                         <td><?= $surveyQuestion->has('survey') ? $this->Html->link($surveyQuestion->survey->name, ['controller' => 'Surveys', 'action' => 'view', $surveyQuestion->survey->id]) : '' ?></td>
                         <td><?= h($surveyQuestion->question) ?></td>
