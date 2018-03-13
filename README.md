@@ -14,7 +14,7 @@ Usage
 Pull the template code into your plugin:
 
 ```
-composer install qobo/cakephp-survey
+composer require qobo/cakephp-survey
 ```
 
 
