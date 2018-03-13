@@ -33,7 +33,7 @@ $options['title'] = 'Surveys';
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($surveys as $survey): ?>
+                        <?php foreach ($surveys as $survey) : ?>
                         <tr>
                             <td><?= h($survey->name) ?></td>
                             <td><?= h($survey->version) ?></td>
