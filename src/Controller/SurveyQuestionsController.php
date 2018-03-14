@@ -46,6 +46,28 @@ class SurveyQuestionsController extends AppController
     }
 
     /**
+     * View method
+     *
+     * @param string|null $id Survey Question id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function preview($id = null)
+    {
+        $questionTypes = $this->SurveyQuestions->getQuestionTypes();
+        $savedResults = [];
+        $surveyQuestion = $this->SurveyQuestions->get($id, [
+            'contain' => ['Surveys', 'SurveyAnswers']
+        ]);
+
+        if ($this->request->is(['post', 'put', 'patch'])) {
+            $savedResults = $this->request->getData();
+        }
+
+        $this->set(compact('surveyQuestion', 'questionTypes', 'savedResults'));
+    }
+
+    /**
      * Add method
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.

@@ -39,6 +39,7 @@ $options['title'] = 'Survey Questions';
                         <td><?= h($questionTypes[$surveyQuestion->type]) ?></td>
                         <td><?= h($surveyQuestion->active) ?></td>
                         <td class="actions">
+                            <?= $this->Html->link(__('Preview'), ['action' => 'preview', $surveyQuestion->id]) ?>
                             <?= $this->Html->link(__('View'), ['action' => 'view', $surveyQuestion->id]) ?>
                             <?= $this->Html->link(__('Edit'), ['action' => 'edit', $surveyQuestion->id]) ?>
                             <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $surveyQuestion->id], ['confirm' => __('Are you sure you want to delete # {0}?', $surveyQuestion->id)]) ?>
