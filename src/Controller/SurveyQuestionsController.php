@@ -26,7 +26,7 @@ class SurveyQuestionsController extends AppController
         $surveyQuestions = $this->paginate($this->SurveyQuestions);
         $questionTypes = $this->SurveyQuestions->getQuestionTypes();
 
-        $this->set(compact('surveyQuestions','questionTypes'));
+        $this->set(compact('surveyQuestions', 'questionTypes'));
     }
 
     /**
@@ -65,7 +65,7 @@ class SurveyQuestionsController extends AppController
             $this->Flash->error(__('The survey question could not be saved. Please, try again.'));
         }
         $surveys = $this->SurveyQuestions->Surveys->find('list', ['limit' => 200]);
-        $this->set(compact('surveyQuestion', 'surveys','questionTypes'));
+        $this->set(compact('surveyQuestion', 'surveys', 'questionTypes'));
     }
 
     /**
@@ -91,7 +91,7 @@ class SurveyQuestionsController extends AppController
             $this->Flash->error(__('The survey question could not be saved. Please, try again.'));
         }
         $surveys = $this->SurveyQuestions->Surveys->find('list', ['limit' => 200]);
-        $this->set(compact('surveyQuestion', 'surveys','questionTypes'));
+        $this->set(compact('surveyQuestion', 'surveys', 'questionTypes'));
     }
 
     /**
