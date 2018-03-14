@@ -9,10 +9,8 @@ use Cake\Validation\Validator;
 /**
  * SurveyAnswers Model
  *
- * @property \Qobo\Survey\Model\Table\SurveysTable|\Cake\ORM\Association\BelongsTo $Surveys
  * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable|\Cake\ORM\Association\BelongsTo $SurveyQuestions
- * @property \Qobo\Survey\Model\Table\SurveyChoicesTable|\Cake\ORM\Association\BelongsTo $SurveyChoices
- * @property \Qobo\Survey\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
+ * @property |\Cake\ORM\Association\HasMany $SurveyResults
  *
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer get($primaryKey, $options = [])
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer newEntity($data = null, array $options = [])
@@ -43,25 +41,14 @@ class SurveyAnswersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Surveys', [
-            'foreignKey' => 'survey_id',
-            'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.Surveys'
-        ]);
         $this->belongsTo('SurveyQuestions', [
             'foreignKey' => 'survey_question_id',
             'joinType' => 'INNER',
             'className' => 'Qobo/Survey.SurveyQuestions'
         ]);
-        $this->belongsTo('SurveyChoices', [
-            'foreignKey' => 'survey_choice_id',
-            'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.SurveyChoices'
-        ]);
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.Users'
+        $this->hasMany('SurveyResults', [
+            'foreignKey' => 'survey_answer_id',
+            'className' => 'Qobo/Survey.SurveyResults'
         ]);
     }
 
@@ -80,7 +67,13 @@ class SurveyAnswersTable extends Table
         $validator
             ->scalar('answer')
             ->maxLength('answer', 4294967295)
-            ->allowEmpty('answer');
+            ->requirePresence('answer', 'create')
+            ->notEmpty('answer');
+
+        $validator
+            ->scalar('comment')
+            ->maxLength('comment', 4294967295)
+            ->allowEmpty('comment');
 
         $validator
             ->dateTime('trashed')
@@ -98,10 +91,7 @@ class SurveyAnswersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['survey_id'], 'Surveys'));
         $rules->add($rules->existsIn(['survey_question_id'], 'SurveyQuestions'));
-        $rules->add($rules->existsIn(['survey_choice_id'], 'SurveyChoices'));
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
     }

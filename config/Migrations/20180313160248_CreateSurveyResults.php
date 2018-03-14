@@ -2,7 +2,7 @@
 use Migrations\AbstractMigration;
 use Phinx\Db\Adapter\MysqlAdapter;
 
-class CreateSurveyChoices extends AbstractMigration
+class CreateSurveyResults extends AbstractMigration
 {
     /**
      * Change Method.
@@ -13,30 +13,32 @@ class CreateSurveyChoices extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('survey_choices', ['id' => false, 'primary_key' => ['id']]);
-
+        $table = $this->table('survey_results', ['id' => false, 'primary_key' => ['id']]);
         $table->addColumn('id', 'uuid', [
             'default' => null,
             'null' => false,
         ]);
+        $table->addColumn('survey_id', 'uuid', [
+            'default' => null,
+            'null' => false,
+        ])->addIndex(['survey_id']);
 
         $table->addColumn('survey_question_id', 'uuid', [
             'default' => null,
             'null' => false,
         ])->addIndex(['survey_question_id']);
 
-        $table->addColumn('choice', 'text', [
-            'default' => null,
-            'limit' => MysqlAdapter::TEXT_LONG,
-            'null' => false,
-        ]);
-
-        $table->addColumn('type', 'string', [
+        $table->addColumn('survey_answer_id', 'uuid', [
             'default' => null,
             'null' => false,
         ]);
 
-        $table->addColumn('comment', 'text', [
+        $table->addColumn('user_id', 'uuid', [
+            'default' => null,
+            'null' => false,
+        ])->addIndex(['user_id']);
+
+        $table->addColumn('result', 'text', [
             'default' => null,
             'limit' => MysqlAdapter::TEXT_LONG,
             'null' => true,
@@ -49,7 +51,7 @@ class CreateSurveyChoices extends AbstractMigration
 
         $table->addColumn('modified', 'datetime', [
             'default' => null,
-            'null' => false
+            'null' => false,
         ]);
 
         $table->addColumn('trashed', 'datetime', [
@@ -60,6 +62,7 @@ class CreateSurveyChoices extends AbstractMigration
         $table->addPrimaryKey([
             'id',
         ]);
+
         $table->create();
     }
 }

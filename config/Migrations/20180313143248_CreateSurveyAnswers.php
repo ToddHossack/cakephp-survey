@@ -14,31 +14,24 @@ class CreateSurveyAnswers extends AbstractMigration
     public function change()
     {
         $table = $this->table('survey_answers', ['id' => false, 'primary_key' => ['id']]);
+
         $table->addColumn('id', 'uuid', [
             'default' => null,
             'null' => false,
         ]);
-        $table->addColumn('survey_id', 'uuid', [
-            'default' => null,
-            'null' => false,
-        ])->addIndex(['survey_id']);
 
         $table->addColumn('survey_question_id', 'uuid', [
             'default' => null,
             'null' => false,
         ])->addIndex(['survey_question_id']);
 
-        $table->addColumn('survey_choice_id', 'uuid', [
+        $table->addColumn('answer', 'text', [
             'default' => null,
+            'limit' => MysqlAdapter::TEXT_LONG,
             'null' => false,
         ]);
 
-        $table->addColumn('user_id', 'uuid', [
-            'default' => null,
-            'null' => false,
-        ])->addIndex(['user_id']);
-
-        $table->addColumn('answer', 'text', [
+        $table->addColumn('comment', 'text', [
             'default' => null,
             'limit' => MysqlAdapter::TEXT_LONG,
             'null' => true,
@@ -51,7 +44,7 @@ class CreateSurveyAnswers extends AbstractMigration
 
         $table->addColumn('modified', 'datetime', [
             'default' => null,
-            'null' => false,
+            'null' => false
         ]);
 
         $table->addColumn('trashed', 'datetime', [
@@ -62,7 +55,6 @@ class CreateSurveyAnswers extends AbstractMigration
         $table->addPrimaryKey([
             'id',
         ]);
-
         $table->create();
     }
 }

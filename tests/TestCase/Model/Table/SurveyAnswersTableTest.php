@@ -25,9 +25,9 @@ class SurveyAnswersTableTest extends TestCase
      */
     public $fixtures = [
         'plugin.qobo/survey.survey_answers',
-        'plugin.qobo/survey.surveys',
         'plugin.qobo/survey.survey_questions',
-        'plugin.qobo/survey.survey_choices',
+        'plugin.qobo/survey.surveys',
+        'plugin.qobo/survey.survey_results',
         'plugin.qobo/survey.users'
     ];
 

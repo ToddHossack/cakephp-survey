@@ -10,6 +10,8 @@ use Cake\Validation\Validator;
  * SurveyQuestions Model
  *
  * @property \Qobo\Survey\Model\Table\SurveysTable|\Cake\ORM\Association\BelongsTo $Surveys
+ * @property |\Cake\ORM\Association\HasMany $SurveyAnswers
+ * @property |\Cake\ORM\Association\HasMany $SurveyResults
  *
  * @method \Qobo\Survey\Model\Entity\SurveyQuestion get($primaryKey, $options = [])
  * @method \Qobo\Survey\Model\Entity\SurveyQuestion newEntity($data = null, array $options = [])
@@ -45,6 +47,14 @@ class SurveyQuestionsTable extends Table
             'joinType' => 'INNER',
             'className' => 'Qobo/Survey.Surveys'
         ]);
+        $this->hasMany('SurveyAnswers', [
+            'foreignKey' => 'survey_question_id',
+            'className' => 'Qobo/Survey.SurveyAnswers'
+        ]);
+        $this->hasMany('SurveyResults', [
+            'foreignKey' => 'survey_question_id',
+            'className' => 'Qobo/Survey.SurveyResults'
+        ]);
     }
 
     /**
@@ -64,6 +74,12 @@ class SurveyQuestionsTable extends Table
             ->maxLength('question', 4294967295)
             ->requirePresence('question', 'create')
             ->notEmpty('question');
+
+        $validator
+            ->scalar('type')
+            ->maxLength('type', 255)
+            ->requirePresence('type', 'create')
+            ->notEmpty('type');
 
         $validator
             ->boolean('active')

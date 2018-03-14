@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property string $id
  * @property string $survey_id
  * @property string $question
+ * @property string $type
  * @property bool $active
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
@@ -31,6 +32,7 @@ class SurveyQuestion extends Entity
     protected $_accessible = [
         'survey_id' => true,
         'question' => true,
+        'type' => true,
         'active' => true,
         'created' => true,
         'modified' => true,

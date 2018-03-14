@@ -30,6 +30,10 @@ class CreateSurveyQuestions extends AbstractMigration
             'limit' => MysqlAdapter::TEXT_LONG,
             'null' => false,
         ]);
+        $table->addColumn('type', 'string', [
+            'default' => null,
+            'null' => false,
+        ]);
 
         $table->addColumn('active', 'boolean', [
             'default' => 0,
