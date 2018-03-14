@@ -105,4 +105,15 @@ class SurveyQuestionsTable extends Table
 
         return $rules;
     }
+
+    public function getQuestionTypes()
+    {
+        return [
+            'input' => 'Short Text',
+            'textarea' => 'Paragraph',
+            'checkbox' => 'Multiple Checkboxes',
+            'radio' => 'Radio Buttons',
+            'select' => 'Dropdown',
+        ];
+    }
 }

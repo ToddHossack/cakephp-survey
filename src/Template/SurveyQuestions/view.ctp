@@ -48,21 +48,12 @@ $options['title'] = 'View Question';
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
-            <div class="row">
+           <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Created') ?>:</strong>
+                    <strong><?= __('Type') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= h($surveyQuestion->created) ?>
-                </div>
-                <div class="clearfix visible-xs visible-sm"></div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Modified') ?>:</strong>
-                </div>
-                <div class="col-xs-8 col-md-4">
-                    <?= h($surveyQuestion->modified) ?>
+                    <?= $questionTypes[$surveyQuestion->type] ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
@@ -84,6 +75,25 @@ $options['title'] = 'View Question';
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Created') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= h($surveyQuestion->created) ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Modified') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= h($surveyQuestion->modified) ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
+            </div>
+
         </div>
     </div>
 </section>

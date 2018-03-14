@@ -28,18 +28,16 @@ $options['title'] = 'Question Choices';
                             <th scope="col"><?= $this->Paginator->sort('answer') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-                            <th scope="col"><?= $this->Paginator->sort('trashed') ?></th>
                             <th scope="col" class="actions"><?= __('Actions') ?></th>
                         </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($surveyAnswers as $surveyAnswer) : ?>
                     <tr>
-                        <td><?= $surveyAnswer->has('survey_question') ? $this->Html->link($surveyAnswer->survey_question->id, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyAnswer->survey_question->id]) : '' ?></td>
+                        <td><?= $surveyAnswer->has('survey_question') ? $this->Html->link($surveyAnswer->survey_question->question, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyAnswer->survey_question->id]) : '' ?></td>
                         <td><?= h($surveyAnswer->answer) ?></td>
                         <td><?= h($surveyAnswer->created) ?></td>
                         <td><?= h($surveyAnswer->modified) ?></td>
-                        <td><?= h($surveyAnswer->trashed) ?></td>
                         <td class="actions">
                             <?= $this->Html->link(__('View'), ['action' => 'view', $surveyAnswer->id]) ?>
                             <?= $this->Html->link(__('Edit'), ['action' => 'edit', $surveyAnswer->id]) ?>

@@ -20,16 +20,21 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('survey_id', ['options' => $surveys]); ?>
-                </div>
-                <div class="col-xs-12 col-md-6">
                     <?php echo $this->Form->input('question'); ?>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('type'); ?>
+                    <?php echo $this->Form->input('survey_id', ['options' => $surveys]); ?>
                 </div>
+
+            </div>
+            <div class="row">
                 <div class="col-xs-12 col-md-6">
                     <?php echo $this->Form->input('active'); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <?php echo $this->Form->input('type', ['options' => $questionTypes]); ?>
                 </div>
             </div>
         </div>
