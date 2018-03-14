@@ -67,8 +67,7 @@ class SurveyAnswersTable extends Table
         $validator
             ->scalar('answer')
             ->maxLength('answer', 4294967295)
-            ->requirePresence('answer', 'create')
-            ->notEmpty('answer');
+            ->allowEmpty('answer');
 
         $validator
             ->scalar('comment')

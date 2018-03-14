@@ -28,7 +28,7 @@ class CreateSurveyAnswers extends AbstractMigration
         $table->addColumn('answer', 'text', [
             'default' => null,
             'limit' => MysqlAdapter::TEXT_LONG,
-            'null' => false,
+            'null' => true,
         ]);
 
         $table->addColumn('comment', 'text', [
