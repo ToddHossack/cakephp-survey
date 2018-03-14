@@ -21,7 +21,7 @@ class SurveyAnswersController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Surveys', 'SurveyQuestions', 'SurveyChoices', 'Users']
+            'contain' => ['SurveyQuestions']
         ];
         $surveyAnswers = $this->paginate($this->SurveyAnswers);
 
@@ -38,7 +38,7 @@ class SurveyAnswersController extends AppController
     public function view($id = null)
     {
         $surveyAnswer = $this->SurveyAnswers->get($id, [
-            'contain' => ['Surveys', 'SurveyQuestions', 'SurveyChoices', 'Users']
+            'contain' => ['SurveyQuestions', 'SurveyResults']
         ]);
 
         $this->set('surveyAnswer', $surveyAnswer);
@@ -61,11 +61,8 @@ class SurveyAnswersController extends AppController
             }
             $this->Flash->error(__('The survey answer could not be saved. Please, try again.'));
         }
-        $surveys = $this->SurveyAnswers->Surveys->find('list', ['limit' => 200]);
         $surveyQuestions = $this->SurveyAnswers->SurveyQuestions->find('list', ['limit' => 200]);
-        $surveyChoices = $this->SurveyAnswers->SurveyChoices->find('list', ['limit' => 200]);
-        $users = $this->SurveyAnswers->Users->find('list', ['limit' => 200]);
-        $this->set(compact('surveyAnswer', 'surveys', 'surveyQuestions', 'surveyChoices', 'users'));
+        $this->set(compact('surveyAnswer', 'surveyQuestions'));
     }
 
     /**
@@ -89,11 +86,8 @@ class SurveyAnswersController extends AppController
             }
             $this->Flash->error(__('The survey answer could not be saved. Please, try again.'));
         }
-        $surveys = $this->SurveyAnswers->Surveys->find('list', ['limit' => 200]);
         $surveyQuestions = $this->SurveyAnswers->SurveyQuestions->find('list', ['limit' => 200]);
-        $surveyChoices = $this->SurveyAnswers->SurveyChoices->find('list', ['limit' => 200]);
-        $users = $this->SurveyAnswers->Users->find('list', ['limit' => 200]);
-        $this->set(compact('surveyAnswer', 'surveys', 'surveyQuestions', 'surveyChoices', 'users'));
+        $this->set(compact('surveyAnswer', 'surveyQuestions'));
     }
 
     /**
