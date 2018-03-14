@@ -3,50 +3,88 @@
  * @var \App\View\AppView $this
  * @var \Cake\Datasource\EntityInterface $survey
  */
+$options['title'] = 'View Surveys';
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Survey'), ['action' => 'edit', $survey->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Survey'), ['action' => 'delete', $survey->id], ['confirm' => __('Are you sure you want to delete # {0}?', $survey->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Surveys'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Survey'), ['action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="surveys view large-9 medium-8 columns content">
-    <h3><?= h($survey->name) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= h($survey->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Name') ?></th>
-            <td><?= h($survey->name) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Version') ?></th>
-            <td><?= h($survey->version) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($survey->created) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($survey->modified) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Trashed') ?></th>
-            <td><?= h($survey->trashed) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Active') ?></th>
-            <td><?= $survey->active ? __('Yes') : __('No'); ?></td>
-        </tr>
-    </table>
+<section class="content-header">
     <div class="row">
-        <h4><?= __('Description') ?></h4>
-        <?= $this->Text->autoParagraph(h($survey->description)); ?>
+        <div class="col-xs-12 col-md-6">
+            <h4><?= $options['title'] ?></h4>
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <div class="pull-right">
+            <div class="btn-group btn-group-sm" role="group">
+            </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
+<section class="content">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title"><?= __('Details'); ?></h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Id') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= h($survey->id) ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Name') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= h($survey->name) ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Version') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= h($survey->version) ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Created') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= h($survey->created) ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Active') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= $survey->active ? __('Yes') : __('No'); ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Description') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= $this->Text->autoParagraph(h($survey->description)); ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>

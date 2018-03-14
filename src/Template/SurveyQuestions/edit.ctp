@@ -7,7 +7,7 @@
 <section class="content-header">
     <div class="row">
         <div class="col-xs-12 col-md-6">
-            <h4><?= __('Create {0}', ['Survey']);?></h4>
+            <h4><?= __('Edit {0}', ['Survey Question']);?></h4>
         </div>
     </div>
 </section>
@@ -26,7 +26,10 @@
                     <?php echo $this->Form->input('question'); ?>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->control('active'); ?>
+                    <?php echo $this->Form->input('type'); ?>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <?php echo $this->Form->input('active'); ?>
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@
  * @var \App\View\AppView $this
  * @var \Cake\Datasource\EntityInterface[]|\Cake\Collection\CollectionInterface $surveyAnswers
  */
-$options['title'] = 'Surveys';
+$options['title'] = 'Question Choices';
 ?>
 <section class="content-header">
     <div class="row">
@@ -19,43 +19,46 @@ $options['title'] = 'Surveys';
 </section>
 <section class="content">
     <div class="box box-primary">
-    <div class="box-body">
-        <div class="table-responsive">
-            <table class="table table-hover table-condensed table-vertical-align table-datatable" width="100%">
-                <thead>
+        <div class="box-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-condensed table-vertical-align table-datatable" width="100%">
+                    <thead>
+                        <tr>
+                            <th scope="col"><?= $this->Paginator->sort('survey_question_id') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('answer') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('created') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('trashed') ?></th>
+                            <th scope="col" class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($surveyAnswers as $surveyAnswer) : ?>
                     <tr>
-                        <th scope="col"><?= $this->Paginator->sort('survey_id') ?></th>
-                        <th scope="col"><?= $this->Paginator->sort('survey_question_id') ?></th>
-                        <th scope="col"><?= $this->Paginator->sort('answer') ?></th>
-                        <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
-                        <th scope="col" class="actions"><?= __('Actions') ?></th>
+                        <td><?= $surveyAnswer->has('survey_question') ? $this->Html->link($surveyAnswer->survey_question->id, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyAnswer->survey_question->id]) : '' ?></td>
+                        <td><?= h($surveyAnswer->answer) ?></td>
+                        <td><?= h($surveyAnswer->created) ?></td>
+                        <td><?= h($surveyAnswer->modified) ?></td>
+                        <td><?= h($surveyAnswer->trashed) ?></td>
+                        <td class="actions">
+                            <?= $this->Html->link(__('View'), ['action' => 'view', $surveyAnswer->id]) ?>
+                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $surveyAnswer->id]) ?>
+                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $surveyAnswer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $surveyAnswer->id)]) ?>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($surveyAnswers as $surveyAnswer) : ?>
-                <tr>
-                    <td><?= $surveyAnswer->has('survey') ? $this->Html->link($surveyAnswer->survey->name, ['controller' => 'Surveys', 'action' => 'view', $surveyAnswer->survey->id]) : '' ?></td>
-                    <td><?= $surveyAnswer->has('survey_question') ? $this->Html->link($surveyAnswer->survey_question->id, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyAnswer->survey_question->id]) : '' ?></td>
-                    <td><?= $surveyAnswer->answer;?> </td>
-                    <td><?= $surveyAnswer->has('user') ? $this->Html->link($surveyAnswer->user->id, ['controller' => 'Users', 'action' => 'view', $surveyAnswer->user->id]) : '' ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $surveyAnswer->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $surveyAnswer->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $surveyAnswer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $surveyAnswer->id)]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <div class="paginator">
-            <ul class="pagination">
-                <?= $this->Paginator->first('<< ' . __('first')) ?>
-                <?= $this->Paginator->prev('< ' . __('previous')) ?>
-                <?= $this->Paginator->numbers() ?>
-                <?= $this->Paginator->next(__('next') . ' >') ?>
-                <?= $this->Paginator->last(__('last') . ' >>') ?>
-            </ul>
-            <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            <div class="paginator">
+                <ul class="pagination">
+                    <?= $this->Paginator->first('<< ' . __('first')) ?>
+                    <?= $this->Paginator->prev('< ' . __('previous')) ?>
+                    <?= $this->Paginator->numbers() ?>
+                    <?= $this->Paginator->next(__('next') . ' >') ?>
+                    <?= $this->Paginator->last(__('last') . ' >>') ?>
+                </ul>
+                <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+            </div>
         </div>
     </div>
 </div>
