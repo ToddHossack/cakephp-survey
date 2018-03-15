@@ -61,7 +61,7 @@ class SurveyAnswersController extends AppController
             }
             $this->Flash->error(__('The survey answer could not be saved. Please, try again.'));
         }
-        $surveyQuestions = $this->SurveyAnswers->SurveyQuestions->find('list', ['limit' => 200]);
+        $surveyQuestions = $this->SurveyAnswers->SurveyQuestions->find('list', ['limit' => 200, 'keyField' => 'id', 'valueField' => 'question']);
         $this->set(compact('surveyAnswer', 'surveyQuestions'));
     }
 
@@ -86,7 +86,7 @@ class SurveyAnswersController extends AppController
             }
             $this->Flash->error(__('The survey answer could not be saved. Please, try again.'));
         }
-        $surveyQuestions = $this->SurveyAnswers->SurveyQuestions->find('list', ['limit' => 200]);
+        $surveyQuestions = $this->SurveyAnswers->SurveyQuestions->find('list', ['limit' => 200, 'keyField' => 'id', 'valueField' => 'question']);
         $this->set(compact('surveyAnswer', 'surveyQuestions'));
     }
 

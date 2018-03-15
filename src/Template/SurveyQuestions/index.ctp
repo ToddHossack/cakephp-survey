@@ -26,6 +26,7 @@ $options['title'] = 'Survey Questions';
                         <tr>
                             <th scope="col"><?= $this->Paginator->sort('survey_id') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('question') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('type') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('active') ?></th>
                             <th scope="col" class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -35,8 +36,10 @@ $options['title'] = 'Survey Questions';
                     <tr>
                         <td><?= $surveyQuestion->has('survey') ? $this->Html->link($surveyQuestion->survey->name, ['controller' => 'Surveys', 'action' => 'view', $surveyQuestion->survey->id]) : '' ?></td>
                         <td><?= h($surveyQuestion->question) ?></td>
+                        <td><?= h($questionTypes[$surveyQuestion->type]) ?></td>
                         <td><?= h($surveyQuestion->active) ?></td>
                         <td class="actions">
+                            <?= $this->Html->link(__('Preview'), ['action' => 'preview', $surveyQuestion->id]) ?>
                             <?= $this->Html->link(__('View'), ['action' => 'view', $surveyQuestion->id]) ?>
                             <?= $this->Html->link(__('Edit'), ['action' => 'edit', $surveyQuestion->id]) ?>
                             <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $surveyQuestion->id], ['confirm' => __('Are you sure you want to delete # {0}?', $surveyQuestion->id)]) ?>

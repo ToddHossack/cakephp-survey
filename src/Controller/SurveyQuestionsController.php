@@ -24,8 +24,9 @@ class SurveyQuestionsController extends AppController
             'contain' => ['Surveys']
         ];
         $surveyQuestions = $this->paginate($this->SurveyQuestions);
+        $questionTypes = $this->SurveyQuestions->getQuestionTypes();
 
-        $this->set(compact('surveyQuestions'));
+        $this->set(compact('surveyQuestions', 'questionTypes'));
     }
 
     /**
@@ -37,11 +38,33 @@ class SurveyQuestionsController extends AppController
      */
     public function view($id = null)
     {
+        $questionTypes = $this->SurveyQuestions->getQuestionTypes();
         $surveyQuestion = $this->SurveyQuestions->get($id, [
             'contain' => ['Surveys']
         ]);
+        $this->set(compact('surveyQuestion', 'questionTypes'));
+    }
 
-        $this->set('surveyQuestion', $surveyQuestion);
+    /**
+     * View method
+     *
+     * @param string|null $id Survey Question id.
+     * @return \Cake\Http\Response|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function preview($id = null)
+    {
+        $questionTypes = $this->SurveyQuestions->getQuestionTypes();
+        $savedResults = [];
+        $surveyQuestion = $this->SurveyQuestions->get($id, [
+            'contain' => ['Surveys', 'SurveyAnswers']
+        ]);
+
+        if ($this->request->is(['post', 'put', 'patch'])) {
+            $savedResults = $this->request->getData();
+        }
+
+        $this->set(compact('surveyQuestion', 'questionTypes', 'savedResults'));
     }
 
     /**
@@ -51,6 +74,8 @@ class SurveyQuestionsController extends AppController
      */
     public function add()
     {
+        $questionTypes = $this->SurveyQuestions->getQuestionTypes();
+
         $surveyQuestion = $this->SurveyQuestions->newEntity();
         if ($this->request->is('post')) {
             $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, $this->request->getData());
@@ -62,7 +87,7 @@ class SurveyQuestionsController extends AppController
             $this->Flash->error(__('The survey question could not be saved. Please, try again.'));
         }
         $surveys = $this->SurveyQuestions->Surveys->find('list', ['limit' => 200]);
-        $this->set(compact('surveyQuestion', 'surveys'));
+        $this->set(compact('surveyQuestion', 'surveys', 'questionTypes'));
     }
 
     /**
@@ -74,6 +99,7 @@ class SurveyQuestionsController extends AppController
      */
     public function edit($id = null)
     {
+        $questionTypes = $this->SurveyQuestions->getQuestionTypes();
         $surveyQuestion = $this->SurveyQuestions->get($id, [
             'contain' => []
         ]);
@@ -87,7 +113,7 @@ class SurveyQuestionsController extends AppController
             $this->Flash->error(__('The survey question could not be saved. Please, try again.'));
         }
         $surveys = $this->SurveyQuestions->Surveys->find('list', ['limit' => 200]);
-        $this->set(compact('surveyQuestion', 'surveys'));
+        $this->set(compact('surveyQuestion', 'surveys', 'questionTypes'));
     }
 
     /**

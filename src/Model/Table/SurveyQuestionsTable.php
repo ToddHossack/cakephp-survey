@@ -105,4 +105,20 @@ class SurveyQuestionsTable extends Table
 
         return $rules;
     }
+
+    /**
+     * Get defined list of Question types currently available
+     *
+     * @return array $list of question types.
+     */
+    public function getQuestionTypes()
+    {
+        return [
+            'input' => 'Short Text',
+            'textarea' => 'Paragraph',
+            'checkbox' => 'Multiple Checkboxes',
+            'radio' => 'Radio Buttons',
+            'select' => 'Dropdown',
+        ];
+    }
 }
