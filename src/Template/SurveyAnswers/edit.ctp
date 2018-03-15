@@ -7,7 +7,7 @@
 <section class="content-header">
     <div class="row">
         <div class="col-xs-12 col-md-6">
-            <h4><?= __('Create {0}', ['Question Option']);?></h4>
+            <h4><?= __('Edit {0}', ['Question Option']);?></h4>
         </div>
     </div>
 </section>
@@ -21,9 +21,10 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('survey_question_id', ['options' => $surveyQuestions]); ?>
-                    <?php echo $this->Form->input('answer'); ?>
-                    <?php echo $this->Form->input('comment'); ?>
+                    <?= $this->Form->input('survey_question_id', ['options' => $surveyQuestions]); ?>
+                    <?= $this->Form->input('answer'); ?>
+                    <?= $this->Form->input('comment'); ?>
+                    <?= $this->Form->input('order'); ?>
                 </div>
             </div>
         <?= $this->Form->button(__('Submit')) ?>
