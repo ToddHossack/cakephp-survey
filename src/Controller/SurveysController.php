@@ -2,7 +2,7 @@
 namespace Qobo\Survey\Controller;
 
 use App\Controller\AppController;
-
+use Cake\I18n\Date;
 /**
  * Surveys Controller
  *
@@ -40,6 +40,32 @@ class SurveysController extends AppController
 
         $this->set('survey', $survey);
     }
+
+    /**
+     * Publish method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function publish($id = null)
+    {
+        $survey = $this->Surveys->get($id);
+
+        if ($this->request->is(['post', 'put', 'patch'])) {
+            $data = $this->request->getData();
+
+            $survey = $this->Surveys->patchEntity($survey, $data, ['validate' => false]);
+            if ($this->Surveys->save($survey)) {
+                $this->Flash->success(__('Publish date of the survey successfully saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+
+            $this->Flash->error(__('Couldn\'t publish the survey'));
+        }
+
+        $this->set(compact('survey'));
+    }
+
 
     /**
      * Add method
