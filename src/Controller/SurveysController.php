@@ -3,6 +3,7 @@ namespace Qobo\Survey\Controller;
 
 use App\Controller\AppController;
 use Cake\I18n\Date;
+
 /**
  * Surveys Controller
  *
@@ -65,7 +66,6 @@ class SurveysController extends AppController
 
         $this->set(compact('survey'));
     }
-
 
     /**
      * Add method

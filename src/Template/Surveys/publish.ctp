@@ -28,7 +28,7 @@ echo $this->Html->script([
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('Surveys.publish_date',['type' => 'text', 'data-provide' => 'datetimepicker']); ?>
+                    <?php echo $this->Form->input('Surveys.publish_date', ['type' => 'text', 'data-provide' => 'datetimepicker']); ?>
                 </div>
             </div>
             <?= $this->Form->button(__('Submit')) ?>
