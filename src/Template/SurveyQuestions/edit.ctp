@@ -37,6 +37,12 @@
                     <?php echo $this->Form->input('type', ['options' => $questionTypes]); ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <?php echo $this->Form->input('order');?>
+                </div>
+            </div>
+
         </div>
     </div>
     <?= $this->Form->button(__('Submit')) ?>
