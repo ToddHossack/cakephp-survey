@@ -41,6 +41,7 @@ $options['title'] = 'Surveys';
                             <td><?= h($survey->created) ?></td>
                             <td><?= h($survey->publish_date) ?></td>
                             <td class="actions">
+                                <?= $this->Form->postLink(__('Duplicate'), ['action' => 'duplicate', $survey->id]);?>
                                 <?php if (!empty($survey->publish_date)) : ?>
                                 <?= $this->Html->link(__('Publish'), ['action' => 'publish', $survey->id]);?>
                                 <?= $this->Html->link(__('View'), ['action' => 'view', $survey->id]) ?>
