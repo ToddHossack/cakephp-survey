@@ -28,12 +28,7 @@ class Survey extends Entity
      * @var array
      */
     protected $_accessible = [
-        'name' => true,
-        'version' => true,
-        'description' => true,
-        'active' => true,
-        'created' => true,
-        'modified' => true,
-        'trashed' => true
+        '*' => true,
+        'id' => false,
     ];
 }

@@ -1,9 +1,11 @@
 <?php
 namespace Qobo\Survey\Model\Table;
 
+use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
 /**
@@ -76,5 +78,22 @@ class SurveysTable extends Table
             ->allowEmpty('trashed');
 
         return $validator;
+    }
+
+    /**
+     * Get Survey Categories
+     *
+     * @return array $result list of categories.
+     */
+    public function getSurveyCategories()
+    {
+        $result = [];
+        $config = Configure::read('Survey.Categories');
+
+        if (!empty($config)) {
+            $result = Hash::combine($config, '{n}.value', '{n}.name');
+        }
+
+        return $result;
     }
 }

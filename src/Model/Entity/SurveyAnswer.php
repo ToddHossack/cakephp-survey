@@ -29,12 +29,7 @@ class SurveyAnswer extends Entity
      * @var array
      */
     protected $_accessible = [
-        'survey_question_id' => true,
-        'answer' => true,
-        'comment' => true,
-        'created' => true,
-        'modified' => true,
-        'trashed' => true,
-        'survey_question' => true
+        '*' => true,
+        'id' => false,
     ];
 }

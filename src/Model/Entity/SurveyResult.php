@@ -34,17 +34,7 @@ class SurveyResult extends Entity
      * @var array
      */
     protected $_accessible = [
-        'survey_id' => true,
-        'survey_question_id' => true,
-        'survey_answer_id' => true,
-        'user_id' => true,
-        'result' => true,
-        'created' => true,
-        'modified' => true,
-        'trashed' => true,
-        'survey' => true,
-        'survey_question' => true,
-        'survey_answer' => true,
-        'user' => true
+        '*' => true,
+        'id' => false,
     ];
 }

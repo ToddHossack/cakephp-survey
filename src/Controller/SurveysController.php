@@ -2,6 +2,7 @@
 namespace Qobo\Survey\Controller;
 
 use App\Controller\AppController;
+use Cake\I18n\Date;
 
 /**
  * Surveys Controller
@@ -21,8 +22,9 @@ class SurveysController extends AppController
     public function index()
     {
         $surveys = $this->paginate($this->Surveys);
+        $categories = $this->Surveys->getSurveyCategories();
 
-        $this->set(compact('surveys'));
+        $this->set(compact('surveys', 'categories'));
     }
 
     /**
@@ -42,6 +44,33 @@ class SurveysController extends AppController
     }
 
     /**
+     * Publish method
+     *
+     * @param string|null $id Survey id.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function publish($id = null)
+    {
+        $survey = $this->Surveys->get($id);
+
+        if ($this->request->is(['post', 'put', 'patch'])) {
+            $data = $this->request->getData();
+
+            $survey = $this->Surveys->patchEntity($survey, $data, ['validate' => false]);
+            if ($this->Surveys->save($survey)) {
+                $this->Flash->success(__('Survey was successfully saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+
+            $this->Flash->error(__('Couldn\'t publish the survey'));
+        }
+
+        $this->set(compact('survey'));
+    }
+
+    /**
      * Add method
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
@@ -49,6 +78,8 @@ class SurveysController extends AppController
     public function add()
     {
         $survey = $this->Surveys->newEntity();
+        $categories = $this->Surveys->getSurveyCategories();
+
         if ($this->request->is('post')) {
             $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
             if ($this->Surveys->save($survey)) {
@@ -58,7 +89,7 @@ class SurveysController extends AppController
             }
             $this->Flash->error(__('The survey could not be saved. Please, try again.'));
         }
-        $this->set(compact('survey'));
+        $this->set(compact('survey', 'categories'));
     }
 
     /**
@@ -70,9 +101,11 @@ class SurveysController extends AppController
      */
     public function edit($id = null)
     {
+        $categories = $this->Surveys->getSurveyCategories();
         $survey = $this->Surveys->get($id, [
             'contain' => []
         ]);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
             if ($this->Surveys->save($survey)) {
@@ -82,7 +115,7 @@ class SurveysController extends AppController
             }
             $this->Flash->error(__('The survey could not be saved. Please, try again.'));
         }
-        $this->set(compact('survey'));
+        $this->set(compact('survey', 'categories'));
     }
 
     /**
