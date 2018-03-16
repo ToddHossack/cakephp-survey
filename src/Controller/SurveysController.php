@@ -56,7 +56,7 @@ class SurveysController extends AppController
 
             $survey = $this->Surveys->patchEntity($survey, $data, ['validate' => false]);
             if ($this->Surveys->save($survey)) {
-                $this->Flash->success(__('Publish date of the survey successfully saved.'));
+                $this->Flash->success(__('Survey publish date was successfully saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
