@@ -75,6 +75,8 @@ class SurveysController extends AppController
     public function add()
     {
         $survey = $this->Surveys->newEntity();
+        $categories = $this->Surveys->getSurveyCategories();
+
         if ($this->request->is('post')) {
             $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
             if ($this->Surveys->save($survey)) {
@@ -84,7 +86,7 @@ class SurveysController extends AppController
             }
             $this->Flash->error(__('The survey could not be saved. Please, try again.'));
         }
-        $this->set(compact('survey'));
+        $this->set(compact('survey', 'categories'));
     }
 
     /**
@@ -96,9 +98,11 @@ class SurveysController extends AppController
      */
     public function edit($id = null)
     {
+        $categories = $this->Surveys->getSurveyCategories();
         $survey = $this->Surveys->get($id, [
             'contain' => []
         ]);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
             if ($this->Surveys->save($survey)) {
@@ -108,7 +112,7 @@ class SurveysController extends AppController
             }
             $this->Flash->error(__('The survey could not be saved. Please, try again.'));
         }
-        $this->set(compact('survey'));
+        $this->set(compact('survey', 'categories'));
     }
 
     /**

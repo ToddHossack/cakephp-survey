@@ -25,7 +25,7 @@ $options['title'] = 'Surveys';
                     <thead>
                         <tr>
                             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                            <th scope="col"><?= $this->Paginator->sort('version') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('category') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('active') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('publish_date') ?></th>
@@ -36,7 +36,7 @@ $options['title'] = 'Surveys';
                         <?php foreach ($surveys as $survey) : ?>
                         <tr>
                             <td><?= h($survey->name) ?></td>
-                            <td><?= h($survey->version) ?></td>
+                            <td><?= h($survey->category) ?></td>
                             <td><?= h($survey->active) ?></td>
                             <td><?= h($survey->created) ?></td>
                             <td><?= h($survey->publish_date) ?></td>

@@ -23,7 +23,7 @@
                     <?php echo $this->Form->input('name'); ?>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('version'); ?>
+                    <?php echo $this->Form->input('category', ['options' => $categories]); ?>
                 </div>
                 <div class="col-xs-12 col-md-6">
                     <?php echo $this->Form->input('description');?>
