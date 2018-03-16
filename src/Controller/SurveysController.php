@@ -71,6 +71,31 @@ class SurveysController extends AppController
     }
 
     /**
+     * Publish method
+     *
+     * @param string|null $id Survey id.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function duplicate($id = null)
+    {
+        $this->autoRender = false;
+
+        if ($this->request->is(['post', 'put', 'patch'])) {
+            $duplicated = $this->Surveys->duplicate($id);
+            if ($duplicated) {
+                // @NOTE: saving parent_id as Duplicatable unsets origin id
+                $duplicated = $this->Surveys->patchEntity($duplicated, ['parent_id' => $id]);
+                $duplicated = $this->Surveys->save($duplicated);
+
+                $this->Flash->success(__('Survey was successfully duplicated'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('Couldn\'t duplicate the survey data'));
+        }
+    }
+    /**
      * Add method
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
