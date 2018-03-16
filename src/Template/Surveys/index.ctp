@@ -36,7 +36,7 @@ $options['title'] = 'Surveys';
                         <?php foreach ($surveys as $survey) : ?>
                         <tr>
                             <td><?= h($survey->name) ?></td>
-                            <td><?= h($survey->category) ?></td>
+                            <td><?= (!empty($categories[$survey->category])) ? $categories[$survey->category] : $survey->category ?></td>
                             <td><?= h($survey->active) ?></td>
                             <td><?= h($survey->created) ?></td>
                             <td><?= h($survey->publish_date) ?></td>

@@ -22,8 +22,9 @@ class SurveysController extends AppController
     public function index()
     {
         $surveys = $this->paginate($this->Surveys);
+        $categories = $this->Surveys->getSurveyCategories();
 
-        $this->set(compact('surveys'));
+        $this->set(compact('surveys', 'categories'));
     }
 
     /**
