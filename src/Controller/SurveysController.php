@@ -46,7 +46,9 @@ class SurveysController extends AppController
     /**
      * Publish method
      *
+     * @param string|null $id Survey id.
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function publish($id = null)
     {
