@@ -53,7 +53,7 @@ $options['title'] = 'View Question Result';
                     <strong><?= __('Survey Question') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= $surveyResult->has('survey_question') ? $this->Html->link($surveyResult->survey_question->id, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyResult->survey_question->id]) : '' ?>
+                    <?= $surveyResult->has('survey_question') ? $this->Html->link($surveyResult->survey_question->question, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyResult->survey_question->id]) : '' ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
@@ -62,16 +62,25 @@ $options['title'] = 'View Question Result';
                     <strong><?= __('Survey Answer') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= $surveyResult->has('survey_choice') ? $this->Html->link($surveyResult->survey_choice->id, ['controller' => 'SurveyChoices', 'action' => 'view', $surveyResult->survey_choice->id]) : '' ?>
+                    <?= $surveyResult->has('survey_answer') ? $this->Html->link($surveyResult->survey_answer->answer, ['controller' => 'SurveyAnswers', 'action' => 'view', $surveyResult->survey_answer->id]) : '' ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
-             <div class="row">
+            <div class="row">
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Result') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= $this->Text->autoParagraph(h($surveyResult->result)); ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
+            </div>
+            <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('User') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= $surveyResult->has('user') ? $this->Html->link($surveyResult->user->id, ['controller' => 'Users', 'action' => 'view', $surveyResult->user->id]) : '' ?>
+                    <?= $surveyResult->has('user') ? $this->Html->link($surveyResult->user->username, ['controller' => 'Users', 'action' => 'view', $surveyResult->user->id]) : '' ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
@@ -93,15 +102,6 @@ $options['title'] = 'View Question Result';
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
-            <div class="row">
-                <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Result') ?>:</strong>
-                </div>
-                <div class="col-xs-8 col-md-4">
-                    <?= $this->Text->autoParagraph(h($surveyResult->result)); ?>
-                </div>
-                <div class="clearfix visible-xs visible-sm"></div>
-            </div>
-        </div>
+          </div>
     </div>
 </section>

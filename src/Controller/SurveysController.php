@@ -3,6 +3,7 @@ namespace Qobo\Survey\Controller;
 
 use App\Controller\AppController;
 use Cake\I18n\Date;
+use Cake\ORM\TableRegistry;
 
 /**
  * Surveys Controller
@@ -65,6 +66,84 @@ class SurveysController extends AppController
             }
 
             $this->Flash->error(__('Couldn\'t publish the survey'));
+        }
+
+        $this->set(compact('survey'));
+    }
+
+    /**
+     * Publish method
+     *
+     * @param string|null $id Survey id.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function preview($id = null)
+    {
+        $survey = null;
+
+        $query = $this->Surveys->find();
+        $query->where(['id' => $id]);
+
+        $query->contain([
+            'SurveyQuestions' => [
+                'sort' => ['SurveyQuestions.order' => 'ASC'],
+                'SurveyAnswers' => [
+                    'sort' => ['SurveyAnswers.order' => 'ASC'],
+                ],
+            ]
+        ]);
+
+        $query->execute();
+
+        if ($query->count()) {
+            $survey = $query->first();
+        }
+
+        $saved = [];
+
+        if ($this->request->is(['post', 'put', 'patch'])) {
+            $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
+            $user = $this->Auth->user();
+            $questions = $this->request->getData();
+
+            foreach ($questions['SurveyResults'] as $k => $item) {
+                if (!is_array($item['survey_answer_id'])) {
+                    $entity = $this->SurveyResults->newEntity();
+                    $entity->user_id = $user['id'];
+                    $entity->survey_id = $id;
+                    $entity->survey_question_id = $item['survey_question_id'];
+                    $entity->survey_answer_id = $item['survey_answer_id'];
+                    $entity->result = (!empty($item['result']) ? $item['result'] : '');
+
+                    $result = $this->SurveyResults->save($entity);
+                    if ($result) {
+                        $saved[] = $result;
+                    }
+                } else {
+                    foreach ($item['survey_answer_id'] as $key => $answer) {
+                        $entity = $this->SurveyResults->newEntity();
+                        $entity->user_id = $user['id'];
+                        $entity->survey_id = $id;
+                        $entity->survey_question_id = $item['survey_question_id'];
+                        $entity->survey_answer_id = $answer; //item['survey_answer_id'];
+                        $entity->result = (!empty($item['result']) ? $item['result'] : '');
+
+                        $result = $this->SurveyResults->save($entity);
+                        if ($result) {
+                            $saved[] = $result;
+                        }
+                    }
+                }
+            }
+
+            if (!empty($saved)) {
+                $this->Flash->success(__('Saved questionnaire results'));
+
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->success(__('Some errors took place during result savings'));
+            }
         }
 
         $this->set(compact('survey'));

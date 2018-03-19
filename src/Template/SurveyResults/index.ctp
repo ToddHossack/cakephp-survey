@@ -36,10 +36,10 @@ $options['title'] = 'Surveys';
                 <?php foreach ($surveyResults as $surveyResult) : ?>
                 <tr>
                     <td><?= $surveyResult->has('survey') ? $this->Html->link($surveyResult->survey->name, ['controller' => 'Surveys', 'action' => 'view', $surveyResult->survey->id]) : '' ?></td>
-                    <td><?= $surveyResult->has('survey_question') ? $this->Html->link($surveyResult->survey_question->id, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyResult->survey_question->id]) : '' ?></td>
-                    <td><?= $surveyResult->has('survey_answer') ? $this->Html->link($surveyResult->survey_answer->id, ['controller' => 'SurveyAnswers', 'action' => 'view', $surveyResult->survey_answer->id]) : '' ?></td>
+                    <td><?= $surveyResult->has('survey_question') ? $this->Html->link($surveyResult->survey_question->question, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyResult->survey_question->id]) : '' ?></td>
+                    <td><?= $surveyResult->has('survey_answer') ? $this->Html->link($surveyResult->survey_answer->answer, ['controller' => 'SurveyAnswers', 'action' => 'view', $surveyResult->survey_answer->id]) : '' ?></td>
                     <td><?= $surveyResult->result;?> </td>
-                    <td><?= $surveyResult->has('user') ? $this->Html->link($surveyResult->user->id, ['controller' => 'Users', 'action' => 'view', $surveyResult->user->id]) : '' ?></td>
+                    <td><?= $surveyResult->has('user') ? $this->Html->link($surveyResult->user->username, ['controller' => 'Users', 'action' => 'view', $surveyResult->user->id]) : '' ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $surveyResult->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $surveyResult->id]) ?>
