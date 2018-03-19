@@ -86,5 +86,36 @@ $options['title'] = 'View Surveys';
             </div>
         </div>
     </div>
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title"><?= __('Survey Results'); ?></h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body">
+            <?php $count = 1;?>
+            <?php foreach ($survey->survey_questions as $k => $question) : ?>
+                <?php
+                if (in_array($question->type, ['input', 'textarea'])) {
+                    continue;
+                }
+                ?>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <h4><?= $count . '. ' . $question->question;?></h4>
+                        <ul>
+                        <?php foreach ($question->survey_answers as $answer) : ?>
+                            <li><?= $answer->answer; ?></li>
+                        <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+                <?php $count++; ?>
+            <?php endforeach; ?>
+        </div>
     </div>
 </section>
