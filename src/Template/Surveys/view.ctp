@@ -1,9 +1,23 @@
 <?php
-/**
- * @var \App\View\AppView $this
- * @var \Cake\Datasource\EntityInterface $survey
- */
+use Cake\Core\Configure;
+
 $options['title'] = 'View Surveys';
+
+echo $this->Html->scriptBlock('var apiToken="' . Configure::read('API.token') . '";', ['block' => 'scriptBottom']);
+echo $this->Html->css([
+    'AdminLTE./plugins/morris/morris',
+], [
+    'block' => 'scriptBottom'
+]);
+
+echo $this->Html->script([
+    'Qobo/Survey.raphael-min',
+    'AdminLTE./plugins/morris/morris.min',
+    'Qobo/Survey.init',
+    ], [
+        'block' => 'scriptBottom'
+    ]
+);
 ?>
 <section class="content-header">
     <div class="row">
@@ -87,9 +101,11 @@ $options['title'] = 'View Surveys';
         </div>
     </div>
 
+    <?php $count = 1;?>
+    <?php foreach ($survey->survey_questions as $k => $question) : ?>
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title"><?= __('Survey Results'); ?></h3>
+            <h3 class="box-title"><?= $count . '. ' . $question->question;?></h3>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
                     <i class="fa fa-minus"></i>
@@ -97,25 +113,24 @@ $options['title'] = 'View Surveys';
             </div>
         </div>
         <div class="box-body">
-            <?php $count = 1;?>
-            <?php foreach ($survey->survey_questions as $k => $question) : ?>
-                <?php
-                if (in_array($question->type, ['input', 'textarea'])) {
-                    continue;
-                }
-                ?>
-                <div class="row">
-                    <div class="col-xs-12 col-md-12">
-                        <h4><?= $count . '. ' . $question->question;?></h4>
-                        <ul>
-                        <?php foreach ($question->survey_answers as $answer) : ?>
-                            <li><?= $answer->answer; ?></li>
-                        <?php endforeach; ?>
-                        </ul>
-                    </div>
+            <div class="row survey-question-results" data-id="<?= $question->id?>" data-survey-id="<?= $survey->id ?>">
+                <div class="col-xs-12 col-md-6">
+                    <?php if (!in_array($question->type, ['input', 'textarea'])) : ?>
+                    <ul>
+                    <?php foreach ($question->survey_answers as $answer) : ?>
+                        <li data-answer-id="<?= $answer->id?>"><?= $answer->answer; ?>. <strong>(Total: <span class="answer-stats"></span>)</strong></li>
+                    <?php endforeach; ?>
+                    </ul>
+                    <?php else : ?>
+                        <p> Question is [<?= $question->type ?>] type. <?= $this->Html->link(__('Load Answers'), '#', ['action' => 'view', 'controller' => 'SurveyResults']);?></p>
+                    <?php endif; ?>
                 </div>
-                <?php $count++; ?>
-            <?php endforeach; ?>
+                <div class="col-xs-12 col-md-5 graphs-container" id="graph-<?= $question->id ?>" data-question-type="<?= $question->type ?>" style="height:200px;width:200px;">
+                    <!-- graphs content goes here.. -->
+                </div>
+            </div>
         </div>
     </div>
+    <?php $count++; ?>
+    <?php endforeach; ?>
 </section>
