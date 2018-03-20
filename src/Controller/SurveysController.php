@@ -38,7 +38,14 @@ class SurveysController extends AppController
     public function view($id = null)
     {
         $survey = $this->Surveys->get($id, [
-            'contain' => []
+            'contain' => [
+                'SurveyQuestions' => [
+                    'sort' => ['SurveyQuestions.order' => 'ASC'],
+                    'SurveyAnswers' => [
+                        'sort' => ['SurveyAnswers.order' => 'ASC'],
+                    ],
+                ]
+            ]
         ]);
 
         $this->set('survey', $survey);
