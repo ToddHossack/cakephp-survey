@@ -10,11 +10,13 @@ echo $this->Html->css([
     'block' => 'scriptBottom'
 ]);
 
-echo $this->Html->script([
-    'Qobo/Survey.raphael-min',
-    'AdminLTE./plugins/morris/morris.min',
-    'Qobo/Survey.init',
-    ], [
+echo $this->Html->script(
+    [
+        'Qobo/Survey.raphael-min',
+        'AdminLTE./plugins/morris/morris.min',
+        'Qobo/Survey.init',
+    ],
+    [
         'block' => 'scriptBottom'
     ]
 );

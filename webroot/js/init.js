@@ -48,9 +48,9 @@
             headers: {
                 Authorization: 'Bearer ' + apiToken
             }
-        }).then( function (response) {
+        }).then(function (response) {
+
             if (!response.success) {
-                console.log('errorr in response');
                 return;
             }
 
@@ -63,7 +63,7 @@
 
             for (var answerId in response.data.answers) {
                 var element = response.data.answers[answerId];
-                var listElement = $(that).find('li[data-answer-id="' + answerId +'"]');
+                var listElement = $(that).find('li[data-answer-id="' + answerId + '"]');
                 $(listElement).find('.answer-stats').text(element.results);
                 graphData.push({
                     label: element.entity.answer,
