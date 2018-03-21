@@ -36,7 +36,6 @@
 
     $('.survey-question-results').each(function () {
         var that = this;
-
         $.ajax({
             dataType: 'json',
             method: 'POST',
@@ -54,28 +53,40 @@
                 return;
             }
 
-            if (['input', 'textarea'].includes(response.data.question.type)) {
+            let questionId = $(that).data('id');
+            let graphContainerId = 'graph-' + questionId;
+            let graphData = [];
+
+            for (var answerId in response.data.answers) {
+                let filter = 'li[data-answer-id="' + answerId + '"]';
+
+                if (['textarea', 'input'].includes(response.data.question.type)) {
+                    filter = 'li:first';
+                }
+
+                let element = response.data.answers[answerId];
+                $(that).find(filter).find('.answer-stats').text(element.results);
+            }
+
+            if (['textarea', 'input'].includes(response.data.question.type)) {
                 return;
             }
 
-            var graphContainerId = $(that).find('div.graphs-container').attr('id');
-            var graphData = [];
-
             for (var answerId in response.data.answers) {
                 var element = response.data.answers[answerId];
-                var listElement = $(that).find('li[data-answer-id="' + answerId + '"]');
-                $(listElement).find('.answer-stats').text(element.results);
                 graphData.push({
-                    label: element.entity.answer,
-                    value: parseInt(element.results)
+                    y: element.entity.answer,
+                    x: parseInt(element.results)
                 });
             }
 
             if (window.Morris !== undefined) {
-                Morris.Donut({
-                    'element': graphContainerId,
-                    'data': graphData,
-                    'resize': true
+                Morris.Bar({
+                    "element": graphContainerId,
+                    "data": graphData,
+                    xkey: 'y',
+                    ykeys: ['x'],
+                    labels: ['Count']
                 });
             }
         });
