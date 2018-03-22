@@ -12,7 +12,6 @@ $options['title'] = 'Surveys';
         </div>
         <div class="col-xs-12 col-md-6">
             <div class="pull-right">
-                <?= $this->element('CsvMigrations.Menu/index_top') ?>
             </div>
         </div>
     </div>
@@ -38,17 +37,35 @@ $options['title'] = 'Surveys';
                             <td><?= h($survey->name) ?></td>
                             <td><?= (!empty($categories[$survey->category])) ? $categories[$survey->category] : $survey->category ?></td>
                             <td><?= h($survey->active) ?></td>
-                            <td><?= h($survey->created) ?></td>
-                            <td><?= h($survey->publish_date) ?></td>
+                            <td><?= h($survey->created->i18nFormat('yyyy-MM-dd HH:mm')) ?></td>
+                            <td><?= !empty($survey->publish_date) ? h($survey->publish_date->i18nFormat('yyyy-MM-dd HH:mm')) : '' ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('Preview'), ['action' => 'preview', $survey->id]);?>
-                                <?= $this->Form->postLink(__('Duplicate'), ['action' => 'duplicate', $survey->id]);?>
-                                <?php if (!empty($survey->publish_date)) : ?>
-                                <?= $this->Html->link(__('Publish'), ['action' => 'publish', $survey->id]);?>
-                                <?= $this->Html->link(__('View'), ['action' => 'view', $survey->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $survey->id]) ?>
+                                <div class="btn-group btn-group-xs" role="group">
+                                <?= $this->Html->link(
+                                    '<i class="fa fa-pencil"></i>',
+                                    ['action' => 'preview', $survey->id],
+                                    ['class' => 'btn btn-default', 'escape' => false, 'title' => __('Preview Survey')]
+                                )?>
+                                <?= $this->Form->postLink(
+                                    '<i class="fa fa-clipboard"></i>',
+                                    ['action' => 'duplicate', $survey->id],
+                                    ['escape' => false, 'class' => 'btn btn-default', 'title' => __('Duplicate whole survey')]
+                                )?>
+                                <?php if (empty($survey->publish_date)) : ?>
+                                    <?= $this->Html->link(
+                                        '<i class="fa fa-calendar"></i>',
+                                        ['action' => 'publish', $survey->id],
+                                        ['class' => 'btn btn-default', 'escape' => false, 'title' => __('Set Publish Date')]
+                                    )?>
+                                    <?= $this->Html->link(
+                                        '<i class="fa fa-eye"></i>',
+                                        ['action' => 'view', $survey->id],
+                                        ['class' => 'btn btn-default', 'escape' => false, 'title' => __('View Survey & Results')]
+                                    )?>
+                                    <?= $this->Html->link('<i class="fa fa-edit"></i>', ['action' => 'edit', $survey->id], ['class' => 'btn btn-default', 'escape' => false]) ?>
                                 <?php endif; ?>
-                                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $survey->id], ['confirm' => __('Are you sure you want to delete # {0}?', $survey->id)]) ?>
+                                <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['action' => 'delete', $survey->id], ['class' => 'btn btn-default', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $survey->id)]) ?>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>

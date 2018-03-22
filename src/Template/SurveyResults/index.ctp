@@ -40,10 +40,10 @@ $options['title'] = 'Surveys';
                     <td><?= $surveyResult->has('survey_answer') ? $this->Html->link($surveyResult->survey_answer->answer, ['controller' => 'SurveyAnswers', 'action' => 'view', $surveyResult->survey_answer->id]) : '' ?></td>
                     <td><?= $surveyResult->result;?> </td>
                     <td><?= $surveyResult->has('user') ? $this->Html->link($surveyResult->user->username, ['controller' => 'Users', 'action' => 'view', $surveyResult->user->id]) : '' ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $surveyResult->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $surveyResult->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $surveyResult->id], ['confirm' => __('Are you sure you want to delete # {0}?', $surveyResult->id)]) ?>
+                    <td class="actions btn-group btn-group-xs">
+                        <?= $this->Html->link('<i class="fa fa-eye"></i>', ['action' => 'view', $surveyResult->id], ['class' => 'btn btn-default', 'escape' => false]) ?>
+                        <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['action' => 'edit', $surveyResult->id], ['class' => 'btn btn-default', 'escape' => false]) ?>
+                        <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['action' => 'delete', $surveyResult->id], ['class' => 'btn btn-default', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $surveyResult->id)]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>

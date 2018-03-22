@@ -1,5 +1,8 @@
 <?php
 use Cake\Core\Configure;
+use Cake\ORM\TableRegistry;
+
+$table = TableRegistry::get($this->name);
 
 $options['title'] = 'View Surveys';
 

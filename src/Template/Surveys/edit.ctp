@@ -7,7 +7,7 @@
 <section class="content-header">
     <div class="row">
         <div class="col-xs-12 col-md-6">
-            <h4><?= __('Create {0}', ['Survey']);?></h4>
+            <h4><?= __('Edit {0}', ['Survey']);?></h4>
         </div>
     </div>
 </section>
