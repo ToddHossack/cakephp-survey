@@ -38,10 +38,10 @@ $options['title'] = 'Question Choices';
                         <td><?= h($surveyAnswer->answer) ?></td>
                         <td><?= h($surveyAnswer->created) ?></td>
                         <td><?= h($surveyAnswer->modified) ?></td>
-                        <td class="actions">
-                            <?= $this->Html->link(__('View'), ['action' => 'view', $surveyAnswer->id]) ?>
-                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $surveyAnswer->id]) ?>
-                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $surveyAnswer->id], ['confirm' => __('Are you sure you want to delete # {0}?', $surveyAnswer->id)]) ?>
+                        <td class="actions btn-group btn-group-xs">
+                            <?= $this->Html->link('<i class="fa fa-eye"></i>', ['action' => 'view', $surveyAnswer->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
+                            <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['action' => 'edit', $surveyAnswer->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
+                            <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['action' => 'delete', $surveyAnswer->id], ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}?', $surveyAnswer->id)]) ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
