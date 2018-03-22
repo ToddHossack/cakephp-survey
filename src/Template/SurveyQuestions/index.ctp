@@ -38,11 +38,11 @@ $options['title'] = 'Survey Questions';
                         <td><?= h($surveyQuestion->question) ?></td>
                         <td><?= h($questionTypes[$surveyQuestion->type]) ?></td>
                         <td><?= h($surveyQuestion->active) ?></td>
-                        <td class="actions">
-                            <?= $this->Html->link(__('Preview'), ['action' => 'preview', $surveyQuestion->id]) ?>
-                            <?= $this->Html->link(__('View'), ['action' => 'view', $surveyQuestion->id]) ?>
-                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $surveyQuestion->id]) ?>
-                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $surveyQuestion->id], ['confirm' => __('Are you sure you want to delete # {0}?', $surveyQuestion->id)]) ?>
+                        <td class="actions btn-group btn-group-xs">
+                            <?= $this->Html->link('<i class="fa fa-file"></i>', ['action' => 'preview', $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
+                            <?= $this->Html->link('<i class="fa fa-eye"></i>', ['action' => 'view', $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
+                            <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['action' => 'edit', $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
+                            <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['action' => 'delete', $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}?', $surveyQuestion->id)]) ?>
                         </td>
                     </tr>
                     <?php endforeach; ?>
