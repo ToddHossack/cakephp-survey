@@ -37,6 +37,9 @@ class SurveysController extends AppController
      */
     public function view($id = null)
     {
+        $this->SurveyQuestions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+
+        $questionTypes = $this->SurveyQuestions->getQuestionTypes();
         $survey = $this->Surveys->get($id, [
             'contain' => [
                 'SurveyQuestions' => [
@@ -48,7 +51,7 @@ class SurveysController extends AppController
             ]
         ]);
 
-        $this->set('survey', $survey);
+        $this->set(compact('survey', 'questionTypes'));
     }
 
     /**
