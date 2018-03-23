@@ -52,33 +52,10 @@ class SurveyQuestionsTableTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * Test initialize method
-     *
-     * @return void
-     */
-    public function testInitialize()
+    public function testGetQuestionTypes()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $result = $this->SurveyQuestions->getQuestionTypes();
+        $this->assertTrue(is_array($result));
+        $this->assertNotEmpty($result);
     }
 }
