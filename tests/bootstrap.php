@@ -56,6 +56,12 @@ Configure::write('App', [
         ]
     ]
 ]);
+
+$config = Configure::read('Survey');
+if (empty($config)) {
+    Configure::load('survey', 'default');
+}
+
 Configure::write('debug', true);
 
 $TMP = new Folder(TMP);

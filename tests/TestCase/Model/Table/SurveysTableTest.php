@@ -1,6 +1,7 @@
 <?php
 namespace Qobo\Survey\Test\TestCase\Model\Table;
 
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Qobo\Survey\Model\Table\SurveysTable;
@@ -69,5 +70,12 @@ class SurveysTableTest extends TestCase
     public function testValidationDefault()
     {
         $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    public function testGetSurveyCategories()
+    {
+        $result = $this->Surveys->getSurveyCategories();
+        $this->assertTrue(is_array($result));
+        $this->assertEquals($result['test_default'], 'Test Default');
     }
 }
