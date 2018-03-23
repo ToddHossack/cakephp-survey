@@ -39,7 +39,7 @@ echo $this->Html->script(
 </section>
 
 <section class="content">
-    <div class="box box-primary">
+       <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title"><?= __('Details'); ?></h3>
             <div class="box-tools pull-right">
@@ -51,7 +51,7 @@ echo $this->Html->script(
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Id') ?>:</strong>
+                    <strong><?= __('ID') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
                     <?= h($survey->id) ?>
@@ -105,50 +105,36 @@ echo $this->Html->script(
             </div>
         </div>
     </div>
-    <?php $count = 1;?>
-    <?php foreach ($survey->survey_questions as $k => $question) : ?>
-        <div class="row">
-            <div class="col-md-6">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title"><?= $count . '. ' . $question->question;?></h3>
-                <div class="box-tools pull-right">
-                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                </div>
-            </div>
 
-            <div class="box-body">
-                <div class="row question-<?= $question->id ?> survey-question-results" data-id="<?= $question->id?>" data-survey-id="<?= $survey->id ?>">
-                    <div class="col-xs-12 col-md-12">
-                        <ul>
-                        <?php if (!in_array($question->type, ['input', 'textarea'])) : ?>
-                            <?php foreach ($question->survey_answers as $answer) : ?>
-                                <li data-answer-id="<?= $answer->id?>"><?= $answer->answer; ?>. <strong>(Total: <span class="answer-stats"></span>)</strong></li>
-                            <?php endforeach; ?>
-                        <?php else : ?>
-                            <li>
-                                Question is [<?= $question->type ?>] type.
-                                <strong>(Total: <span class="answer-stats"></span>)</strong>
-                            </li>
-                        <?php endif; ?>
-                        </ul>
-                    </div>
-                    <?php if (!in_array($question->type, ['input', 'textarea'])) : ?>
-                    <div class="col-xs-12 col-md-12">
-                        <div class="box-body">
-                            <div class="col-xs-12 col-md-5 graphs-container" id="graph-<?= $question->id ?>" style="height:300px;width:400px;">
-                            </div>
-                        </div>
-                    </div>
-                    <?php endif; ?>
-                </div>
-
+    <div class="nav-tabs-custom">
+        <ul id="relatedTabs" class="nav nav-tabs" role="tablist">
+            <li role="presentation">
+                <a href="#manage-survey-questions" aria-controls="manage-content" role="tab" data-toggle="tab">
+                    <?= __('Questions'); ?>
+                </a>
+            </li>
+            <li role="presentation">
+                 <a href="#manage-survey-answers" aria-controls="manage-content" role="tab" data-toggle="tab">
+                    <?= __('Answers'); ?>
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="#manage-survey-results" aria-controls="manage-survey-results" role="tab" data-toggle="tab">
+                    <?= __('Survey Results'); ?>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane" id="manage-survey-questions">
+                <?= $this->element('Qobo/Survey.SurveyQuestions/view', ['survey' => $survey]);?>
             </div>
-        </div>
+            <div role="tabpanel" class="tab-pane" id="manage-survey-answers">
+                <?= $this->element('Qobo/Survey.Answers/view', ['survey' => $survey]);?>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="manage-survey-results">
+                <?= $this->element('Qobo/Survey.SurveyResults/view', ['survey' => $survey]);?>
+            </div>
         </div>
     </div>
-    <?php $count++; ?>
-    <?php endforeach; ?>
+
 </section>
