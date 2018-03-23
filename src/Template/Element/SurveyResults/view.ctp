@@ -1,8 +1,8 @@
 <?php $count = 1;?>
+<div class="row">
 <?php foreach ($survey->survey_questions as $k => $question) : ?>
-    <div class="row">
-        <div class="col-md-6">
-    <div class="box box-primary">
+        <div class="col-md-6 col-xs-12">
+        <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title"><?= $count . '. ' . $question->question;?></h3>
             <div class="box-tools pull-right">
@@ -41,7 +41,7 @@
         </div>
     </div>
     </div>
-</div>
 <?php $count++; ?>
 <?php endforeach; ?>
+</div>
 
