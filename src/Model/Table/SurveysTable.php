@@ -118,4 +118,40 @@ class SurveysTable extends Table
 
         return $result;
     }
+
+    /**
+     * Get Survey full data including q&a with results.
+     *
+     * @param string|null $surveyId for the record
+     *
+     * @return array $result containing the survey's data.
+     */
+    public function getSurveyData($surveyId = null)
+    {
+        $result = [];
+
+        if (empty($surveyId)) {
+            return $result;
+        }
+
+        $query = $this->find();
+        $query->where(['id' => $surveyId]);
+        $query->contain(['SurveyQuestions' => [
+            'sort' => ['SurveyQuestions.order' => 'ASC'],
+            'SurveyAnswers' => [
+                'sort' => ['SurveyAnswers.order' => 'ASC'],
+                'SurveyResults'
+            ]
+        ]]);
+
+        $query->execute();
+
+        if (!$query->count()) {
+            return $result;
+        }
+
+        $result = $query->first();
+
+        return $result;
+    }
 }
