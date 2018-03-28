@@ -12,6 +12,7 @@
 namespace Qobo\Survey\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * SurveyAnswers Controller
@@ -63,11 +64,17 @@ class SurveyAnswersController extends AppController
     {
         $surveyAnswer = $this->SurveyAnswers->newEntity();
         if ($this->request->is('post')) {
+
             $surveyAnswer = $this->SurveyAnswers->patchEntity($surveyAnswer, $this->request->getData());
             if ($this->SurveyAnswers->save($surveyAnswer)) {
                 $this->Flash->success(__('The survey answer has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                $questionsTable = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+                $question = $questionsTable->get($this->request->data['survey_question_id']);
+
+                $url = ['controller' => 'Surveys', 'action' => 'view', $question->survey_id];
+
+                return $this->redirect($url);
             }
             $this->Flash->error(__('The survey answer could not be saved. Please, try again.'));
         }
@@ -92,7 +99,12 @@ class SurveyAnswersController extends AppController
             if ($this->SurveyAnswers->save($surveyAnswer)) {
                 $this->Flash->success(__('The survey answer has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                $questionsTable = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+                $question = $questionsTable->get($this->request->data['survey_question_id']);
+
+                $url = ['controller' => 'Surveys', 'action' => 'view', $question->survey_id];
+
+                return $this->redirect($url);
             }
             $this->Flash->error(__('The survey answer could not be saved. Please, try again.'));
         }
