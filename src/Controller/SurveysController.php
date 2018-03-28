@@ -50,16 +50,7 @@ class SurveysController extends AppController
         $this->SurveyQuestions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
 
         $questionTypes = $this->SurveyQuestions->getQuestionTypes();
-        $survey = $this->Surveys->get($id, [
-            'contain' => [
-                'SurveyQuestions' => [
-                    'sort' => ['SurveyQuestions.order' => 'ASC'],
-                    'SurveyAnswers' => [
-                        'sort' => ['SurveyAnswers.order' => 'ASC'],
-                    ],
-                ]
-            ]
-        ]);
+        $survey = $this->Surveys->getSurveyData($id);
 
         $this->set(compact('survey', 'questionTypes'));
     }
@@ -100,27 +91,8 @@ class SurveysController extends AppController
      */
     public function preview($id = null)
     {
-        $survey = null;
-
-        $query = $this->Surveys->find();
-        $query->where(['id' => $id]);
-
-        $query->contain([
-            'SurveyQuestions' => [
-                'sort' => ['SurveyQuestions.order' => 'ASC'],
-                'SurveyAnswers' => [
-                    'sort' => ['SurveyAnswers.order' => 'ASC'],
-                ],
-            ]
-        ]);
-
-        $query->execute();
-
-        if ($query->count()) {
-            $survey = $query->first();
-        }
-
         $saved = [];
+        $survey = $this->Surveys->getSurveyData($id);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
             $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
