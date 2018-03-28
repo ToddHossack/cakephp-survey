@@ -17,7 +17,8 @@
                 <?= $this->Html->link(
                     '<i class="fa fa-plus"></i> ' . __('Add Question'),
                     ['controller' => 'SurveyQuestions', 'action' => 'add'],
-                    ['class' => 'btn btn-default', 'escape' => false]);?>
+                    ['class' => 'btn btn-default', 'escape' => false]
+                )?>
             </div>
         </div>
     </div>
