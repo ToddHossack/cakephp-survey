@@ -11,10 +11,10 @@
  */
 namespace Qobo\Survey\Model\Table;
 
-use App\Model\Table\AppTable;
 use Cake\Core\Configure;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
+use Cake\ORM\Table;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
@@ -31,7 +31,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class SurveysTable extends AppTable
+class SurveysTable extends Table
 {
 
     /**
