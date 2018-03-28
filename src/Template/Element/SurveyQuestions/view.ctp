@@ -10,6 +10,18 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 ?>
+<div class="row">
+    <div class="col-xs-12 col-md-12">
+        <div class="pull-right">
+            <div class="btn-group btn-group-sm" role="group">
+                <?= $this->Html->link(
+                    '<i class="fa fa-plus"></i> ' . __('Add Question'),
+                    ['controller' => 'SurveyQuestions', 'action' => 'add'],
+                    ['class' => 'btn btn-default', 'escape' => false]);?>
+            </div>
+        </div>
+    </div>
+</div>
 <table class="table table-hover table-condensed table-vertical-align table-datatable" width="100%">
     <thead>
         <tr>
@@ -35,4 +47,3 @@
     <?php endforeach; ?>
     </tbody>
 </table>
-
