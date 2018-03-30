@@ -165,12 +165,14 @@ class SurveysController extends AppController
     public function duplicate($id = null)
     {
         $this->autoRender = false;
+        $survey = $this->Surveys->getSurveyData($id);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $duplicated = $this->Surveys->duplicate($id);
+            $duplicated = $this->Surveys->duplicate($survey->id);
+
             if ($duplicated) {
                 // @NOTE: saving parent_id as Duplicatable unsets origin id
-                $duplicated = $this->Surveys->patchEntity($duplicated, ['parent_id' => $id]);
+                $duplicated = $this->Surveys->patchEntity($duplicated, ['parent_id' => $survey->id]);
                 $duplicated = $this->Surveys->save($duplicated);
 
                 $this->Flash->success(__('Survey was successfully duplicated'));
@@ -241,7 +243,7 @@ class SurveysController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $survey = $this->Surveys->get($id);
+        $survey = $this->Surveys->getSurveyData($id);
         if ($this->Surveys->delete($survey)) {
             $this->Flash->success(__('The survey has been deleted.'));
         } else {

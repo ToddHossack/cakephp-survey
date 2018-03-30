@@ -47,7 +47,7 @@ $options['title'] .= ' &raquo; ' . $survey->name;
             <div class="btn-group btn-group-sm" role="group">
                 <?= $this->Form->postLink(
                     '<i class="fa fa-clipboard"></i> ' . __('Copy'),
-                    ['action' => 'duplicate', $surveyId],
+                    ['action' => 'duplicate', $survey->id],
                     ['escape' => false, 'class' => 'btn btn-default', 'title' => __('Duplicate whole survey')]
                 )?>
                 <?= $this->Html->link(
