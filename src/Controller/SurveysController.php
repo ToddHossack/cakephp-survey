@@ -78,7 +78,7 @@ class SurveysController extends AppController
      */
     public function publish($id = null)
     {
-        $survey = $this->Surveys->get($id);
+        $survey = $this->Surveys->getSurveyData($id);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
             $data = $this->request->getData();
@@ -87,7 +87,7 @@ class SurveysController extends AppController
             if ($this->Surveys->save($survey)) {
                 $this->Flash->success(__('Survey was successfully saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $id]);
             }
 
             $this->Flash->error(__('Couldn\'t publish the survey'));

@@ -110,7 +110,7 @@ $options['title'] .= ' &raquo; ' . $survey->name;
                     <strong><?= __('Publish Date') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= empty($survey->publish_date) ? 'N/A' : $survey->publish_date->i18nFormat('yyyy-MM-DD HH:mm') ?>
+                    <?= empty($survey->publish_date) ? 'N/A' : $survey->publish_date->i18nFormat('yyyy-MM-dd HH:mm') ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">

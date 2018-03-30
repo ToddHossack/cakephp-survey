@@ -108,7 +108,7 @@ $options['title'] .= $surveyQuestion->question;
                     <strong><?= __('Created') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= h($surveyQuestion->created->i18nFormat('yyyy-MM-DD HH:mm')) ?>
+                    <?= h($surveyQuestion->created->i18nFormat('yyyy-MM-dd HH:mm')) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
@@ -117,7 +117,7 @@ $options['title'] .= $surveyQuestion->question;
                     <strong><?= __('Modified') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= h($surveyQuestion->modified->i18nFormat('yyyy-MM-DD HH:mm')) ?>
+                    <?= h($surveyQuestion->modified->i18nFormat('yyyy-MM-dd HH:mm')) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
