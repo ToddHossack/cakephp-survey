@@ -9,6 +9,13 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+$checked = $survey->active ? $survey->active : true;
+
+echo $this->Html->css('AdminLTE./plugins/iCheck/all', ['block' => 'css']);
+echo $this->Html->script([
+    'AdminLTE./plugins/iCheck/icheck.min',
+    'Cms.icheck.init'
+    ], ['block' => 'scriptBottom']);
 ?>
 <section class="content-header">
     <div class="row">
@@ -35,7 +42,18 @@
                     <?php echo $this->Form->input('description');?>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('active'); ?>
+                    <?php
+                    $label = $this->Form->label('active');
+                    echo $this->Form->input('active', [
+                        'type' => 'checkbox',
+                        'checked' => $checked,
+                        'class' => 'square',
+                        'label' => false,
+                        'templates' => [
+                            'inputContainer' => '<div class="{{required}}">' . $label . '<div class="clearfix"></div>{{content}}</div>'
+                        ]
+                    ]);
+                    ?>
                 </div>
             </div>
             <?= $this->Form->button(__('Submit')) ?>

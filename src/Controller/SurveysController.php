@@ -12,7 +12,7 @@
 namespace Qobo\Survey\Controller;
 
 use App\Controller\AppController;
-use Cake\I18n\Date;
+use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -33,9 +33,23 @@ class SurveysController extends AppController
     public function index()
     {
         $surveys = $this->paginate($this->Surveys);
-        $categories = $this->Surveys->getSurveyCategories();
+        $this->set(compact('surveys'));
+    }
 
-        $this->set(compact('surveys', 'categories'));
+    /**
+     * Before Filter callback
+     *
+     * Preloading extra vars for all methods
+     *
+     * @param \Cake\Event\Event $event broadcasted.
+     * @return void
+     */
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+
+        $categories = $this->Surveys->getSurveyCategories();
+        $this->set(compact('categories'));
     }
 
     /**
@@ -50,7 +64,7 @@ class SurveysController extends AppController
         $this->SurveyQuestions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
 
         $questionTypes = $this->SurveyQuestions->getQuestionTypes();
-        $survey = $this->Surveys->getSurveyData($id);
+        $survey = $this->Surveys->getSurveyData($id, true);
 
         $this->set(compact('survey', 'questionTypes'));
     }
@@ -92,7 +106,7 @@ class SurveysController extends AppController
     public function preview($id = null)
     {
         $saved = [];
-        $survey = $this->Surveys->getSurveyData($id);
+        $survey = $this->Surveys->getSurveyData($id, true);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
             $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
@@ -174,7 +188,6 @@ class SurveysController extends AppController
     public function add()
     {
         $survey = $this->Surveys->newEntity();
-        $categories = $this->Surveys->getSurveyCategories();
 
         if ($this->request->is('post')) {
             $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
@@ -185,7 +198,7 @@ class SurveysController extends AppController
             }
             $this->Flash->error(__('The survey could not be saved. Please, try again.'));
         }
-        $this->set(compact('survey', 'categories'));
+        $this->set(compact('survey'));
     }
 
     /**
@@ -197,21 +210,25 @@ class SurveysController extends AppController
      */
     public function edit($id = null)
     {
-        $categories = $this->Surveys->getSurveyCategories();
-        $survey = $this->Surveys->get($id, [
-            'contain' => []
-        ]);
+        $survey = $this->Surveys->getSurveyData($id);
+        $redirect = ['controller' => 'Surveys', 'action' => 'view', $survey->id];
+
+        if (!empty($survey->publish_date)) {
+            $this->Flash->error(__('You cannot edit alredy published survey'));
+
+            return $this->redirect($redirect);
+        }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
             if ($this->Surveys->save($survey)) {
                 $this->Flash->success(__('The survey has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect($redirect);
             }
             $this->Flash->error(__('The survey could not be saved. Please, try again.'));
         }
-        $this->set(compact('survey', 'categories'));
+        $this->set(compact('survey'));
     }
 
     /**

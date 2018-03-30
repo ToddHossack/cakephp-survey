@@ -18,6 +18,13 @@ $options['title'] = 'Surveys';
         </div>
         <div class="col-xs-12 col-md-6">
             <div class="pull-right">
+                <div class="btn-group btn-group-sm">
+                <?= $this->Html->link(
+                    '<i class="fa fa-plus"></i>' . __('Add'),
+                    ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'add'],
+                    ['class' => 'btn btn-default', 'escape' => false]
+                );?>
+                </div>
             </div>
         </div>
     </div>
@@ -39,39 +46,23 @@ $options['title'] = 'Surveys';
                     </thead>
                     <tbody>
                         <?php foreach ($surveys as $survey) : ?>
+                            <?php $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id; ?>
                         <tr>
                             <td><?= h($survey->name) ?></td>
                             <td><?= (!empty($categories[$survey->category])) ? $categories[$survey->category] : $survey->category ?></td>
-                            <td><?= h($survey->active) ?></td>
+                            <td><?= h($survey->active ? __('Yes') : __('No')) ?></td>
                             <td><?= h($survey->created->i18nFormat('yyyy-MM-dd HH:mm')) ?></td>
                             <td><?= !empty($survey->publish_date) ? h($survey->publish_date->i18nFormat('yyyy-MM-dd HH:mm')) : '' ?></td>
-                            <td class="actions">
-                                <div class="btn-group btn-group-xs" role="group">
+                            <td class="actions btn-group btn-group-xs" role="group">
                                 <?= $this->Html->link(
-                                    '<i class="fa fa-pencil"></i>',
-                                    ['action' => 'preview', $survey->id],
-                                    ['class' => 'btn btn-default', 'escape' => false, 'title' => __('Preview Survey')]
-                                )?>
-                                <?= $this->Form->postLink(
-                                    '<i class="fa fa-clipboard"></i>',
-                                    ['action' => 'duplicate', $survey->id],
-                                    ['escape' => false, 'class' => 'btn btn-default', 'title' => __('Duplicate whole survey')]
+                                    '<i class="fa fa-eye"></i>',
+                                    ['action' => 'view', $surveyId],
+                                    ['class' => 'btn btn-default', 'escape' => false, 'title' => __('View Survey & Results')]
                                 )?>
                                 <?php if (empty($survey->publish_date)) : ?>
-                                    <?= $this->Html->link(
-                                        '<i class="fa fa-calendar"></i>',
-                                        ['action' => 'publish', $survey->id],
-                                        ['class' => 'btn btn-default', 'escape' => false, 'title' => __('Set Publish Date')]
-                                    )?>
-                                    <?= $this->Html->link(
-                                        '<i class="fa fa-eye"></i>',
-                                        ['action' => 'view', $survey->id],
-                                        ['class' => 'btn btn-default', 'escape' => false, 'title' => __('View Survey & Results')]
-                                    )?>
-                                    <?= $this->Html->link('<i class="fa fa-edit"></i>', ['action' => 'edit', $survey->id], ['class' => 'btn btn-default', 'escape' => false]) ?>
+                                <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['action' => 'edit', $surveyId], ['class' => 'btn btn-default', 'escape' => false]) ?>
                                 <?php endif; ?>
-                                <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['action' => 'delete', $survey->id], ['class' => 'btn btn-default', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $survey->id)]) ?>
-                                </div>
+                                <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['action' => 'delete', $surveyId], ['class' => 'btn btn-default', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $survey->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

@@ -49,6 +49,8 @@ class SurveysTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Muffin/Trash.Trash');
+        $this->addBehavior('Muffin/Slug.Slug');
 
         $this->addBehavior('Duplicatable.Duplicatable', [
             'finder' => 'all',
@@ -81,8 +83,10 @@ class SurveysTable extends Table
             ->allowEmpty('name');
 
         $validator
-            ->scalar('version')
-            ->maxLength('version', 255)
+            ->notEmpty('slug')
+            ->add('slug', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
             ->allowEmpty('version');
 
         $validator
@@ -100,6 +104,20 @@ class SurveysTable extends Table
             ->allowEmpty('trashed');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['slug']));
+
+        return $rules;
     }
 
     /**
@@ -123,10 +141,11 @@ class SurveysTable extends Table
      * Get Survey full data including q&a with results.
      *
      * @param string|null $surveyId for the record
+     * @param bool $contain to attach containable Q&A entities or not.
      *
      * @return array $result containing the survey's data.
      */
-    public function getSurveyData($surveyId = null)
+    public function getSurveyData($surveyId = null, $contain = false)
     {
         $result = [];
 
@@ -134,15 +153,19 @@ class SurveysTable extends Table
             return $result;
         }
 
-        $query = $this->find();
-        $query->where(['id' => $surveyId]);
-        $query->contain(['SurveyQuestions' => [
-            'sort' => ['SurveyQuestions.order' => 'ASC'],
-            'SurveyAnswers' => [
-                'sort' => ['SurveyAnswers.order' => 'ASC'],
-                'SurveyResults'
-            ]
-        ]]);
+        $query = $this->find('all');
+        $query->limit(1);
+        $query->where(['Surveys.id' => $surveyId]);
+        $query->orWhere(['Surveys.slug' => $surveyId]);
+        if ($contain) {
+            $query->contain(['SurveyQuestions' => [
+                'sort' => ['SurveyQuestions.order' => 'ASC'],
+                'SurveyAnswers' => [
+                    'sort' => ['SurveyAnswers.order' => 'ASC'],
+                    'SurveyResults'
+                ]
+            ]]);
+        }
 
         $query->execute();
 
@@ -150,7 +173,7 @@ class SurveysTable extends Table
             return $result;
         }
 
-        $result = $query->first();
+        $result = $query->firstOrFail();
 
         return $result;
     }

@@ -9,7 +9,17 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-$options['title'] = 'View Surveys';
+$surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
+
+$options['title'] = $this->Html->link(
+    $survey->name,
+    ['controller' => 'Surveys', 'action' => 'view', $surveyAnswer->survey_question->survey_id]
+);
+
+$options['title'] .= ' &raquo; ';
+$options['title'] .= $surveyAnswer->survey_question->question;
+$options['title'] .= ' &raquo; ';
+$options['title'] .= $surveyAnswer->answer;
 ?>
 <section class="content-header">
     <div class="row">
@@ -19,6 +29,16 @@ $options['title'] = 'View Surveys';
         <div class="col-xs-12 col-md-6">
             <div class="pull-right">
             <div class="btn-group btn-group-sm" role="group">
+            <?= $this->Html->link(
+                '<i class="fa fa-pencil"></i> ' . __('Edit'),
+                ['controller' => 'SurveyAnswers', 'action' => 'edit', $surveyId, $surveyAnswer->id],
+                ['class' => 'btn btn-default', 'title' => __('Edit'), 'escape' => false]
+            )?>
+            <?= $this->Form->postLink(
+                '<i class="fa fa-trash"></i>' . __('Delete'),
+                ['controller' => 'SurveyAnswers', 'action' => 'delete', $surveyId, $surveyAnswer->id],
+                ['class' => 'btn btn-default', 'title' => __('Delete'), 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}', $surveyAnswer->id)]
+            )?>
             </div>
             </div>
         </div>

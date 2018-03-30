@@ -23,111 +23,108 @@ use Cake\ORM\TableRegistry;
  */
 class SurveyAnswersController extends AppController
 {
-
     /**
-     * Index method
+     * Initialize survey answers controller
+     * pre-load Surveys table object
      *
-     * @return \Cake\Http\Response|void
+     * @return void
      */
-    public function index()
+    public function initialize()
     {
-        $this->paginate = [
-            'contain' => ['SurveyQuestions']
-        ];
-        $surveyAnswers = $this->paginate($this->SurveyAnswers);
-
-        $this->set(compact('surveyAnswers'));
+        parent::initialize();
+        $this->Surveys = TableRegistry::get('Qobo/Survey.Surveys');
     }
-
     /**
      * View method
      *
+     * @param string $surveyId it's either slug or survey id.
      * @param string|null $id Survey Answer id.
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($surveyId, $id = null)
     {
+        $survey = $this->Surveys->getSurveyData($surveyId, false);
+
         $surveyAnswer = $this->SurveyAnswers->get($id, [
             'contain' => ['SurveyQuestions', 'SurveyResults']
         ]);
 
-        $this->set('surveyAnswer', $surveyAnswer);
+        $this->set(compact('surveyAnswer', 'survey'));
     }
 
     /**
      * Add method
      *
+     * @param string $surveyId it's either slug or survey id.
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($surveyId = null)
     {
         $surveyAnswer = $this->SurveyAnswers->newEntity();
-        if ($this->request->is('post')) {
+        $survey = $this->Surveys->getSurveyData($surveyId);
+
+        if ($this->request->is(['post', 'put', 'patch'])) {
             $surveyAnswer = $this->SurveyAnswers->patchEntity($surveyAnswer, $this->request->getData());
             if ($this->SurveyAnswers->save($surveyAnswer)) {
                 $this->Flash->success(__('The survey answer has been saved.'));
 
-                $questionsTable = TableRegistry::get('Qobo/Survey.SurveyQuestions');
-                $question = $questionsTable->get($this->request->data['survey_question_id']);
-
-                $url = ['controller' => 'Surveys', 'action' => 'view', $question->survey_id];
-
-                return $this->redirect($url);
+                return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $survey->id]);
             }
             $this->Flash->error(__('The survey answer could not be saved. Please, try again.'));
         }
-        $surveyQuestions = $this->SurveyAnswers->SurveyQuestions->find('list', ['limit' => 200, 'keyField' => 'id', 'valueField' => 'question']);
+
+        $surveyQuestions = $this->SurveyAnswers->SurveyQuestions->getQuestionList($survey->id);
         $this->set(compact('surveyAnswer', 'surveyQuestions'));
     }
 
     /**
      * Edit method
      *
+     * @param string $surveyId it's either slug or survey id.
      * @param string|null $id Survey Answer id.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($surveyId, $id = null)
     {
-        $surveyAnswer = $this->SurveyAnswers->get($id, [
-            'contain' => []
-        ]);
+        $surveyAnswer = $this->SurveyAnswers->get($id);
+        $survey = $this->Surveys->getSurveyData($surveyId);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $surveyAnswer = $this->SurveyAnswers->patchEntity($surveyAnswer, $this->request->getData());
             if ($this->SurveyAnswers->save($surveyAnswer)) {
                 $this->Flash->success(__('The survey answer has been saved.'));
 
-                $questionsTable = TableRegistry::get('Qobo/Survey.SurveyQuestions');
-                $question = $questionsTable->get($this->request->data['survey_question_id']);
-
-                $url = ['controller' => 'Surveys', 'action' => 'view', $question->survey_id];
-
-                return $this->redirect($url);
+                return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $survey->id]);
             }
             $this->Flash->error(__('The survey answer could not be saved. Please, try again.'));
         }
-        $surveyQuestions = $this->SurveyAnswers->SurveyQuestions->find('list', ['limit' => 200, 'keyField' => 'id', 'valueField' => 'question']);
+
+        $surveyQuestions = $this->SurveyAnswers->SurveyQuestions->getQuestionList($survey->id);
         $this->set(compact('surveyAnswer', 'surveyQuestions'));
     }
 
     /**
      * Delete method
      *
+     * @param string $surveyId it's either slug or survey id.
      * @param string|null $id Survey Answer id.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($surveyId, $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $surveyAnswer = $this->SurveyAnswers->get($id);
+        $survey = $this->Surveys->getSurveyData($surveyId);
+
         if ($this->SurveyAnswers->delete($surveyAnswer)) {
             $this->Flash->success(__('The survey answer has been deleted.'));
         } else {
             $this->Flash->error(__('The survey answer could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $survey->id]);
     }
 }

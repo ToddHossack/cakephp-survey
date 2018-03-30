@@ -13,12 +13,13 @@
 <section class="content-header">
     <div class="row">
         <div class="col-xs-12 col-md-6">
-            <h4><?= __('Edit {0}', ['Survey Question']);?></h4>
+            <h4><?= __('Add {0}', ['Survey Question']);?></h4>
         </div>
     </div>
 </section>
 <section class="content">
     <?= $this->Form->create($surveyQuestion) ?>
+    <?= $this->Form->hidden('survey_id', ['value' => $survey->id]);?>
     <div class="box box-solid">
         <div class="box-header with-border">
             <h3 class="box-title"><?= __('Details');?></h3>
@@ -28,10 +29,6 @@
                 <div class="col-xs-12 col-md-6">
                     <?php echo $this->Form->input('question'); ?>
                 </div>
-                <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('survey_id', ['options' => $surveys]); ?>
-                </div>
-
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">

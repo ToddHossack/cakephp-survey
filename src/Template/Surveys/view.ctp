@@ -14,8 +14,6 @@ use Cake\ORM\TableRegistry;
 
 $table = TableRegistry::get($this->name);
 
-$options['title'] = 'View Surveys';
-
 echo $this->Html->scriptBlock('var apiToken="' . Configure::read('API.token') . '";', ['block' => 'scriptBottom']);
 echo $this->Html->css([
     'AdminLTE./plugins/morris/morris',
@@ -33,6 +31,11 @@ echo $this->Html->script(
         'block' => 'scriptBottom'
     ]
 );
+
+$surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
+
+$options['title'] = $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']);
+$options['title'] .= ' &raquo; ' . $survey->name;
 ?>
 <section class="content-header">
     <div class="row">
@@ -42,6 +45,33 @@ echo $this->Html->script(
         <div class="col-xs-12 col-md-6">
             <div class="pull-right">
             <div class="btn-group btn-group-sm" role="group">
+                <?= $this->Form->postLink(
+                    '<i class="fa fa-clipboard"></i> ' . __('Copy'),
+                    ['action' => 'duplicate', $surveyId],
+                    ['escape' => false, 'class' => 'btn btn-default', 'title' => __('Duplicate whole survey')]
+                )?>
+                <?= $this->Html->link(
+                    '<i class="fa fa-file"></i> ' . __('Preview'),
+                    ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'preview', $surveyId],
+                    ['class' => 'btn btn-default', 'escape' => false]
+                );?>
+                <?php if (empty($survey->publish_date)) : ?>
+                <?= $this->Html->link(
+                    '<i class="fa fa-calendar"></i> ' . __('Publish'),
+                    ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'publish', $surveyId],
+                    ['class' => 'btn btn-default', 'escape' => false]
+                )?>
+                <?= $this->Html->link(
+                    '<i class="fa fa-pencil"></i> ' . __('Edit'),
+                    ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'edit', $surveyId],
+                    ['class' => 'btn btn-default', 'escape' => false]
+                );?>
+                <?php endif; ?>
+                <?= $this->Form->postLink(
+                    '<i class="fa fa-trash"></i> ' . __('Delete'),
+                    ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'delete', $survey->id],
+                    ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}', $survey->name)]
+                );?>
             </div>
             </div>
         </div>
@@ -67,8 +97,6 @@ echo $this->Html->script(
                     <?= h($survey->id) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
-            </div>
-            <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Name') ?>:</strong>
                 </div>
@@ -79,19 +107,17 @@ echo $this->Html->script(
             </div>
             <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Version') ?>:</strong>
+                    <strong><?= __('Publish Date') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= h($survey->version) ?>
+                    <?= empty($survey->publish_date) ? 'N/A' : $survey->publish_date->i18nFormat('yyyy-MM-DD HH:mm') ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
-            </div>
-            <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Created') ?>:</strong>
+                    <strong><?= __('Slug') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= h($survey->created) ?>
+                    <?= h($survey->slug) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
@@ -103,8 +129,6 @@ echo $this->Html->script(
                     <?= $survey->active ? __('Yes') : __('No'); ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
-            </div>
-            <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Description') ?>:</strong>
                 </div>
