@@ -117,7 +117,7 @@ class SurveysController extends AppController
                 if (!is_array($item['survey_answer_id'])) {
                     $entity = $this->SurveyResults->newEntity();
                     $entity->user_id = $user['id'];
-                    $entity->survey_id = $id;
+                    $entity->survey_id = $survey->id;
                     $entity->survey_question_id = $item['survey_question_id'];
                     $entity->survey_answer_id = $item['survey_answer_id'];
                     $entity->result = (!empty($item['result']) ? $item['result'] : '');
@@ -130,7 +130,7 @@ class SurveysController extends AppController
                     foreach ($item['survey_answer_id'] as $key => $answer) {
                         $entity = $this->SurveyResults->newEntity();
                         $entity->user_id = $user['id'];
-                        $entity->survey_id = $id;
+                        $entity->survey_id = $survey->id;
                         $entity->survey_question_id = $item['survey_question_id'];
                         $entity->survey_answer_id = $answer; //item['survey_answer_id'];
                         $entity->result = (!empty($item['result']) ? $item['result'] : '');
@@ -146,7 +146,7 @@ class SurveysController extends AppController
             if (!empty($saved)) {
                 $this->Flash->success(__('Saved questionnaire results'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);
             } else {
                 $this->Flash->success(__('Some errors took place during result savings'));
             }
