@@ -10,6 +10,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 $surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
+$questionId = $surveyAnswer->survey_question->id;
 
 $options['title'] = $this->Html->link(
     $survey->name,
@@ -17,9 +18,12 @@ $options['title'] = $this->Html->link(
 );
 
 $options['title'] .= ' &raquo; ';
-$options['title'] .= $surveyAnswer->survey_question->question;
+$options['title'] .= $this->Html->link(
+    $surveyAnswer->survey_question->question,
+    ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $questionId]
+);
 $options['title'] .= ' &raquo; ';
-$options['title'] .= $surveyAnswer->answer;
+$options['title'] .= empty($surveyAnswer->answer) ? $surveyAnswer->comment : $survey->answer;
 ?>
 <section class="content-header">
     <div class="row">
@@ -31,12 +35,12 @@ $options['title'] .= $surveyAnswer->answer;
             <div class="btn-group btn-group-sm" role="group">
             <?= $this->Html->link(
                 '<i class="fa fa-pencil"></i> ' . __('Edit'),
-                ['controller' => 'SurveyAnswers', 'action' => 'edit', $surveyId, $surveyAnswer->id],
+                ['controller' => 'SurveyAnswers', 'action' => 'edit', $surveyId, $questionId, $surveyAnswer->id],
                 ['class' => 'btn btn-default', 'title' => __('Edit'), 'escape' => false]
             )?>
             <?= $this->Form->postLink(
                 '<i class="fa fa-trash"></i>' . __('Delete'),
-                ['controller' => 'SurveyAnswers', 'action' => 'delete', $surveyId, $surveyAnswer->id],
+                ['controller' => 'SurveyAnswers', 'action' => 'delete', $surveyId, $questionId, $surveyAnswer->id],
                 ['class' => 'btn btn-default', 'title' => __('Delete'), 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}', $surveyAnswer->id)]
             )?>
             </div>
@@ -59,7 +63,7 @@ $options['title'] .= $surveyAnswer->answer;
     <div class="box-body">
         <div class="row">
             <div class="col-xs-4 col-md-2 text-right">
-                <strong><?= __('Id') ?>:</strong>
+                <strong><?= __('ID') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
                 <?= h($surveyAnswer->id) ?>
@@ -71,7 +75,7 @@ $options['title'] .= $surveyAnswer->answer;
                 <strong><?= __('Survey Question') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
-                <?= $surveyAnswer->has('survey_question') ? $this->Html->link($surveyAnswer->survey_question->id, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyAnswer->survey_question->id]) : '' ?>
+                <?= $surveyAnswer->has('survey_question') ? $this->Html->link($surveyAnswer->survey_question->question, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyAnswer->survey_question->id]) : '' ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
         </div>
@@ -80,7 +84,7 @@ $options['title'] .= $surveyAnswer->answer;
                 <strong><?= __('Question Type') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
-                <?= h($surveyAnswer->type) ?>
+                <?= h($questionTypes[$surveyAnswer->survey_question->type]) ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
         </div>

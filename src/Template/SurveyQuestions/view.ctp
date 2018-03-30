@@ -9,15 +9,14 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+$surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
 $options['title'] = $this->Html->link(
-    $surveyQuestion->survey->name,
-    ['controller' => 'Surveys', 'action' => 'view', $surveyQuestion->survey->id]
+    $survey->name,
+    ['controller' => 'Surveys', 'action' => 'view', $surveyId]
 );
 $options['title'] .= " &raquo; ";
-
 $options['title'] .= $surveyQuestion->question;
 
-$surveyId = empty($surveyQuestion->survey->slug) ? $surveyQuestion->survey->id : $surveyQuestion->survey->slug;
 ?>
 <section class="content-header">
     <div class="row">
@@ -122,7 +121,21 @@ $surveyId = empty($surveyQuestion->survey->slug) ? $surveyQuestion->survey->id :
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
+        </div>
+    </div>
 
+    <div class="nav-tabs-custom">
+        <ul id="relatedTabs" class="nav nav-tabs" role="tablist">
+            <li role="presentation">
+                 <a href="#manage-survey-answers" aria-controls="manage-content" role="tab" data-toggle="tab">
+                    <?= __('Answers'); ?>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane" id="manage-survey-answers">
+                <?= $this->element('Qobo/Survey.Answers/view', ['survey' => $survey]);?>
+            </div>
         </div>
     </div>
 </section>

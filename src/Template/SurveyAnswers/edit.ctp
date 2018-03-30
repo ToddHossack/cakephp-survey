@@ -27,7 +27,6 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?= $this->Form->input('survey_question_id', ['options' => $surveyQuestions]); ?>
                     <?= $this->Form->input('answer'); ?>
                     <?= $this->Form->input('comment'); ?>
                     <?= $this->Form->input('order'); ?>

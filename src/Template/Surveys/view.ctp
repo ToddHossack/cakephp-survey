@@ -148,22 +148,14 @@ $options['title'] .= ' &raquo; ' . $survey->name;
                 </a>
             </li>
             <li role="presentation">
-                 <a href="#manage-survey-answers" aria-controls="manage-content" role="tab" data-toggle="tab">
-                    <?= __('Answers'); ?>
-                </a>
-            </li>
-            <li role="presentation">
                 <a href="#manage-survey-results" aria-controls="manage-survey-results" role="tab" data-toggle="tab">
-                    <?= __('Survey Results'); ?>
+                    <?= __('Results'); ?>
                 </a>
             </li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane" id="manage-survey-questions">
                 <?= $this->element('Qobo/Survey.SurveyQuestions/view', ['survey' => $survey]);?>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="manage-survey-answers">
-                <?= $this->element('Qobo/Survey.Answers/view', ['survey' => $survey]);?>
             </div>
             <div role="tabpanel" class="tab-pane" id="manage-survey-results">
                 <?= $this->element('Qobo/Survey.SurveyResults/view', ['survey' => $survey]);?>

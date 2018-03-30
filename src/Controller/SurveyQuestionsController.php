@@ -56,9 +56,10 @@ class SurveyQuestionsController extends AppController
     public function view($surveyId, $id = null)
     {
         $surveyQuestion = $this->SurveyQuestions->get($id, [
-            'contain' => ['Surveys']
+            'contain' => ['SurveyAnswers']
         ]);
-        $this->set(compact('surveyQuestion'));
+        $survey = $this->Surveys->getSurveyData($surveyId, true);
+        $this->set(compact('surveyQuestion', 'survey'));
     }
 
     /**

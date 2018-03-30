@@ -17,7 +17,7 @@ $surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
             <div class="btn-group btn-group-sm" role="group">
                 <?= $this->Html->link(
                     '<i class="fa fa-plus"></i> ' . __('Add Answer'),
-                    ['controller' => 'SurveyAnswers', 'action' => 'add', $surveyId],
+                    ['controller' => 'SurveyAnswers', 'action' => 'add', $surveyId, $surveyQuestion->id],
                     ['class' => 'btn btn-default', 'escape' => false]
                 )?>
             </div>
@@ -27,7 +27,6 @@ $surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
 <table class="table table-hover table-condensed table-vertical-align table-datatable" width="100%">
     <thead>
         <tr>
-            <th scope="col"><?= __('Question') ?></th>
             <th scope="col"><?= __('Answer') ?></th>
             <th scope="col"><?= __('Comment') ?></th>
             <th scope="col"><?= __('Created') ?></th>
@@ -38,14 +37,25 @@ $surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
     <?php foreach ($survey->survey_questions as $question) : ?>
         <?php foreach ($question->survey_answers as $surveyAnswer) : ?>
         <tr>
-            <td><?= $this->Html->link($question->question, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $question->id])?></td>
             <td><?= h($surveyAnswer->answer) ?></td>
             <td><?= h($surveyAnswer->comment) ?></td>
             <td><?= h($surveyAnswer->created->i18nFormat('yyyy-MM-DD HH:mm')) ?></td>
             <td class="actions btn-group btn-group-xs">
-                <?= $this->Html->link('<i class="fa fa-eye"></i>', ['controller' => 'SurveyAnswers', 'action' => 'view', $surveyId, $surveyAnswer->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
-                <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['controller' => 'SurveyAnswers', 'action' => 'edit', $surveyId, $surveyAnswer->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
-                <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['controller' => 'SurveyAnswers', 'action' => 'delete', $surveyId, $surveyAnswer->id], ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}?', $surveyAnswer->id)]) ?>
+                <?= $this->Html->link(
+                    '<i class="fa fa-eye"></i>',
+                    ['controller' => 'SurveyAnswers', 'action' => 'view', $surveyId, $question->id, $surveyAnswer->id],
+                    ['escape' => false, 'class' => 'btn btn-default']
+                )?>
+                <?= $this->Html->link(
+                    '<i class="fa fa-pencil"></i>',
+                    ['controller' => 'SurveyAnswers', 'action' => 'edit', $surveyId, $question->id, $surveyAnswer->id],
+                    ['escape' => false, 'class' => 'btn btn-default']
+                )?>
+                <?= $this->Form->postLink(
+                    '<i class="fa fa-trash"></i>',
+                    ['controller' => 'SurveyAnswers', 'action' => 'delete', $surveyId, $question->id, $surveyAnswer->id],
+                    ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}?', $surveyAnswer->id)]
+                )?>
             </td>
         </tr>
         <?php endforeach; ?>
