@@ -9,16 +9,19 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+$surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
 ?>
 <div class="row">
     <div class="col-xs-12 col-md-12">
         <div class="pull-right">
             <div class="btn-group btn-group-sm" role="group">
+                <?php if (empty($survey->publish_date)) : ?>
                 <?= $this->Html->link(
                     '<i class="fa fa-plus"></i> ' . __('Add Question'),
-                    ['controller' => 'SurveyQuestions', 'action' => 'add'],
+                    ['controller' => 'SurveyQuestions', 'action' => 'add', $surveyId],
                     ['class' => 'btn btn-default', 'escape' => false]
                 )?>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -39,10 +42,10 @@
         <td><?= h($questionTypes[$surveyQuestion->type]) ?></td>
         <td><?= h($surveyQuestion->active) ?></td>
         <td class="actions btn-group btn-group-xs">
-            <?= $this->Html->link('<i class="fa fa-file"></i>', ['controller' => 'SurveyQuestions', 'action' => 'preview', $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
-            <?= $this->Html->link('<i class="fa fa-eye"></i>', ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
-            <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['controller' => 'SurveyQuestions', 'action' => 'edit', $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
-            <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['controller' => 'SurveyQuestions', 'action' => 'delete', $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}?', $surveyQuestion->id)]) ?>
+            <?= $this->Html->link('<i class="fa fa-file"></i>', ['controller' => 'SurveyQuestions', 'action' => 'preview', $surveyId, $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
+            <?= $this->Html->link('<i class="fa fa-eye"></i>', ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
+            <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['controller' => 'SurveyQuestions', 'action' => 'edit', $surveyId, $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
+            <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['controller' => 'SurveyQuestions', 'action' => 'delete', $surveyId, $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}?', $surveyQuestion->id)]) ?>
         </td>
     </tr>
     <?php endforeach; ?>

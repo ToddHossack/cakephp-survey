@@ -12,7 +12,7 @@
 namespace Qobo\Survey\Controller;
 
 use App\Controller\AppController;
-use Cake\I18n\Date;
+use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -33,9 +33,23 @@ class SurveysController extends AppController
     public function index()
     {
         $surveys = $this->paginate($this->Surveys);
-        $categories = $this->Surveys->getSurveyCategories();
+        $this->set(compact('surveys'));
+    }
 
-        $this->set(compact('surveys', 'categories'));
+    /**
+     * Before Filter callback
+     *
+     * Preloading extra vars for all methods
+     *
+     * @param \Cake\Event\Event $event broadcasted.
+     * @return void
+     */
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+
+        $categories = $this->Surveys->getSurveyCategories();
+        $this->set(compact('categories'));
     }
 
     /**
@@ -50,7 +64,7 @@ class SurveysController extends AppController
         $this->SurveyQuestions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
 
         $questionTypes = $this->SurveyQuestions->getQuestionTypes();
-        $survey = $this->Surveys->getSurveyData($id);
+        $survey = $this->Surveys->getSurveyData($id, true);
 
         $this->set(compact('survey', 'questionTypes'));
     }
@@ -64,7 +78,7 @@ class SurveysController extends AppController
      */
     public function publish($id = null)
     {
-        $survey = $this->Surveys->get($id);
+        $survey = $this->Surveys->getSurveyData($id);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
             $data = $this->request->getData();
@@ -73,7 +87,7 @@ class SurveysController extends AppController
             if ($this->Surveys->save($survey)) {
                 $this->Flash->success(__('Survey was successfully saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $id]);
             }
 
             $this->Flash->error(__('Couldn\'t publish the survey'));
@@ -92,7 +106,7 @@ class SurveysController extends AppController
     public function preview($id = null)
     {
         $saved = [];
-        $survey = $this->Surveys->getSurveyData($id);
+        $survey = $this->Surveys->getSurveyData($id, true);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
             $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
@@ -103,7 +117,7 @@ class SurveysController extends AppController
                 if (!is_array($item['survey_answer_id'])) {
                     $entity = $this->SurveyResults->newEntity();
                     $entity->user_id = $user['id'];
-                    $entity->survey_id = $id;
+                    $entity->survey_id = $survey->id;
                     $entity->survey_question_id = $item['survey_question_id'];
                     $entity->survey_answer_id = $item['survey_answer_id'];
                     $entity->result = (!empty($item['result']) ? $item['result'] : '');
@@ -116,7 +130,7 @@ class SurveysController extends AppController
                     foreach ($item['survey_answer_id'] as $key => $answer) {
                         $entity = $this->SurveyResults->newEntity();
                         $entity->user_id = $user['id'];
-                        $entity->survey_id = $id;
+                        $entity->survey_id = $survey->id;
                         $entity->survey_question_id = $item['survey_question_id'];
                         $entity->survey_answer_id = $answer; //item['survey_answer_id'];
                         $entity->result = (!empty($item['result']) ? $item['result'] : '');
@@ -132,7 +146,7 @@ class SurveysController extends AppController
             if (!empty($saved)) {
                 $this->Flash->success(__('Saved questionnaire results'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);
             } else {
                 $this->Flash->success(__('Some errors took place during result savings'));
             }
@@ -151,12 +165,14 @@ class SurveysController extends AppController
     public function duplicate($id = null)
     {
         $this->autoRender = false;
+        $survey = $this->Surveys->getSurveyData($id);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $duplicated = $this->Surveys->duplicate($id);
+            $duplicated = $this->Surveys->duplicate($survey->id);
+
             if ($duplicated) {
                 // @NOTE: saving parent_id as Duplicatable unsets origin id
-                $duplicated = $this->Surveys->patchEntity($duplicated, ['parent_id' => $id]);
+                $duplicated = $this->Surveys->patchEntity($duplicated, ['parent_id' => $survey->id]);
                 $duplicated = $this->Surveys->save($duplicated);
 
                 $this->Flash->success(__('Survey was successfully duplicated'));
@@ -174,7 +190,6 @@ class SurveysController extends AppController
     public function add()
     {
         $survey = $this->Surveys->newEntity();
-        $categories = $this->Surveys->getSurveyCategories();
 
         if ($this->request->is('post')) {
             $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
@@ -185,7 +200,7 @@ class SurveysController extends AppController
             }
             $this->Flash->error(__('The survey could not be saved. Please, try again.'));
         }
-        $this->set(compact('survey', 'categories'));
+        $this->set(compact('survey'));
     }
 
     /**
@@ -197,21 +212,25 @@ class SurveysController extends AppController
      */
     public function edit($id = null)
     {
-        $categories = $this->Surveys->getSurveyCategories();
-        $survey = $this->Surveys->get($id, [
-            'contain' => []
-        ]);
+        $survey = $this->Surveys->getSurveyData($id);
+        $redirect = ['controller' => 'Surveys', 'action' => 'view', $survey->id];
+
+        if (!empty($survey->publish_date)) {
+            $this->Flash->error(__('You cannot edit alredy published survey'));
+
+            return $this->redirect($redirect);
+        }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
             if ($this->Surveys->save($survey)) {
                 $this->Flash->success(__('The survey has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect($redirect);
             }
             $this->Flash->error(__('The survey could not be saved. Please, try again.'));
         }
-        $this->set(compact('survey', 'categories'));
+        $this->set(compact('survey'));
     }
 
     /**
@@ -224,7 +243,7 @@ class SurveysController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $survey = $this->Surveys->get($id);
+        $survey = $this->Surveys->getSurveyData($id);
         if ($this->Surveys->delete($survey)) {
             $this->Flash->success(__('The survey has been deleted.'));
         } else {
