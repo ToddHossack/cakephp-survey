@@ -66,17 +66,13 @@ $options['title'] .= $surveyQuestion->question;
                     <?= h($surveyQuestion->id) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
-            </div>
-            <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Survey') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= $surveyQuestion->has('survey') ? $this->Html->link($surveyQuestion->survey->name, ['controller' => 'Surveys', 'action' => 'view', $surveyQuestion->survey->id]) : '' ?>
+                    <?= $this->Html->link($survey->name, ['controller' => 'Surveys', 'action' => 'view', $surveyId]) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
-            </div>
-           <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Type') ?>:</strong>
                 </div>
@@ -84,8 +80,6 @@ $options['title'] .= $surveyQuestion->question;
                     <?= $questionTypes[$surveyQuestion->type] ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
-            </div>
-            <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Active') ?>:</strong>
                 </div>
@@ -93,8 +87,6 @@ $options['title'] .= $surveyQuestion->question;
                     <?= $surveyQuestion->active ? __('Yes') : __('No'); ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
-            </div>
-            <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Question') ?>:</strong>
                 </div>
@@ -102,8 +94,6 @@ $options['title'] .= $surveyQuestion->question;
                     <?= $this->Text->autoParagraph(h($surveyQuestion->question)); ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
-            </div>
-            <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Created') ?>:</strong>
                 </div>
@@ -111,8 +101,6 @@ $options['title'] .= $surveyQuestion->question;
                     <?= h($surveyQuestion->created->i18nFormat('yyyy-MM-dd HH:mm')) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
-            </div>
-            <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Modified') ?>:</strong>
                 </div>
@@ -134,7 +122,7 @@ $options['title'] .= $surveyQuestion->question;
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane" id="manage-survey-answers">
-                <?= $this->element('Qobo/Survey.Answers/view', ['survey' => $survey]);?>
+                <?= $this->element('Qobo/Survey.Answers/view', ['survey' => $surveyQuestion]);?>
             </div>
         </div>
     </div>

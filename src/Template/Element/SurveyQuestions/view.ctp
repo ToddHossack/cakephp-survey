@@ -31,6 +31,7 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
         <tr>
             <th scope="col"><?= __('Question') ?></th>
             <th scope="col"><?= __('Type') ?></th>
+            <th scope="col"><?= __('Order') ?></th>
             <th scope="col"><?= __('Active') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
@@ -40,12 +41,15 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
     <tr>
         <td><?= h($surveyQuestion->question) ?></td>
         <td><?= h($questionTypes[$surveyQuestion->type]) ?></td>
-        <td><?= h($surveyQuestion->active) ?></td>
-        <td class="actions btn-group btn-group-xs">
+        <td><?= h($surveyQuestion->order) ?></td>
+        <td><?= h($surveyQuestion->active ? __('Yes') : __('No')) ?></td>
+        <td class="actions">
+            <div class="btn-group btn-group-xs">
             <?= $this->Html->link('<i class="fa fa-file"></i>', ['controller' => 'SurveyQuestions', 'action' => 'preview', $surveyId, $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
             <?= $this->Html->link('<i class="fa fa-eye"></i>', ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
             <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['controller' => 'SurveyQuestions', 'action' => 'edit', $surveyId, $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default']) ?>
             <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['controller' => 'SurveyQuestions', 'action' => 'delete', $surveyId, $surveyQuestion->id], ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}?', $surveyQuestion->id)]) ?>
+            </div>
         </td>
     </tr>
     <?php endforeach; ?>

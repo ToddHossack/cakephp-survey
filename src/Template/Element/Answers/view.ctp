@@ -9,7 +9,8 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-$surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
+$surveyId = empty($survey->survey->slug) ? $survey->survey->id : $survey->survey->slug;
+
 ?>
 <div class="row">
     <div class="col-xs-12 col-md-12">
@@ -28,38 +29,46 @@ $surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
     <thead>
         <tr>
             <th scope="col"><?= __('Answer') ?></th>
-            <th scope="col"><?= __('Comment') ?></th>
+            <th scope="col"><?= __('Order') ?></th>
             <th scope="col"><?= __('Created') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
     <tbody>
-    <?php foreach ($survey->survey_questions as $question) : ?>
-        <?php foreach ($question->survey_answers as $surveyAnswer) : ?>
+        <?php foreach ($surveyQuestion->survey_answers as $surveyAnswer) : ?>
         <tr>
-            <td><?= h($surveyAnswer->answer) ?></td>
-            <td><?= h($surveyAnswer->comment) ?></td>
+            <td>
+                <?php
+                if (!in_array($surveyQuestion->type, ['textarea', 'input'])) {
+                    echo h($surveyAnswer->answer);
+                } else {
+                    echo __('Text input answer');
+                }
+                ?>
+            </td>
+            <td><?= h($surveyAnswer->order) ?></td>
             <td><?= h($surveyAnswer->created->i18nFormat('yyyy-MM-DD HH:mm')) ?></td>
-            <td class="actions btn-group btn-group-xs">
+            <td class="actions">
+                <div class="btn-group btn-group-xs">
                 <?= $this->Html->link(
                     '<i class="fa fa-eye"></i>',
-                    ['controller' => 'SurveyAnswers', 'action' => 'view', $surveyId, $question->id, $surveyAnswer->id],
+                    ['controller' => 'SurveyAnswers', 'action' => 'view', $surveyId, $surveyQuestion->id, $surveyAnswer->id],
                     ['escape' => false, 'class' => 'btn btn-default']
                 )?>
                 <?= $this->Html->link(
                     '<i class="fa fa-pencil"></i>',
-                    ['controller' => 'SurveyAnswers', 'action' => 'edit', $surveyId, $question->id, $surveyAnswer->id],
+                    ['controller' => 'SurveyAnswers', 'action' => 'edit', $surveyId, $surveyQuestion->id, $surveyAnswer->id],
                     ['escape' => false, 'class' => 'btn btn-default']
                 )?>
                 <?= $this->Form->postLink(
                     '<i class="fa fa-trash"></i>',
-                    ['controller' => 'SurveyAnswers', 'action' => 'delete', $surveyId, $question->id, $surveyAnswer->id],
+                    ['controller' => 'SurveyAnswers', 'action' => 'delete', $surveyId, $surveyQuestion->id, $surveyAnswer->id],
                     ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}?', $surveyAnswer->id)]
                 )?>
+                </div>
             </td>
         </tr>
         <?php endforeach; ?>
-    <?php endforeach; ?>
     </tbody>
 </table>
 
