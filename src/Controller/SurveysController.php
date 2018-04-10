@@ -96,6 +96,7 @@ class SurveysController extends AppController
                         'survey' => $fullSurvey,
                     ]
                 ]);
+                $this->eventManager()->dispatch($event);
 
                 return $this->redirect(['action' => 'view', $id]);
             }
