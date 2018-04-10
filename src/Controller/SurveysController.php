@@ -14,6 +14,7 @@ namespace Qobo\Survey\Controller;
 use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
+use Qobo\Survey\Event\EventName;
 
 /**
  * Surveys Controller
@@ -89,7 +90,7 @@ class SurveysController extends AppController
 
                 $fullSurvey = $this->Surveys->getSurveyData($survey->id, true);
 
-                $event = new Event('Model.Queue.addJobToQueue', $this, [
+                $event = new Event((string)EventName::PUBLISH_SURVEY(), $this, [
                     'data' => [
                         'action' => 'add_survey',
                         'survey' => $fullSurvey,
