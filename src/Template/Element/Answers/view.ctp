@@ -28,8 +28,9 @@ $surveyId = empty($survey->survey->slug) ? $survey->survey->id : $survey->survey
 <table class="table table-hover table-condensed table-vertical-align table-datatable" width="100%">
     <thead>
         <tr>
-            <th scope="col"><?= __('Answer') ?></th>
             <th scope="col"><?= __('Order') ?></th>
+            <th scope="col"><?= __('Answer') ?></th>
+            <th scope="col"><?= __('Score') ?></th>
             <th scope="col"><?= __('Created') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
@@ -37,6 +38,7 @@ $surveyId = empty($survey->survey->slug) ? $survey->survey->id : $survey->survey
     <tbody>
         <?php foreach ($surveyQuestion->survey_answers as $surveyAnswer) : ?>
         <tr>
+            <td><?= h($surveyAnswer->order) ?></td>
             <td>
                 <?php
                 if (!in_array($surveyQuestion->type, ['textarea', 'input'])) {
@@ -46,7 +48,7 @@ $surveyId = empty($survey->survey->slug) ? $survey->survey->id : $survey->survey
                 }
                 ?>
             </td>
-            <td><?= h($surveyAnswer->order) ?></td>
+            <td><?= h($surveyAnswer->score) ?></td>
             <td><?= h($surveyAnswer->created->i18nFormat('yyyy-MM-DD HH:mm')) ?></td>
             <td class="actions">
                 <div class="btn-group btn-group-xs">

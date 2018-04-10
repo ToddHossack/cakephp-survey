@@ -29,9 +29,9 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
 <table class="table table-hover table-condensed table-vertical-align table-datatable" width="100%">
     <thead>
         <tr>
+            <th scope="col"><?= __('Order') ?></th>
             <th scope="col"><?= __('Question') ?></th>
             <th scope="col"><?= __('Type') ?></th>
-            <th scope="col"><?= __('Order') ?></th>
             <th scope="col"><?= __('Active') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
@@ -39,9 +39,9 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
     <tbody>
     <?php foreach ($survey->survey_questions as $surveyQuestion) : ?>
     <tr>
+        <td><?= h($surveyQuestion->order) ?></td>
         <td><?= h($surveyQuestion->question) ?></td>
         <td><?= h($questionTypes[$surveyQuestion->type]) ?></td>
-        <td><?= h($surveyQuestion->order) ?></td>
         <td><?= h($surveyQuestion->active ? __('Yes') : __('No')) ?></td>
         <td class="actions">
             <div class="btn-group btn-group-xs">
