@@ -9,11 +9,17 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+$surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
+$options['title'] = $this->Html->link($survey->name, ['controller' => 'Surveys', 'action' => 'view', $surveyId]);
+$options['title'] .= ' &raquo; ';
+$options['title'] .= $this->Html->link($question->question, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $question->id]);
+$options['title'] .= ' &raquo; ';
+$options['title'] .= __('Edit "{0}"', [$surveyAnswer->answer]);
 ?>
 <section class="content-header">
     <div class="row">
         <div class="col-xs-12 col-md-6">
-            <h4><?= __('Edit {0}', ['Question Option']);?></h4>
+            <h4><?= $options['title']; ?></h4>
         </div>
     </div>
 </section>

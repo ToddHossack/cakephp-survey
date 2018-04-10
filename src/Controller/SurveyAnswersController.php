@@ -68,6 +68,7 @@ class SurveyAnswersController extends AppController
     {
         $surveyAnswer = $this->SurveyAnswers->newEntity();
         $survey = $this->Surveys->getSurveyData($surveyId);
+        $question = $this->SurveyAnswers->SurveyQuestions->get($questionId);
         $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $questionId];
 
         if ($this->request->is(['post', 'put', 'patch'])) {
@@ -83,7 +84,7 @@ class SurveyAnswersController extends AppController
             $this->Flash->error(__('The survey answer could not be saved. Please, try again.'));
         }
 
-        $this->set(compact('surveyAnswer', 'surveyQuestions'));
+        $this->set(compact('surveyAnswer', 'survey', 'question'));
     }
 
     /**
@@ -100,6 +101,7 @@ class SurveyAnswersController extends AppController
     {
         $surveyAnswer = $this->SurveyAnswers->get($id);
         $survey = $this->Surveys->getSurveyData($surveyId);
+        $question = $this->SurveyAnswers->SurveyQuestions->get($questionId);
         $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $questionId];
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -115,7 +117,7 @@ class SurveyAnswersController extends AppController
             $this->Flash->error(__('The survey answer could not be saved. Please, try again.'));
         }
 
-        $this->set(compact('surveyAnswer', 'surveyQuestions'));
+        $this->set(compact('surveyAnswer', 'survey', 'question'));
     }
 
     /**
