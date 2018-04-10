@@ -69,8 +69,6 @@ $options['title'] .= empty($surveyAnswer->answer) ? $surveyAnswer->comment : $su
                 <?= h($surveyAnswer->id) ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
-        </div>
-        <div class="row">
             <div class="col-xs-4 col-md-2 text-right">
                 <strong><?= __('Survey Question') ?>:</strong>
             </div>
@@ -78,8 +76,6 @@ $options['title'] .= empty($surveyAnswer->answer) ? $surveyAnswer->comment : $su
                 <?= $surveyAnswer->has('survey_question') ? $this->Html->link($surveyAnswer->survey_question->question, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyAnswer->survey_question->id]) : '' ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
-        </div>
-        <div class="row">
             <div class="col-xs-4 col-md-2 text-right">
                 <strong><?= __('Question Type') ?>:</strong>
             </div>
@@ -87,26 +83,27 @@ $options['title'] .= empty($surveyAnswer->answer) ? $surveyAnswer->comment : $su
                 <?= h($questionTypes[$surveyAnswer->survey_question->type]) ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
-        </div>
-        <div class="row">
+            <div class="col-xs-4 col-md-2 text-right">
+                <strong><?= __('Score') ?>:</strong>
+            </div>
+            <div class="col-xs-8 col-md-4">
+                <?= h($surveyAnswer->score) ?>
+            </div>
+            <div class="clearfix visible-xs visible-sm"></div>
             <div class="col-xs-4 col-md-2 text-right">
                 <strong><?= __('Created') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
-                <?= h($surveyAnswer->created) ?>
+                <?= h($surveyAnswer->created->i18nFormat('yyyy-MM-dd HH:mm')) ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
-        </div>
-        <div class="row">
             <div class="col-xs-4 col-md-2 text-right">
                 <strong><?= __('Modified') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
-                <?= h($surveyAnswer->modified) ?>
+                <?= h($surveyAnswer->modified->i18nFormat('yyyy-MM-dd HH:mm')) ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
-        </div>
-        <div class="row">
             <div class="col-xs-4 col-md-2 text-right">
                 <strong><?= __('Answer') ?>:</strong>
             </div>
