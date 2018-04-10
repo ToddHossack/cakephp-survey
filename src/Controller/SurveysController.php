@@ -87,6 +87,15 @@ class SurveysController extends AppController
             if ($this->Surveys->save($survey)) {
                 $this->Flash->success(__('Survey was successfully saved.'));
 
+                $fullSurvey = $this->Surveys->getSurveyData($survey->id, true);
+
+                $event = new Event('Model.Queue.addJobToQueue', $this, [
+                    'data' => [
+                        'action' => 'add_survey',
+                        'survey' => $fullSurvey,
+                    ]
+                ]);
+
                 return $this->redirect(['action' => 'view', $id]);
             }
 
