@@ -55,10 +55,20 @@ class SurveyQuestionsController extends AppController
      */
     public function view($surveyId, $id = null)
     {
-        $surveyQuestion = $this->SurveyQuestions->get($id, [
-            'contain' => ['SurveyAnswers']
+        $query = $this->SurveyQuestions->find();
+        $query->where(['SurveyQuestions.id' => $id]);
+        $query->contain([
+            'Surveys',
+            'SurveyAnswers' => [
+                'sort' => ['SurveyAnswers.order' => 'ASC'],
+            ]
         ]);
-        $survey = $this->Surveys->getSurveyData($surveyId, true);
+
+        $query->execute();
+        $surveyQuestion = $query->first();
+
+        $survey = $this->Surveys->getSurveyData($surveyId, false);
+
         $this->set(compact('surveyQuestion', 'survey'));
     }
 
