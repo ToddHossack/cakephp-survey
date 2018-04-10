@@ -20,4 +20,3 @@ class EventName extends Enum
 {
     const PUBLISH_SURVEY = 'Model.Queue.addJobToQueue';
 }
-
