@@ -84,7 +84,12 @@ class SurveyQuestionsController extends AppController
     {
         $savedResults = [];
         $surveyQuestion = $this->SurveyQuestions->get($id, [
-            'contain' => ['Surveys', 'SurveyAnswers']
+            'contain' => [
+                'Surveys',
+                'SurveyAnswers' => [
+                    'sort' => ['SurveyAnswers.order' => 'ASC'],
+                ]
+            ]
         ]);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
