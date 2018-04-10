@@ -14,6 +14,7 @@ namespace Qobo\Survey\Controller;
 use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
+use Qobo\Survey\Event\EventName;
 
 /**
  * Surveys Controller
@@ -86,6 +87,15 @@ class SurveysController extends AppController
             $survey = $this->Surveys->patchEntity($survey, $data, ['validate' => false]);
             if ($this->Surveys->save($survey)) {
                 $this->Flash->success(__('Survey was successfully saved.'));
+
+                $fullSurvey = $this->Surveys->getSurveyData($survey->id, true);
+
+                $event = new Event((string)EventName::PUBLISH_SURVEY(), $this, [
+                    'data' => [
+                        'action' => 'add_survey',
+                        'survey' => $fullSurvey,
+                    ]
+                ]);
 
                 return $this->redirect(['action' => 'view', $id]);
             }
