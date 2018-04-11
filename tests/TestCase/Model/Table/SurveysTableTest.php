@@ -25,7 +25,9 @@ class SurveysTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.qobo/survey.surveys'
+        'plugin.qobo/survey.surveys',
+        'plugin.qobo/survey.survey_questions',
+        'plugin.qobo/survey.survey_answers',
     ];
 
     /**
@@ -81,7 +83,20 @@ class SurveysTableTest extends TestCase
 
     public function testGetSurveyData()
     {
+        $surveyId = '00000000-0000-0000-0000-000000000001';
         $result = $this->Surveys->getSurveyData(null);
         $this->assertEmpty($result);
+
+        $result = $this->Surveys->getSurveyData($surveyId);
+        $this->assertEquals($result->id, $surveyId);
+
+        $result = $this->Surveys->getSurveyData($surveyId, true);
+        $this->assertTrue((count($result->survey_questions) > 0));
+
+        $result = $this->Surveys->getSurveyData('foobar_slug');
+        $this->assertEmpty($result);
+
+        $result = $this->Surveys->getSurveyData('survey_-_1');
+        $this->assertEquals($result->id, $surveyId);
     }
 }
