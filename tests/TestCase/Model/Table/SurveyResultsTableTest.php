@@ -3,6 +3,7 @@ namespace Qobo\Survey\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Qobo\Survey\Model\Table\SurveysTable;
 use Qobo\Survey\Model\Table\SurveyResultsTable;
 
 /**
@@ -41,6 +42,8 @@ class SurveyResultsTableTest extends TestCase
         parent::setUp();
         $config = TableRegistry::exists('SurveyResults') ? [] : ['className' => SurveyResultsTable::class];
         $this->SurveyResults = TableRegistry::get('SurveyResults', $config);
+
+        $this->Surveys = TableRegistry::get('Surveys', ['className' => SurveysTable::class]);
     }
 
     /**
@@ -99,5 +102,38 @@ class SurveyResultsTableTest extends TestCase
                  2
             ]
         ];
+    }
+
+    public function testSaveData()
+    {
+        $survey = $this->Surveys->getSurveyData('survey_-_1', true);
+
+        $data = [
+            'user_id' => '00000000-0000-0000-0000-000000000001',
+            'survey_id' => $survey->id,
+            'survey_question_id' => $survey->survey_questions[0]->id,
+            'survey_answer_id' => $survey->survey_questions[0]->survey_answers[0]->id,
+            'result' => 'w00t',
+        ];
+
+        $result = $this->SurveyResults->saveData($data);
+        $this->assertEquals($result['status'], true);
+        $this->assertEquals($result['entity']->result, $data['result']);
+    }
+
+    public function testSaveDataErrors()
+    {
+        $survey = $this->Surveys->getSurveyData('survey_-_1', true);
+        $data = [
+            'user_id' => '00000000-0000-0000-0000-000000000001',
+            'survey_id' => $survey->id,
+            'survey_answer_id' => null,
+            'survey_question_id' => $survey->survey_questions[0]->id,
+            'result' => 'w00t',
+        ];
+
+        $result = $this->SurveyResults->saveData($data);
+        $this->assertEquals($result['status'], false);
+        $this->assertNotEmpty($result['entity']->getErrors());
     }
 }

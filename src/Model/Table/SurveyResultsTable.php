@@ -139,6 +139,7 @@ class SurveyResultsTable extends Table
             'user_id' => $options['user']['id'],
             'survey_id' => $options['survey']->id,
             'survey_question_id' => $data['survey_question_id'],
+            'result' => !empty($data['result']) ? $data['result'] : '',
         ];
 
         if (!is_array($data['survey_answer_id'])) {
@@ -170,7 +171,7 @@ class SurveyResultsTable extends Table
         ];
         $entity = $this->newEntity();
         foreach ($data as $field => $value) {
-            $entity->$field = $value;
+            $entity->set($field, $value);
         }
 
         $saved = $this->save($entity);
