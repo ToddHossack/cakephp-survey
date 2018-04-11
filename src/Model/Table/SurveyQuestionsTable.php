@@ -131,21 +131,4 @@ class SurveyQuestionsTable extends Table
             'select' => 'Dropdown',
         ];
     }
-
-    /**
-     * Get the list of questions available
-     *
-     * @param string $surveyId uuid of the survey or its slug
-     * @return \Cake\ORM\Query $query of the result set.
-     */
-    public function getQuestionList($surveyId = null)
-    {
-        $query = $this->find('list', ['keyField' => 'id', 'valueField' => 'question']);
-
-        if (!empty($surveyId)) {
-            $query->where(['survey_id' => $surveyId]);
-        }
-
-        return $query;
-    }
 }

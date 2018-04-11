@@ -116,45 +116,33 @@ class SurveysController extends AppController
      */
     public function preview($id = null)
     {
-        $saved = [];
+        $saved = $data = [];
         $survey = $this->Surveys->getSurveyData($id, true);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
             $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
             $user = $this->Auth->user();
-            $questions = $this->request->getData();
 
-            foreach ($questions['SurveyResults'] as $k => $item) {
-                if (!is_array($item['survey_answer_id'])) {
-                    $entity = $this->SurveyResults->newEntity();
-                    $entity->user_id = $user['id'];
-                    $entity->survey_id = $survey->id;
-                    $entity->survey_question_id = $item['survey_question_id'];
-                    $entity->survey_answer_id = $item['survey_answer_id'];
-                    $entity->result = (!empty($item['result']) ? $item['result'] : '');
+            foreach ($this->request->data['SurveyResults'] as $k => $item) {
+                $results = $this->SurveyResults->getResults($item, [
+                    'user' => $user,
+                    'survey' => $survey,
+                ]);
 
-                    $result = $this->SurveyResults->save($entity);
-                    if ($result) {
-                        $saved[] = $result;
-                    }
-                } else {
-                    foreach ($item['survey_answer_id'] as $key => $answer) {
-                        $entity = $this->SurveyResults->newEntity();
-                        $entity->user_id = $user['id'];
-                        $entity->survey_id = $survey->id;
-                        $entity->survey_question_id = $item['survey_question_id'];
-                        $entity->survey_answer_id = $answer; //item['survey_answer_id'];
-                        $entity->result = (!empty($item['result']) ? $item['result'] : '');
-
-                        $result = $this->SurveyResults->save($entity);
-                        if ($result) {
-                            $saved[] = $result;
-                        }
-                    }
-                }
+                $data = array_merge($data, $results);
             }
 
-            if (!empty($saved)) {
+            foreach ($data as $k => $surveyResult) {
+                $saved[] = $this->SurveyResults->saveData($surveyResult);
+            }
+
+            $failed = array_filter($saved, function ($item) {
+                if (!$item['status']) {
+                    return $item;
+                }
+            });
+
+            if (empty($failed)) {
                 $this->Flash->success(__('Saved questionnaire results'));
 
                 return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);

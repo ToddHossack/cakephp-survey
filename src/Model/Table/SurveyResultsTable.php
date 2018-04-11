@@ -115,4 +115,74 @@ class SurveyResultsTable extends Table
 
         return $rules;
     }
+
+    /**
+     * Get Survey Result as indexed array
+     * Certain answer options might contain
+     * multiple answers, thus we create indexed array of those
+     * records for later saving in DB table.
+     *
+     * @param array $data containing SurveyResults request data item
+     * @param array $options containing user and survey instances
+     *
+     * @return array $result containing flat indexed array of all results.
+     */
+    public function getResults(array $data = [], array $options = [])
+    {
+        $result = [];
+
+        if (empty($data)) {
+            return $result;
+        }
+
+        $item = [
+            'user_id' => $options['user']['id'],
+            'survey_id' => $options['survey']->id,
+            'survey_question_id' => $data['survey_question_id'],
+            'result' => !empty($data['result']) ? $data['result'] : '',
+        ];
+
+        if (!is_array($data['survey_answer_id'])) {
+            $item['survey_answer_id'] = $data['survey_answer_id'];
+            array_push($result, $item);
+
+            return $result;
+        }
+
+        foreach ($data['survey_answer_id'] as $answer) {
+            $item['survey_answer_id'] = $answer;
+            array_push($result, $item);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Saving Survey Results
+     *
+     * @param array $data containing results info
+     * @return array $result containing save status
+     */
+    public function saveData(array $data = [])
+    {
+        $result = [
+            'status' => false,
+            'entity' => null,
+        ];
+        $entity = $this->newEntity();
+        foreach ($data as $field => $value) {
+            $entity->set($field, $value);
+        }
+
+        $saved = $this->save($entity);
+
+        if ($saved) {
+            $result['status'] = true;
+            $result['entity'] = $saved;
+        } else {
+            $result['entity'] = $entity;
+        }
+
+        return $result;
+    }
 }
