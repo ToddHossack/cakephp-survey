@@ -3,8 +3,8 @@ namespace Qobo\Survey\Test\TestCase\Model\Table;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Qobo\Survey\Model\Table\SurveysTable;
 use Qobo\Survey\Model\Table\SurveyResultsTable;
+use Qobo\Survey\Model\Table\SurveysTable;
 
 /**
  * Qobo\Survey\Model\Table\SurveyResultsTable Test Case
