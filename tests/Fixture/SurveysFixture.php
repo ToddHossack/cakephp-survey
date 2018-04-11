@@ -51,9 +51,9 @@ class SurveysFixture extends TestFixture
     public $records = [
         [
             'id' => '00000000-0000-0000-0000-000000000001',
-			'reference_id' => null,
+            'reference_id' => null,
             'name' => 'Survey - 1',
-			'slug' => 'survey_-_1',
+            'slug' => 'survey_-_1',
             'version' => '1.0.0',
             'description' => 'Test Survey - 1 Description',
             'active' => 1,
