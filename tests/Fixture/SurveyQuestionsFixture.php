@@ -49,7 +49,7 @@ class SurveyQuestionsFixture extends TestFixture
             'id' => '00000000-0000-0000-0000-000000000001',
             'survey_id' => '00000000-0000-0000-0000-000000000001',
             'question' => 'To be or not to be?',
-            'type' => 'checkboxes',
+            'type' => 'checkbox',
             'active' => 1,
             'created' => '2018-03-14 10:56:36',
             'modified' => '2018-03-14 10:56:36',
