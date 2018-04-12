@@ -142,6 +142,7 @@ class SurveyQuestionsController extends AppController
                 $this->Flash->success(__('The survey question has been saved.'));
 
                 $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->slug, $surveyQuestion->id];
+
                 return $this->redirect($redirect);
             }
             $this->Flash->error(__('The survey question could not be saved. Please, try again.'));

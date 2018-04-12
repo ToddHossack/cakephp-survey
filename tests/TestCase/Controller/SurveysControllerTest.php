@@ -4,8 +4,8 @@ namespace Qobo\Survey\Test\TestCase\Controller;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 use Qobo\Survey\Controller\SurveysController;
-use Qobo\Survey\Model\Table\SurveysTable;
 use Qobo\Survey\Model\Table\SurveyResultsTable;
+use Qobo\Survey\Model\Table\SurveysTable;
 
 class SurveysControllerTest extends IntegrationTestCase
 {

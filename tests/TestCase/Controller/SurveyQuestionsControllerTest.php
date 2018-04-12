@@ -180,6 +180,4 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $this->assertEquals($editedQuestion->question, $editData['question']);
         $this->assertEquals($editedQuestion->id, $questionId);
     }
-
-
 }
