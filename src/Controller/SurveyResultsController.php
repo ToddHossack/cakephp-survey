@@ -24,21 +24,6 @@ class SurveyResultsController extends AppController
 {
 
     /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => ['Surveys', 'SurveyQuestions', 'SurveyAnswers', 'Users']
-        ];
-        $surveyResults = $this->paginate($this->SurveyResults);
-
-        $this->set(compact('surveyResults'));
-    }
-
-    /**
      * View method
      *
      * @param string|null $id Survey Result id.
