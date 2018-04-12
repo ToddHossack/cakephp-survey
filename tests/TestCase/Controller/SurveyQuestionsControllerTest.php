@@ -3,9 +3,9 @@ namespace Qobo\Survey\Test\TestCase\Controller;
 
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
-use Qobo\Survey\Model\Table\SurveysTable;
-use Qobo\Survey\Model\Table\SurveyQuestionsTable;
 use Qobo\Survey\Controller\SurveysController;
+use Qobo\Survey\Model\Table\SurveyQuestionsTable;
+use Qobo\Survey\Model\Table\SurveysTable;
 
 class SurveyQuestionsControllerTest extends IntegrationTestCase
 {
@@ -67,7 +67,6 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $this->post($url);
         $this->assertResponseOk();
     }
-
 
     public function testAddOk()
     {
