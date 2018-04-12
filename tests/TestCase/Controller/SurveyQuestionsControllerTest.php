@@ -134,4 +134,50 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $this->delete($fakeUrl);
         $this->assertResponseCode(404);
     }
+
+    public function testAddPostOk()
+    {
+        $surveyId = '00000000-0000-0000-0000-000000000001';
+        $survey = $this->Surveys->getSurveyData($surveyId);
+        $slug = $survey->slug;
+
+        $postData = [
+            'survey_id' => $survey->id,
+            'question' => 'Who are you?',
+            'type' => 'checkbox',
+            'order' => 1
+        ];
+
+        $this->post('/surveys/survey/' . $survey->slug . '/questions/add', $postData);
+        $query = $this->SurveyQuestions->find()
+            ->where(['question' => $postData['question']]);
+
+        $question = $query->first();
+        $this->assertRedirect(['controller' => 'SurveyQuestions', 'action' => 'view', $survey->slug, $question->id]);
+        $this->assertEquals($question->question, $postData['question']);
+        $this->assertEquals($question->type, $postData['type']);
+    }
+
+    public function testEditPostOk()
+    {
+        $surveyId = '00000000-0000-0000-0000-000000000001';
+        $questionId = '00000000-0000-0000-0000-000000000001';
+        $survey = $this->Surveys->getSurveyData($surveyId);
+        $slug = $survey->slug;
+
+        $editData = [
+            'question' => 'Who are they?',
+        ];
+
+        $this->post('/surveys/survey/' . $survey->slug . '/questions/edit/' . $questionId, $editData);
+
+        $query = $this->SurveyQuestions->find()
+            ->where(['id' => $questionId]);
+
+        $editedQuestion = $query->first();
+
+        $this->assertRedirect(['controller' => 'SurveyQuestions', 'action' => 'view', $survey->slug, $editedQuestion->id]);
+        $this->assertEquals($editedQuestion->question, $editData['question']);
+        $this->assertEquals($editedQuestion->id, $questionId);
+    }
 }
