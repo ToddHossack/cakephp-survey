@@ -47,6 +47,27 @@ class SurveysControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
+    public function testViewOk()
+    {
+        $surveyId = '00000000-0000-0000-0000-000000000001';
+        $this->get('/surveys/surveys/view/' . $surveyId);
+        $this->assertResponseOk();
+    }
+
+    public function testPublishOk()
+    {
+        $surveyId = '00000000-0000-0000-0000-000000000001';
+        $this->get('/surveys/surveys/publish/' . $surveyId);
+        $this->assertResponseOk();
+    }
+
+    public function testDuplicateOk()
+    {
+        $surveyId = '00000000-0000-0000-0000-000000000001';
+        $this->get('/surveys/surveys/duplicate/' . $surveyId);
+        $this->assertResponseOk();
+    }
+
     public function testDeleteRedirectOk()
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
