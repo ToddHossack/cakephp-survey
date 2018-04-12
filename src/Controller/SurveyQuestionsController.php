@@ -135,13 +135,13 @@ class SurveyQuestionsController extends AppController
     {
         $survey = $this->Surveys->getSurveyData($surveyId);
         $surveyQuestion = $this->SurveyQuestions->get($id);
-        $redirect = ['controller' => 'Surveys', 'action' => 'view', $survey->id];
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, $this->request->getData());
             if ($this->SurveyQuestions->save($surveyQuestion)) {
                 $this->Flash->success(__('The survey question has been saved.'));
 
+                $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->slug, $surveyQuestion->id];
                 return $this->redirect($redirect);
             }
             $this->Flash->error(__('The survey question could not be saved. Please, try again.'));

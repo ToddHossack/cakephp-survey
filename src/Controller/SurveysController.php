@@ -123,6 +123,12 @@ class SurveysController extends AppController
             $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
             $user = $this->Auth->user();
 
+            if (empty($this->request->data['SurveyResults'])) {
+                $this->Flash->error(__('Please submit your survey answers'));
+
+                return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);
+            }
+
             foreach ($this->request->data['SurveyResults'] as $k => $item) {
                 $results = $this->SurveyResults->getResults($item, [
                     'user' => $user,
