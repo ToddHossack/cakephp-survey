@@ -111,7 +111,6 @@ class SurveyResultsTable extends Table
         $rules->add($rules->existsIn(['survey_id'], 'Surveys'));
         $rules->add($rules->existsIn(['survey_question_id'], 'SurveyQuestions'));
         $rules->add($rules->existsIn(['survey_answer_id'], 'SurveyAnswers'));
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
     }
