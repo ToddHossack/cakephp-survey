@@ -122,7 +122,6 @@ class SurveysController extends AppController
         if ($this->request->is(['post', 'put', 'patch'])) {
             $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
             $user = $this->Auth->user();
-
             if (empty($this->request->data['SurveyResults'])) {
                 $this->Flash->error(__('Please submit your survey answers'));
 
@@ -133,11 +132,11 @@ class SurveysController extends AppController
                 $results = $this->SurveyResults->getResults($item, [
                     'user' => $user,
                     'survey' => $survey,
+                    'data' => $this->request->data
                 ]);
 
                 $data = array_merge($data, $results);
             }
-
             foreach ($data as $k => $surveyResult) {
                 $saved[] = $this->SurveyResults->saveData($surveyResult);
             }

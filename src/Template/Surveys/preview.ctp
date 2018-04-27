@@ -9,6 +9,9 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+
+use Cake\Utility\Text;
+
 $options['title'] = __('Preview Survey: {0}', $survey->name);
 $count = 1;
 ?>
@@ -28,6 +31,8 @@ $count = 1;
 
 <section class="content">
 <?= $this->Form->create($survey); ?>
+<?= $this->Form->hidden('submit_id', ['value' => Text::uuid()]) ?>
+<?= $this->Form->hidden('submit_date', ['value' => date('Y-m-d H:i:s', time())]) ?>
 <?php foreach ($survey->survey_questions as $k => $question) : ?>
     <div class="box box-primary">
         <div class="box-header with-border">
