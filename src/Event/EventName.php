@@ -19,4 +19,5 @@ use MyCLabs\Enum\Enum;
 class EventName extends Enum
 {
     const PUBLISH_SURVEY = 'Model.Queue.addJobToQueue';
+    const VIEW_SURVEY_RESULTS = 'Plugin.Controller.Surveys.viewResults';
 }

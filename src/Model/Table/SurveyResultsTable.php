@@ -186,4 +186,37 @@ class SurveyResultsTable extends Table
 
         return $result;
     }
+
+    /**
+     * Get Survey Results group by submit_id
+     *
+     * @param string $surveyId with primary key
+     * @param array $options with extra configs
+     *
+     * @return \Cake\ORM\Query|null $result with submits
+     */
+    public function getSubmits($surveyId = null, array $options = [])
+    {
+        $result = null;
+
+        $options['contains'] = empty($options['contains']) ? ['Users'] : $options['contains'];
+
+        if (empty($surveyId)) {
+            return $result;
+        }
+
+        $query = $this->find()
+            ->where(['survey_id' => $surveyId])
+            ->group('submit_id');
+
+        $query->contain($options['contains']);
+
+        if (!$query->count()) {
+            return $result;
+        }
+
+        $result = $query->all();
+
+        return $result;
+    }
 }

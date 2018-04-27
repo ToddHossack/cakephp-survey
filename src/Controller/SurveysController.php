@@ -63,11 +63,26 @@ class SurveysController extends AppController
     public function view($id = null)
     {
         $this->SurveyQuestions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+        $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
 
         $questionTypes = $this->SurveyQuestions->getQuestionTypes();
         $survey = $this->Surveys->getSurveyData($id, true);
 
-        $this->set(compact('survey', 'questionTypes'));
+        $event = new Event((string)EventName::VIEW_SURVEY_RESULTS(), $this, [
+            'user' => $this->Auth->user(),
+            'survey' => $survey,
+            'data' => [],
+        ]);
+
+        $this->eventManager()->dispatch($event);
+
+        if (!empty($event->result)) {
+            $submits = $event->result;
+        } else {
+            $submits = $this->SurveyResults->getSubmits($survey->id);
+        }
+
+        $this->set(compact('survey', 'questionTypes', 'submits'));
     }
 
     /**
@@ -255,5 +270,30 @@ class SurveysController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Get Specific survey results based on submission id
+     *
+     * @param string $surveyId of the given survey
+     * @param string $submitId of specific submission
+     *
+     * @return \Cake\Network\Response
+     */
+    public function viewSubmit($surveyId, $submitId)
+    {
+        $this->SurveyQuestions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+        $survey = $this->Surveys->getSurveyData($surveyId);
+
+        $query = $this->SurveyQuestions->find()
+            ->where(['survey_id' => $survey->id])
+            ->contain([
+                'SurveyAnswers' => ['SurveyResults' => function ($q) use ($submitId) {
+                    return $q->where(['submit_id' => $submitId]);
+                }]
+            ]);
+
+        $surveyResults = $query->all();
+        $this->set(compact('survey', 'surveyResults'));
     }
 }
