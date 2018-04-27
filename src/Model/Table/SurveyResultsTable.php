@@ -139,6 +139,8 @@ class SurveyResultsTable extends Table
             'survey_id' => $options['survey']->id,
             'survey_question_id' => $data['survey_question_id'],
             'result' => !empty($data['result']) ? $data['result'] : '',
+            'submit_id' => !empty($options['data']['submit_id']) ? $options['data']['submit_id'] : null,
+            'submit_date' => !empty($options['data']['submit_date']) ? $options['data']['submit_date'] : null,
         ];
 
         if (!is_array($data['survey_answer_id'])) {
@@ -184,4 +186,5 @@ class SurveyResultsTable extends Table
 
         return $result;
     }
+
 }
