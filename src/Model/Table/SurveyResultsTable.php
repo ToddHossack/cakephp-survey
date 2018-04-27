@@ -186,5 +186,4 @@ class SurveyResultsTable extends Table
 
         return $result;
     }
-
 }
