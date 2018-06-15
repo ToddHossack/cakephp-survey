@@ -49,29 +49,29 @@ $options['title'] .= ' &raquo; ' . $survey->name;
                     '<i class="fa fa-clipboard"></i> ' . __('Copy'),
                     ['action' => 'duplicate', $survey->id],
                     ['escape' => false, 'class' => 'btn btn-default', 'title' => __('Duplicate whole survey')]
-                )?>
+                ); ?>
                 <?= $this->Html->link(
                     '<i class="fa fa-file"></i> ' . __('Preview'),
                     ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'preview', $surveyId],
                     ['class' => 'btn btn-default', 'escape' => false]
-                );?>
+                ); ?>
                 <?php if (empty($survey->publish_date)) : ?>
-                <?= $this->Html->link(
-                    '<i class="fa fa-calendar"></i> ' . __('Publish'),
-                    ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'publish', $surveyId],
-                    ['class' => 'btn btn-default', 'escape' => false]
-                )?>
-                <?= $this->Html->link(
-                    '<i class="fa fa-pencil"></i> ' . __('Edit'),
-                    ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'edit', $surveyId],
-                    ['class' => 'btn btn-default', 'escape' => false]
-                );?>
+                    <?= $this->Html->link(
+                        '<i class="fa fa-calendar"></i> ' . __('Publish'),
+                        ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'publish', $surveyId],
+                        ['class' => 'btn btn-default', 'escape' => false]
+                    ); ?>
+                    <?= $this->Html->link(
+                        '<i class="fa fa-pencil"></i> ' . __('Edit'),
+                        ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'edit', $surveyId],
+                        ['class' => 'btn btn-default', 'escape' => false]
+                    ); ?>
                 <?php endif; ?>
                 <?= $this->Form->postLink(
                     '<i class="fa fa-trash"></i> ' . __('Delete'),
                     ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'delete', $survey->id],
                     ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}', $survey->name)]
-                );?>
+                ); ?>
             </div>
             </div>
         </div>
@@ -160,15 +160,15 @@ $options['title'] .= ' &raquo; ' . $survey->name;
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane" id="manage-survey-questions">
-                <?= $this->element('Qobo/Survey.SurveyQuestions/view', ['survey' => $survey]);?>
+                <?= $this->element('Qobo/Survey.SurveyQuestions/view', ['survey' => $survey]); ?>
             </div>
             <div role="tabpanel" class="tab-pane" id="manage-survey-results">
-                <?= $this->element('Qobo/Survey.SurveyResults/view', ['survey' => $survey]);?>
+                <?= $this->element('Qobo/Survey.SurveyResults/view', ['survey' => $survey]); ?>
             </div>
             <div role="tabpanel" class="tab-pane" id="manage-survey-submits">
-                <?php if (!empty($submits)) : ?>
+            <?php if (!empty($submits)) : ?>
                 <?= $this->element('Qobo/Survey.SurveyResults/submits', ['submits' => $submits]); ?>
-                <?php endif; ?>
+            <?php endif; ?>
             </div>
         </div>
     </div>

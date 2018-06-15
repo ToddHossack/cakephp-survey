@@ -53,7 +53,7 @@ $count = 1;
         </div>
     </div>
     </div>
-<?php $count++; ?>
+    <?php $count++; ?>
 <?php endforeach; ?>
 </div>
 
