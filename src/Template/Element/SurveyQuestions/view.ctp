@@ -15,13 +15,13 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
     <div class="col-xs-12 col-md-12">
         <div class="pull-right">
             <div class="btn-group btn-group-sm" role="group">
-                <?php if (empty($survey->publish_date)) : ?>
+            <?php if (empty($survey->publish_date)) : ?>
                 <?= $this->Html->link(
                     '<i class="fa fa-plus"></i> ' . __('Add Question'),
                     ['controller' => 'SurveyQuestions', 'action' => 'add', $surveyId],
                     ['class' => 'btn btn-default', 'escape' => false]
-                )?>
-                <?php endif; ?>
+                ) ?>
+            <?php endif; ?>
             </div>
         </div>
     </div>

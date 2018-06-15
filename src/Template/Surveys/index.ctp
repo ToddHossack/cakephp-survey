@@ -60,7 +60,7 @@ $options['title'] = 'Surveys';
                                     ['class' => 'btn btn-default', 'escape' => false, 'title' => __('View Survey & Results')]
                                 )?>
                                 <?php if (empty($survey->publish_date)) : ?>
-                                <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['action' => 'edit', $surveyId], ['class' => 'btn btn-default', 'escape' => false]) ?>
+                                    <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['action' => 'edit', $surveyId], ['class' => 'btn btn-default', 'escape' => false]) ?>
                                 <?php endif; ?>
                                 <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['action' => 'delete', $surveyId], ['class' => 'btn btn-default', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $survey->id)]) ?>
                             </td>
