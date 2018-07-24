@@ -60,7 +60,7 @@ $options['title'] .= ' &raquo; ' . $survey->name;
                         '<i class="fa fa-calendar"></i> ' . __('Publish'),
                         ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'publish', $surveyId],
                         ['class' => 'btn btn-default', 'escape' => false]
-                    ); ?>
+                    )?>
                     <?= $this->Html->link(
                         '<i class="fa fa-pencil"></i> ' . __('Edit'),
                         ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'edit', $surveyId],
@@ -144,12 +144,12 @@ $options['title'] .= ' &raquo; ' . $survey->name;
         <ul id="relatedTabs" class="nav nav-tabs" role="tablist">
             <li role="presentation">
                 <a href="#manage-survey-questions" aria-controls="manage-content" role="tab" data-toggle="tab">
-                    <?= __('Questions'); ?>
+                    <i class="fa fa-question-circle"></i> <i class="fa question-circle"></i> <?= __('Questions'); ?>
                 </a>
             </li>
             <li role="presentation">
                 <a href="#manage-survey-results" aria-controls="manage-survey-results" role="tab" data-toggle="tab">
-                    <?= __('Results'); ?>
+                    <i class="fa fa-check-circle"></i> <?= __('Results'); ?>
                 </a>
             </li>
             <li role="presentation">
@@ -166,9 +166,9 @@ $options['title'] .= ' &raquo; ' . $survey->name;
                 <?= $this->element('Qobo/Survey.SurveyResults/view', ['survey' => $survey]); ?>
             </div>
             <div role="tabpanel" class="tab-pane" id="manage-survey-submits">
-            <?php if (!empty($submits)) : ?>
-                <?= $this->element('Qobo/Survey.SurveyResults/submits', ['submits' => $submits]); ?>
-            <?php endif; ?>
+                <?php if (!empty($submits)) : ?>
+                    <?= $this->element('Qobo/Survey.SurveyResults/submits', ['submits' => $submits]); ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>
