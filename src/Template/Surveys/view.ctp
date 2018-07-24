@@ -144,12 +144,12 @@ $options['title'] .= ' &raquo; ' . $survey->name;
         <ul id="relatedTabs" class="nav nav-tabs" role="tablist">
             <li role="presentation">
                 <a href="#manage-survey-questions" aria-controls="manage-content" role="tab" data-toggle="tab">
-                    <?= __('Questions'); ?>
+                    <i class="fa fa-question-circle"></i> <i class="fa question-circle"></i> <?= __('Questions'); ?>
                 </a>
             </li>
             <li role="presentation">
                 <a href="#manage-survey-results" aria-controls="manage-survey-results" role="tab" data-toggle="tab">
-                    <?= __('Results'); ?>
+                    <i class="fa fa-check-circle"></i> <?= __('Results'); ?>
                 </a>
             </li>
             <li role="presentation">

@@ -116,7 +116,7 @@ $options['title'] .= $surveyQuestion->question;
         <ul id="relatedTabs" class="nav nav-tabs" role="tablist">
             <li role="presentation">
                  <a href="#manage-survey-answers" aria-controls="manage-content" role="tab" data-toggle="tab">
-                    <?= __('Answers'); ?>
+                    <i class="fa fa-check-circle"></i> <?= __('Answers'); ?>
                 </a>
             </li>
         </ul>
