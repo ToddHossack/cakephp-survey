@@ -56,16 +56,16 @@ $options['title'] .= ' &raquo; ' . $survey->name;
                     ['class' => 'btn btn-default', 'escape' => false]
                 );?>
                 <?php if (empty($survey->publish_date)) : ?>
-                <?= $this->Html->link(
-                    '<i class="fa fa-calendar"></i> ' . __('Publish'),
-                    ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'publish', $surveyId],
-                    ['class' => 'btn btn-default', 'escape' => false]
-                )?>
-                <?= $this->Html->link(
-                    '<i class="fa fa-pencil"></i> ' . __('Edit'),
-                    ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'edit', $surveyId],
-                    ['class' => 'btn btn-default', 'escape' => false]
-                );?>
+                    <?= $this->Html->link(
+                        '<i class="fa fa-calendar"></i> ' . __('Publish'),
+                        ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'publish', $surveyId],
+                        ['class' => 'btn btn-default', 'escape' => false]
+                    )?>
+                    <?= $this->Html->link(
+                        '<i class="fa fa-pencil"></i> ' . __('Edit'),
+                        ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'edit', $surveyId],
+                        ['class' => 'btn btn-default', 'escape' => false]
+                    );?>
                 <?php endif; ?>
                 <?= $this->Form->postLink(
                     '<i class="fa fa-trash"></i> ' . __('Delete'),
@@ -167,7 +167,7 @@ $options['title'] .= ' &raquo; ' . $survey->name;
             </div>
             <div role="tabpanel" class="tab-pane" id="manage-survey-submits">
                 <?php if (!empty($submits)) : ?>
-                <?= $this->element('Qobo/Survey.SurveyResults/submits', ['submits' => $submits]); ?>
+                    <?= $this->element('Qobo/Survey.SurveyResults/submits', ['submits' => $submits]); ?>
                 <?php endif; ?>
             </div>
         </div>

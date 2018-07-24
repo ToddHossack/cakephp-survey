@@ -16,11 +16,11 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
         <div class="pull-right">
             <div class="btn-group btn-group-sm" role="group">
                 <?php if (empty($survey->publish_date)) : ?>
-                <?= $this->Html->link(
-                    '<i class="fa fa-plus"></i> ' . __('Add Question'),
-                    ['controller' => 'SurveyQuestions', 'action' => 'add', $surveyId],
-                    ['class' => 'btn btn-default', 'escape' => false]
-                )?>
+                    <?= $this->Html->link(
+                        '<i class="fa fa-plus"></i> ' . __('Add Question'),
+                        ['controller' => 'SurveyQuestions', 'action' => 'add', $surveyId],
+                        ['class' => 'btn btn-default', 'escape' => false]
+                    )?>
                 <?php endif; ?>
             </div>
         </div>
