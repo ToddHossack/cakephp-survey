@@ -124,7 +124,7 @@ class SurveyQuestionsTable extends Table
     public function getQuestionTypes()
     {
         return [
-            'input' => 'Short Text',
+            'input' => 'Short Text or Number',
             'textarea' => 'Paragraph',
             'checkbox' => 'Multiple Checkboxes',
             'radio' => 'Radio Buttons',
