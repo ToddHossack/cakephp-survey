@@ -32,7 +32,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('active'); ?>
+                    <?php echo $this->Form->input('active', ['checked' => true]); ?>
                 </div>
             </div>
             <div class="row">
