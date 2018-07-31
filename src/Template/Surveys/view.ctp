@@ -91,17 +91,17 @@ $options['title'] .= ' &raquo; ' . $survey->name;
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('ID') ?>:</strong>
-                </div>
-                <div class="col-xs-8 col-md-4">
-                    <?= h($survey->id) ?>
-                </div>
-                <div class="clearfix visible-xs visible-sm"></div>
-                <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Name') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
                     <?= h($survey->name) ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('ID') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= h($survey->id) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
