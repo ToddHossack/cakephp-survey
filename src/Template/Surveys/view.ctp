@@ -91,17 +91,17 @@ $options['title'] .= ' &raquo; ' . $survey->name;
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('ID') ?>:</strong>
-                </div>
-                <div class="col-xs-8 col-md-4">
-                    <?= h($survey->id) ?>
-                </div>
-                <div class="clearfix visible-xs visible-sm"></div>
-                <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Name') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
                     <?= h($survey->name) ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('ID') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= h($survey->id) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
@@ -149,12 +149,12 @@ $options['title'] .= ' &raquo; ' . $survey->name;
             </li>
             <li role="presentation">
                 <a href="#manage-survey-results" aria-controls="manage-survey-results" role="tab" data-toggle="tab">
-                    <i class="fa fa-check-circle"></i> <?= __('Results'); ?>
+                    <i class="fa fa-check-circle"></i> <?= __('Overview'); ?>
                 </a>
             </li>
             <li role="presentation">
                 <a href="#manage-survey-submits" aria-controls="manage-survey-submits" role="tab" data-toggle="tab">
-                    <?= __('Submits'); ?>
+                    <?= __('Results'); ?>
                 </a>
             </li>
         </ul>

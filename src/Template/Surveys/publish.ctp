@@ -34,7 +34,21 @@ echo $this->Html->script([
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('Surveys.publish_date', ['type' => 'text', 'data-provide' => 'datetimepicker']); ?>
+                    <?= $this->Form->input('Surveys.publish_date', [
+                        'type' => 'text',
+                        'class' => 'form-control',
+                        'data-provide' => 'datetimepicker',
+                        'data-default-value' => date('YYYY-MM-DD H:i:00', time()),
+                        'required' => true,
+                        'templates' => [
+                            'input' => '<div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="{{type}}" name="{{name}}"{{attrs}}/>
+                            </div>'
+                        ]
+                    ]) ?>
                 </div>
             </div>
             <?= $this->Form->button(__('Submit')) ?>

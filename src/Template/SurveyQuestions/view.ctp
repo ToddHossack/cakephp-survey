@@ -31,16 +31,18 @@ $options['title'] .= $surveyQuestion->question;
                 ['controller' => 'SurveyQuestions', 'action' => 'preview', $surveyId, $surveyQuestion->id],
                 ['class' => 'btn btn-default', 'title' => __('Preview'), 'escape' => false]
             )?>
-            <?= $this->Html->link(
-                '<i class="fa fa-pencil"></i> ' . __('Edit'),
-                ['controller' => 'SurveyQuestions', 'action' => 'edit', $surveyId, $surveyQuestion->id],
-                ['class' => 'btn btn-default', 'title' => __('Edit'), 'escape' => false]
-            )?>
-            <?= $this->Form->postLink(
-                '<i class="fa fa-trash"></i> ' . __('Delete'),
-                ['controller' => 'SurveyQuestions', 'action' => 'delete', $surveyId, $surveyQuestion->id],
-                ['class' => 'btn btn-default', 'title' => __('Delete'), 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $surveyQuestion->id)]
-            )?>
+            <?php if (empty($survey->publish_date)) : ?>
+                <?= $this->Html->link(
+                    '<i class="fa fa-pencil"></i> ' . __('Edit'),
+                    ['controller' => 'SurveyQuestions', 'action' => 'edit', $surveyId, $surveyQuestion->id],
+                    ['class' => 'btn btn-default', 'title' => __('Edit'), 'escape' => false]
+                )?>
+                <?= $this->Form->postLink(
+                    '<i class="fa fa-trash"></i> ' . __('Delete'),
+                    ['controller' => 'SurveyQuestions', 'action' => 'delete', $surveyId, $surveyQuestion->id],
+                    ['class' => 'btn btn-default', 'title' => __('Delete'), 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $surveyQuestion->id)]
+                )?>
+            <?php endif; ?>
             </div>
             </div>
         </div>
