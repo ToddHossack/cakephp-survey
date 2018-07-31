@@ -12,7 +12,20 @@
 
 use Cake\Utility\Text;
 
-$options['title'] = __('Preview Survey: {0}', $survey->name);
+$surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
+
+$options['title'] = $this->Html->link(__('Surveys'), [
+    'controller' => 'Surveys',
+    'action' => 'index'
+]);
+$options['title'] .= " &raquo; ";
+$options['title'] .= $this->Html->link($survey->name, [
+    'controller' => 'Surveys',
+    'action' => 'view',
+    $surveyId
+]);
+$options['title'] .= " &raquo; ";
+$options['title'] .= __('Preview');
 $count = 1;
 ?>
 <section class="content-header">

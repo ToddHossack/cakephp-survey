@@ -31,6 +31,7 @@ $options['title'] .= $surveyQuestion->question;
                 ['controller' => 'SurveyQuestions', 'action' => 'preview', $surveyId, $surveyQuestion->id],
                 ['class' => 'btn btn-default', 'title' => __('Preview'), 'escape' => false]
             )?>
+            <?php if (empty($survey->publish_date)) : ?>
             <?= $this->Html->link(
                 '<i class="fa fa-pencil"></i> ' . __('Edit'),
                 ['controller' => 'SurveyQuestions', 'action' => 'edit', $surveyId, $surveyQuestion->id],
@@ -41,6 +42,7 @@ $options['title'] .= $surveyQuestion->question;
                 ['controller' => 'SurveyQuestions', 'action' => 'delete', $surveyId, $surveyQuestion->id],
                 ['class' => 'btn btn-default', 'title' => __('Delete'), 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $surveyQuestion->id)]
             )?>
+            <?php endif; ?>
             </div>
             </div>
         </div>
