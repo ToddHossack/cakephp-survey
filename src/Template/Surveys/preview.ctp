@@ -49,9 +49,4 @@ $count = 1;
     </div>
     <?php $count++; ?>
 <?php endforeach; ?>
-    <div class="box">
-        <?= $this->Form->submit(__('Submit'));?>
-        <?= $this->Form->end(); ?>
-    </div>
 </section>
-
