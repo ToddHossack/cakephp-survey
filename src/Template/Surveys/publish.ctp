@@ -38,6 +38,7 @@ echo $this->Html->script([
                         'type' => 'text',
                         'class' => 'form-control',
                         'data-provide' => 'datetimepicker',
+                        'required' => true,
                         'templates' => [
                             'input' => '<div class="input-group">
                                 <div class="input-group-addon">
