@@ -142,12 +142,12 @@ class SurveysControllerTest extends IntegrationTestCase
         $survey = $query->first();
 
         $this->post('/surveys/surveys/duplicate/' . $survey->id);
-        $this->assertRedirect(['controller' => 'Surveys', 'action' => 'index']);
 
         $query = $this->Surveys->find()
             ->where(['parent_id' => $survey->id]);
 
         $duplicated = $query->first();
+        $this->assertRedirect(['controller' => 'Surveys', 'action' => 'view', $duplicated->id]);
         $this->assertEquals($survey->id, $duplicated->parent_id);
     }
 
