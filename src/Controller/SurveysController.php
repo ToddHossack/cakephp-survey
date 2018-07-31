@@ -196,7 +196,7 @@ class SurveysController extends AppController
 
                 $this->Flash->success(__('Survey was successfully duplicated'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $duplicated->id]);
             }
             $this->Flash->error(__('Couldn\'t duplicate the survey data'));
         }
