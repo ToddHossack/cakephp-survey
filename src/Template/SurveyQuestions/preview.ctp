@@ -35,7 +35,12 @@ $options['title'] = 'Preview Question';
             </div>
         </div>
         <div class="box-body">
-            <?= $this->element('Qobo/Survey.Answers/' . $surveyQuestion->type, ['entity' => $surveyQuestion]);?>
+            <?php
+            if (!empty($surveyQuestion->extras)) {
+                echo $surveyQuestion->extras;
+            }
+            echo $this->element('Qobo/Survey.Answers/' . $surveyQuestion->type, ['entity' => $surveyQuestion]);
+            ?>
         </div>
     </div>
     <?php if (!empty($savedResults)) : ?>

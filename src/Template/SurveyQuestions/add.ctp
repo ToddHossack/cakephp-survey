@@ -27,7 +27,13 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('question'); ?>
+                    <?php echo $this->Form->input('question', ['type' => 'text']); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <?php echo $this->Form->textarea('extras', ['class' => 'tinymce']); ?>
+                    <?= $this->element('Qobo/Survey.tinymce');?>
                 </div>
             </div>
             <div class="row">
