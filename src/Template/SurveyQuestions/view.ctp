@@ -111,7 +111,7 @@ $options['title'] .= $surveyQuestion->question;
             </div>
         </div>
     </div>
-    <?php if(!empty($surveyQuestion->extras)) : ?>
+    <?php if (!empty($surveyQuestion->extras)) : ?>
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title"><?= __('Details'); ?></h3>
