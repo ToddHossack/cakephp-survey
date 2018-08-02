@@ -8,32 +8,6 @@
             config = tinymce_init_config;
         }
 
-        config.setup = function (editor) {
-            editor.addButton('gallery', {
-                tooltip: 'Insert gallery',
-                icon: 'preview',
-                onclick: function () {
-                    // config.file_browser_callback('tinymce', );
-                    editor.windowManager.open({
-                        title: 'Insert gallery',
-                        body: [
-                            {type: 'filepicker', name: 'source', label: 'Source', filetype: 'image'}
-                        ],
-                        onsubmit: function (e) {
-                            editor.focus();
-                            var source = e.data.source;
-                            // trimming out base url and trailing filename.
-                            source = source.match(/.*\//).toString();
-                            source = source.replace(window.location.origin, '');
-                            source = decodeURI(source);
-
-                            editor.selection.setContent('[gallery path="' + source + '"]');
-                        }
-                    });
-                }
-            });
-        };
-
         tinyMCE.init(config);
     });
 
