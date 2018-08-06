@@ -9,7 +9,6 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 (function ($) {
-    var format = 'YYYY-MM-DD HH:mm:ss';
     $('[data-provide="datetimepicker"]').each(function () {
         var options = {
             singleDatePicker: true,
@@ -20,10 +19,17 @@
             timePickerIncrement: 5,
             locale: {
                 cancelLabel: 'Clear',
-                format: format,
+                format: 'YYYY-MM-DD HH:mm:ss',
                 firstDay: 1
             }
         };
+
+        if ($(this).data('format')) {
+            options.locale.format = $(this).data('format');
+            if ('YYYY-MM-DD' == options.locale.format) {
+                options.timePicker = false;
+            }
+        }
 
         var defaultValue = $(this).data('default-value');
         if (!this.value && undefined !== defaultValue) {
@@ -36,7 +42,7 @@
         $(this).daterangepicker(options);
 
         $(this).on('apply.daterangepicker', function (ev, picker) {
-            $(this).val(picker.startDate.format(format));
+            $(this).val(picker.startDate.format(options.locale.format));
         });
 
         $(this).on('cancel.daterangepicker', function (ev, picker) {

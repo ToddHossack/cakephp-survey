@@ -30,7 +30,8 @@ $key = (isset($key) ? $key . '.' : '');
             'type' => 'text',
             'class' => 'form-control',
             'data-provide' => 'datetimepicker',
-            'data-default-value' => date('YYYY-MM-DD H:i:00', time()),
+            'data-format' => 'YYYY-MM-DD',
+            'data-default-value' => date('YYYY-MM-DD', time()),
             'required' => true,
             'templates' => [
                 'input' => '<div class="input-group">
