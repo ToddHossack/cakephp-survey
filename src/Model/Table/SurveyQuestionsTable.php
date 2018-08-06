@@ -125,10 +125,11 @@ class SurveyQuestionsTable extends Table
     {
         return [
             'input' => 'Short Text or Number',
-            'textarea' => 'Paragraph',
-            'checkbox' => 'Multiple Checkboxes',
-            'radio' => 'Radio Buttons',
+            'date' => 'Date',
             'select' => 'Dropdown',
+            'checkbox' => 'Multiple Checkboxes',
+            'textarea' => 'Paragraph',
+            'radio' => 'Radio Buttons',
         ];
     }
 }
