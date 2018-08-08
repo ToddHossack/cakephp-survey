@@ -38,7 +38,7 @@ echo $this->Html->script([
                         'type' => 'text',
                         'class' => 'form-control',
                         'data-provide' => 'datetimepicker',
-                        'data-default-value' => date('YYYY-MM-DD H:i:00', time()),
+                        'data-default-value' => date('Y-m-d H:i:00', time()),
                         'required' => true,
                         'templates' => [
                             'input' => '<div class="input-group">
