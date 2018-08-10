@@ -38,7 +38,7 @@ $surveyId = empty($survey->survey->slug) ? $survey->survey->id : $survey->survey
     <tbody>
         <?php foreach ($surveyQuestion->survey_answers as $surveyAnswer) : ?>
         <tr>
-            <td><?= h($surveyAnswer->order) ?></td>
+            <td><?= h($surveyAnswer->order);?></td>
             <td>
                 <?php
                 if (!in_array($surveyQuestion->type, ['textarea', 'input'])) {
@@ -52,6 +52,8 @@ $surveyId = empty($survey->survey->slug) ? $survey->survey->id : $survey->survey
             <td><?= h($surveyAnswer->created->i18nFormat('yyyy-MM-DD HH:mm')) ?></td>
             <td class="actions">
                 <div class="btn-group btn-group-xs">
+                <?= $this->Form->postLink('<i class="fa fa-arrow-up"></i>', ['controller' => 'SurveyAnswers', 'action' => 'move', $surveyAnswer->id, 'up'], ['escape' => false, 'class' => 'btn btn-default']);?>
+                <?= $this->Form->postLink('<i class="fa fa-arrow-down"></i>', ['controller' => 'SurveyAnswers', 'action' => 'move', $surveyAnswer->id, 'down'], ['escape' => false, 'class' => 'btn btn-default']);?>
                 <?= $this->Html->link(
                     '<i class="fa fa-eye"></i>',
                     ['controller' => 'SurveyAnswers', 'action' => 'view', $surveyId, $surveyQuestion->id, $surveyAnswer->id],
