@@ -11,10 +11,10 @@
  */
 namespace Qobo\Survey\Controller;
 
-use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Qobo\Survey\Event\EventName;
+use Qobo\Survey\Controller\AppController;
 
 /**
  * Surveys Controller
