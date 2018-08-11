@@ -18,6 +18,9 @@ use Exception;
 
 class AppController extends BaseController
 {
+    const DIRECTION_UP = 'up';
+    const DIRECTION_DOWN = 'down';
+
     /**
      * @{inheritDoc}
      */
@@ -42,11 +45,11 @@ class AppController extends BaseController
         try {
             $entity = $table->get($id);
 
-            if ('up' == $direction) {
+            if (self::DIRECTION_UP == $direction) {
                 $table->moveUp($entity);
             }
 
-            if ('down' == $direction) {
+            if (self::DIRECTION_DOWN == $direction) {
                 $table->moveDown($entity);
             }
         } catch (Exception $e) {
