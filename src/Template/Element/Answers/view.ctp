@@ -10,7 +10,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 $surveyId = empty($survey->survey->slug) ? $survey->survey->id : $survey->survey->slug;
-
+$isPublished = empty($survey->survey->publish_date) ? false : true;
 ?>
 <div class="row">
     <div class="col-xs-12 col-md-12">
@@ -52,23 +52,27 @@ $surveyId = empty($survey->survey->slug) ? $survey->survey->id : $survey->survey
             <td><?= h($surveyAnswer->created->i18nFormat('yyyy-MM-DD HH:mm')) ?></td>
             <td class="actions">
                 <div class="btn-group btn-group-xs">
-                <?= $this->Form->postLink('<i class="fa fa-arrow-up"></i>', ['controller' => 'SurveyAnswers', 'action' => 'move', $surveyAnswer->id, 'up'], ['escape' => false, 'class' => 'btn btn-default']);?>
-                <?= $this->Form->postLink('<i class="fa fa-arrow-down"></i>', ['controller' => 'SurveyAnswers', 'action' => 'move', $surveyAnswer->id, 'down'], ['escape' => false, 'class' => 'btn btn-default']);?>
+                <?php if (!$isPublished) : ?>
+                    <?= $this->Form->postLink('<i class="fa fa-arrow-up"></i>', ['controller' => 'SurveyAnswers', 'action' => 'move', $surveyAnswer->id, 'up'], ['escape' => false, 'class' => 'btn btn-default']);?>
+                    <?= $this->Form->postLink('<i class="fa fa-arrow-down"></i>', ['controller' => 'SurveyAnswers', 'action' => 'move', $surveyAnswer->id, 'down'], ['escape' => false, 'class' => 'btn btn-default']);?>
+                <?php endif; ?>
                 <?= $this->Html->link(
                     '<i class="fa fa-eye"></i>',
                     ['controller' => 'SurveyAnswers', 'action' => 'view', $surveyId, $surveyQuestion->id, $surveyAnswer->id],
                     ['escape' => false, 'class' => 'btn btn-default']
                 )?>
-                <?= $this->Html->link(
-                    '<i class="fa fa-pencil"></i>',
-                    ['controller' => 'SurveyAnswers', 'action' => 'edit', $surveyId, $surveyQuestion->id, $surveyAnswer->id],
-                    ['escape' => false, 'class' => 'btn btn-default']
-                )?>
-                <?= $this->Form->postLink(
-                    '<i class="fa fa-trash"></i>',
-                    ['controller' => 'SurveyAnswers', 'action' => 'delete', $surveyId, $surveyQuestion->id, $surveyAnswer->id],
-                    ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}?', $surveyAnswer->id)]
-                )?>
+                <?php if (!$isPublished) : ?>
+                    <?= $this->Html->link(
+                        '<i class="fa fa-pencil"></i>',
+                        ['controller' => 'SurveyAnswers', 'action' => 'edit', $surveyId, $surveyQuestion->id, $surveyAnswer->id],
+                        ['escape' => false, 'class' => 'btn btn-default']
+                    )?>
+                    <?= $this->Form->postLink(
+                        '<i class="fa fa-trash"></i>',
+                        ['controller' => 'SurveyAnswers', 'action' => 'delete', $surveyId, $surveyQuestion->id, $surveyAnswer->id],
+                        ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}?', $surveyAnswer->id)]
+                    )?>
+                <?php endif; ?>
                 </div>
             </td>
         </tr>
