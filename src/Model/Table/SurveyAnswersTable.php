@@ -50,6 +50,11 @@ class SurveyAnswersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('ADmad/Sequence.Sequence', [
+            'order' => 'order',
+            'scope' => ['survey_question_id'],
+            'start' => 1,
+        ]);
 
         $this->belongsTo('SurveyQuestions', [
             'foreignKey' => 'survey_question_id',

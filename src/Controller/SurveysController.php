@@ -11,9 +11,9 @@
  */
 namespace Qobo\Survey\Controller;
 
-use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
+use Qobo\Survey\Controller\AppController;
 use Qobo\Survey\Event\EventName;
 
 /**

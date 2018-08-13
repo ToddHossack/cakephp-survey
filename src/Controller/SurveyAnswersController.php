@@ -11,8 +11,8 @@
  */
 namespace Qobo\Survey\Controller;
 
-use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Qobo\Survey\Controller\AppController;
 
 /**
  * SurveyAnswers Controller
