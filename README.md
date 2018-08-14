@@ -26,3 +26,28 @@ composer require qobo/cakephp-survey
 ```
 
 
+Setup
+-----
+
+Load plugin
+
+```
+bin/cake plugin load --bootstrap --routes Qobo/Survey
+```
+
+or manually add it to `config/bootstrap.php`:
+
+```
+Plugin::load('Qobo/Survey', ['routes' => true, 'bootstrap' => true]);
+```
+
+Survey plugin also uses `ADmad/cakephp-sequence` plugin for Questions/Answers ordering as part of `qobo/cakephp-utils` setup.
+In order to enable that feature don't forget to load it in `APP/config/bootstrap.php`:
+
+```
+Plugin::load('ADmad/Sequence');
+```
+
+Support
+------
+For bugs and feature requests, please use the [issues](https://github.com/QoboLtd/cakephp-survey/issues) section of this repository.
