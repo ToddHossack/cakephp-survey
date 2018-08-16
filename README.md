@@ -44,9 +44,38 @@ Plugin::load('Qobo/Survey', ['routes' => true, 'bootstrap' => true]);
 Survey plugin also uses `ADmad/cakephp-sequence` plugin for Questions/Answers ordering as part of `qobo/cakephp-utils` setup.
 In order to enable that feature don't forget to load it in `APP/config/bootstrap.php`:
 
-```
+```php
 Plugin::load('ADmad/Sequence');
 ```
+
+In order for the plugin to work correctly, you should also run DB migrations:
+
+```bash
+./bin/cake migrations migrate --plugin Qobo/Survey
+```
+
+Surveys plugin is designed for the systems, that use authorised users, so you might run into few glitches on a plain CakePHP installation if you don't have native `AuthComponent` enabled.
+
+We use `qobo/cakephp-utils` plugin as a generic toolset provider. It contains `CakeDC/Users` plugin to handle [authentication/authorisation for the users](https://github.com/CakeDC/users/blob/master/Docs/Documentation/Configuration.md).
+
+The plugin was designed with AdminLTE theme in mind, so you can enable it as well using:
+
+```php
+//inside config/bootstrap.php add:
+Plugin::load('AdminLTE', ['bootstrap' => true, 'routes' => true]);
+```
+
+```php
+//in your AppController.php:
+public function beforeFilter(Event $event)
+{
+  $this->viewBuilder()->theme('AdminLTE');
+  $this->viewBuilder()->layout('adminlte'); // copy adminlte.ctp to your src/Template/Layout/ directory from the plugin.
+}
+```
+
+**Note:** Qobo provides `qobo/project-template-cakephp` [repository](https://github.com/QoboLtd/project-template-cakephp) where you can find some of the company plugins already pre-configured and used.
+
 
 Support
 ------
