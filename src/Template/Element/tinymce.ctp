@@ -13,7 +13,7 @@
 use Cake\Core\Configure;
 
 // load tinyMCE editor and elFinder file manager
-echo $this->Html->script('Qobo/Survey./plugins/tinymce/tinymce.min', ['block' => 'scriptBottom']);
+echo $this->Html->script('Qobo/Utils./plugins/tinymce/tinymce.min', ['block' => 'scriptBottom']);
 
 // initialize tinyMCE
 echo $this->Html->scriptBlock(
