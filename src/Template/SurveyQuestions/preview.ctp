@@ -36,9 +36,6 @@ $options['title'] = 'Preview Question';
         </div>
         <div class="box-body">
             <?php
-            if (!empty($surveyQuestion->extras)) {
-                echo $surveyQuestion->extras;
-            }
             echo $this->element('Qobo/Survey.Answers/' . $surveyQuestion->type, ['entity' => $surveyQuestion]);
             ?>
         </div>

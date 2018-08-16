@@ -15,6 +15,10 @@ foreach ($entity->survey_answers as $item) {
 }
 
 $key = (isset($key) ? $key . '.' : '');
+
+if (!empty($entity->extras)) {
+    echo $entity->extras;
+}
 ?>
 <div class="row">
     <div class="col-xs-12 col-md-6">
