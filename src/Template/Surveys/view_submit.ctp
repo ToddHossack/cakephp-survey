@@ -44,6 +44,9 @@ $options['title'] .= __('Submission Details');
         </div>
         <div class="box-body">
             <?php
+
+            echo $this->element('Qobo/Survey.SurveyQuestions/view_extras', ['entity' => $question, 'collapsed' => true, 'id' => md5($question->id)]);
+
             $isText = in_array($question->type, ['input', 'textarea']) ? true : false;
 
             foreach ($question->survey_answers as $answer) {
