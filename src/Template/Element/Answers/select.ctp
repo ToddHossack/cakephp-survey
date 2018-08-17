@@ -15,7 +15,7 @@ foreach ($entity->survey_answers as $item) {
 }
 
 $key = (isset($key) ? $key . '.' : '');
-$id = md5($options);
+$id = md5(serialize($options));
 
 echo $this->element('Qobo/Survey.SurveyQuestions/view_extras', ['entity' => $entity, 'id' => $id, 'collapsed' => $collapsed]);
 ?>
