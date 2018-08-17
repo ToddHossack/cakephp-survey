@@ -20,10 +20,9 @@ echo $this->Html->script([
 
 $answer = $entity->survey_answers[0];
 $key = (isset($key) ? $key . '.' : '');
+$id = md5($answer);
 
-if (!empty($entity->extras)) {
-    echo $entity->extras;
-}
+echo $this->element('Qobo/Survey.SurveyQuestions/view_extras', ['entity' => $entity, 'id' => $id, 'collapsed' => $collapsed]);
 ?>
 <div class="row">
     <div class="col-xs-12 col-md-6">
