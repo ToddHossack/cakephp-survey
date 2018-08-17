@@ -57,7 +57,7 @@ $count = 1;
             </div>
         </div>
         <div class="box-body">
-            <?= $this->element('Qobo/Survey.Answers/' . $question->type, ['entity' => $question, 'key' => $k]);?>
+            <?= $this->element('Qobo/Survey.Answers/' . $question->type, ['entity' => $question, 'key' => $k, 'collapsed' => false]);?>
         </div>
     </div>
     <?php $count++; ?>

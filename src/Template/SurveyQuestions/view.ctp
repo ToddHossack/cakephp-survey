@@ -138,7 +138,7 @@ $options['title'] .= $surveyQuestion->question;
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane" id="manage-survey-answers">
-                <?= $this->element('Qobo/Survey.Answers/view', ['survey' => $surveyQuestion]);?>
+                <?= $this->element('Qobo/Survey.Answers/view', ['survey' => $surveyQuestion, 'collapsed' => true]);?>
             </div>
         </div>
     </div>
