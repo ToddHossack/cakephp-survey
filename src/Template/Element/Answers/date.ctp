@@ -28,7 +28,7 @@ echo $this->element('Qobo/Survey.SurveyQuestions/view_extras', ['entity' => $ent
     <div class="col-xs-12 col-md-6">
         <?= $this->Form->hidden('SurveyResults.' . $key . 'survey_question_id', ['value' => $entity->id]);?>
         <?= $this->Form->hidden('SurveyResults.' . $key . 'survey_answer_id', ['value' => $answer->id]);?>
-        <?= $this->Form->input('SurveysResults.' . $key . 'result', [
+        <?= $this->Form->input('SurveyResults.' . $key . 'result', [
             'label' => 'Date',
             'type' => 'text',
             'class' => 'form-control',
