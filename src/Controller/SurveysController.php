@@ -97,9 +97,17 @@ class SurveysController extends AppController
         $survey = $this->Surveys->getSurveyData($id);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $data = $this->request->getData();
+            $validated = $this->Surveys->prepublishValidate($id);
 
+            if (false === $validated['status']) {
+                $this->Flash->error(implode("\r\n", $validated['errors']), ['escape' => false]);
+
+                return $this->redirect($this->referer());
+            }
+
+            $data = $this->request->getData();
             $survey = $this->Surveys->patchEntity($survey, $data, ['validate' => false]);
+
             if ($this->Surveys->save($survey)) {
                 $this->Flash->success(__('Survey was successfully saved.'));
 

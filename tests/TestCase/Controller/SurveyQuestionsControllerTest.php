@@ -153,7 +153,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
             ->where(['question' => $postData['question']]);
 
         $question = $query->first();
-        $this->assertRedirect(['controller' => 'SurveyQuestions', 'action' => 'view', $survey->slug, $question->id]);
+        $this->assertRedirect(['controller' => 'SurveyAnswers', 'action' => 'add', $survey->slug, $question->id]);
         $this->assertEquals($question->question, $postData['question']);
         $this->assertEquals($question->type, $postData['type']);
     }
