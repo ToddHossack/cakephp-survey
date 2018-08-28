@@ -179,4 +179,36 @@ class SurveysTable extends Table
 
         return $result;
     }
+
+    /**
+     * Pre-publish validate of Survey
+     *
+     * We make sure the user didn't forget to add at least
+     * one answer option to survey question
+     *
+     * @param mixed $id of the survey or its slug
+     * @return array $response with status flag and possible errors
+     */
+    public function prepublishValidate($id)
+    {
+        $response = [
+            'status' => false,
+            'errors' => []
+        ];
+        $entity = $this->getSurveyData($id, true);
+
+        foreach ($entity->survey_questions as $question) {
+            if (!empty($question->survey_answers)) {
+                continue;
+            }
+
+            $response['errors'][] = "Question \"" . $question->question . "\" must have at least one answer option.";
+        }
+
+        if (empty($response['errors'])) {
+            $response['status'] = true;
+        }
+
+        return $response;
+    }
 }
