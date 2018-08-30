@@ -202,6 +202,9 @@ class SurveysController extends AppController
                 $duplicated = $this->Surveys->patchEntity($duplicated, ['parent_id' => $survey->id]);
                 $duplicated = $this->Surveys->save($duplicated);
 
+                // Fixing order from original survey if there were any order gaps.
+                $sorted = $this->Surveys->setSequentialOrder($duplicated);
+
                 $this->Flash->success(__('Survey was successfully duplicated'));
 
                 return $this->redirect(['action' => 'view', $duplicated->id]);

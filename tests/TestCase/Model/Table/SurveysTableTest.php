@@ -99,4 +99,47 @@ class SurveysTableTest extends TestCase
         $result = $this->Surveys->getSurveyData('survey_-_1');
         $this->assertEquals($result->id, $surveyId);
     }
+
+    public function testSetSequentialOrder()
+    {
+        $id = '00000000-0000-0000-0000-000000000002';
+        $survey = $this->Surveys->getSurveyData($id, true);
+        $sorted = $this->Surveys->setSequentialOrder($survey);
+
+        $modified = $this->Surveys->getSurveyData($id, true);
+
+        $oldQuestionOrders = array_map(
+            function ($item) {
+                return $item->order;
+            },
+            $survey->survey_questions
+        );
+
+        $newQuestionOrders = array_map(
+            function ($item) {
+                return $item->order;
+            },
+            $modified->survey_questions
+        );
+
+        $this->assertNotEquals($oldQuestionOrders, $newQuestionOrders);
+
+        foreach ($survey->survey_questions as $k => $question) {
+            $oldAnswerOrder = array_map(
+                function ($item) {
+                    return $item->order;
+                },
+                $question->survey_answers
+            );
+
+            $newAnwserOrder = array_map(
+                function ($item) {
+                    return $item->order;
+                },
+                $modified->survey_questions[$k]->survey_answers
+            );
+
+            $this->assertNotEquals($oldAnswerOrder, $newAnwserOrder);
+        }
+    }
 }

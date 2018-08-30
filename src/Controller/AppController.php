@@ -14,6 +14,7 @@ namespace Qobo\Survey\Controller;
 use App\Controller\AppController as BaseController;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
 use Exception;
 
 class AppController extends BaseController
