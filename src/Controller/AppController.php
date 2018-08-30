@@ -14,6 +14,7 @@ namespace Qobo\Survey\Controller;
 use App\Controller\AppController as BaseController;
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Inflector;
 use Exception;
 
 class AppController extends BaseController
@@ -69,6 +70,8 @@ class AppController extends BaseController
      */
     public function sort($surveyId, $parentId = null)
     {
+        $sorted = false;
+
         if (!in_array($this->name, ['Surveys', 'SurveyQuestions'])) {
             throw new Exception(__('Sort method is not available in this Controller'));
         }
@@ -93,7 +96,15 @@ class AppController extends BaseController
 
         $entities = $query->all()->toArray();
 
-        $table->setOrder($entities);
+        if (!empty($entities)) {
+            $sorted = $table->setOrder($entities);
+        }
+
+        if ($sorted) {
+            $this->Flash->success(__('Records were successfully sorted'));
+        } else {
+            $this->Flash->error(__('Couldn\'t sort records. Please try again'));
+        }
 
         return $this->redirect($this->referer());
     }
