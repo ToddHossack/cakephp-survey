@@ -21,11 +21,6 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
                         ['controller' => 'SurveyQuestions', 'action' => 'add', $surveyId],
                         ['class' => 'btn btn-default', 'escape' => false]
                     )?>
-                    <?= $this->Form->postLink(
-                        '<i class="fa fa-sort"></i> ' . __('Re-order'),
-                        ['controller' => 'Surveys', 'action' => 'sort', $surveyId],
-                        ['class' => 'btn btn-default', 'escape' => false]
-                    )?>
                 <?php endif; ?>
             </div>
         </div>
