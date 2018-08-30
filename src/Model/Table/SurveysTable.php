@@ -12,9 +12,11 @@
 namespace Qobo\Survey\Model\Table;
 
 use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
 
@@ -210,5 +212,45 @@ class SurveysTable extends Table
         }
 
         return $response;
+    }
+
+    /**
+     * Align questions and answer options of survey in
+     * sequence
+     *
+     * @param \Cake\Datasource\EntityInterface $entity of the survey
+     * @return bool $sorted for sorting result
+     */
+    public function setSequentialOrder(EntityInterface $entity)
+    {
+        $sorted = false;
+        $questions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+        $answers = TableRegistry::get('Qobo/Survey.SurveyAnswers');
+
+        $query = $questions->find()
+            ->where(['survey_id' => $entity->id])
+            ->order(['order' => 'ASC']);
+
+        $entities = $query->all()->toArray();
+
+        if (empty($entities)) {
+            return $sorted;
+        }
+
+        $sorted = $questions->setOrder($entities);
+
+        foreach ($entities as $entity) {
+            $query = $answers->find()
+                ->where(['survey_question_id' => $entity->id])
+                ->order(['order' => 'ASC']);
+
+            $items = $query->all()->toArray();
+
+            if (!empty($items)) {
+                $sorted = $answers->setOrder($items);
+            }
+        }
+
+        return $sorted;
     }
 }
