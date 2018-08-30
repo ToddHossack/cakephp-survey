@@ -17,16 +17,16 @@ $isPublished = empty($survey->survey->publish_date) ? false : true;
         <div class="pull-right">
             <div class="btn-group btn-group-sm" role="group">
                 <?php if (!$isPublished) : ?>
-                <?= $this->Html->link(
-                    '<i class="fa fa-plus"></i> ' . __('Add Answer'),
-                    ['controller' => 'SurveyAnswers', 'action' => 'add', $surveyId, $surveyQuestion->id],
-                    ['class' => 'btn btn-default', 'escape' => false]
-                )?>
-                <?= $this->Form->postLink(
-                    '<i class="fa fa-sort"></i> ' . __('Re-order'),
-                    ['controller' => 'SurveyQuestions', 'action' => 'sort', $surveyId, $surveyQuestion->id],
-                    ['class' => 'btn btn-default', 'escape' => false]
-                )?>
+                    <?= $this->Html->link(
+                        '<i class="fa fa-plus"></i> ' . __('Add Answer'),
+                        ['controller' => 'SurveyAnswers', 'action' => 'add', $surveyId, $surveyQuestion->id],
+                        ['class' => 'btn btn-default', 'escape' => false]
+                    )?>
+                    <?= $this->Form->postLink(
+                        '<i class="fa fa-sort"></i> ' . __('Re-order'),
+                        ['controller' => 'SurveyQuestions', 'action' => 'sort', $surveyId, $surveyQuestion->id],
+                        ['class' => 'btn btn-default', 'escape' => false]
+                    )?>
                 <?php endif; ?>
             </div>
         </div>
