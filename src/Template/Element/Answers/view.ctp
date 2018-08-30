@@ -21,6 +21,11 @@ $isPublished = empty($survey->survey->publish_date) ? false : true;
                     ['controller' => 'SurveyAnswers', 'action' => 'add', $surveyId, $surveyQuestion->id],
                     ['class' => 'btn btn-default', 'escape' => false]
                 )?>
+                <?= $this->Form->postLink(
+                    '<i class="fa fa-sort"></i> ' . __('Re-order'),
+                    ['controller' => 'SurveyQuestions', 'action' => 'sort', $surveyId, $surveyQuestion->id],
+                    ['class' => 'btn btn-default', 'escape' => false]
+                )?>
             </div>
         </div>
     </div>

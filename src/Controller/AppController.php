@@ -58,4 +58,43 @@ class AppController extends BaseController
 
         return $this->redirect($this->referer());
     }
+
+    /**
+     * Sort records sequentially
+     *
+     * @param mixed $surveyId slug|id of the survey
+     * @param uuid $parentId of parent module like SurveyQuestions to sort answer options
+     *
+     * @return \Cake\Network\Response
+     */
+    public function sort($surveyId, $parentId = null)
+    {
+        if (!in_array($this->name, ['Surveys', 'SurveyQuestions'])) {
+            throw new Exception(__('Sort method is not available in this Controller'));
+        }
+
+        if ('Surveys' == $this->name) {
+            $survey = $this->Surveys->getSurveyData($surveyId);
+
+            $name = 'Qobo/Survey.SurveyQuestions';
+            $conditions = ['survey_id' => $survey->id];
+        }
+
+        if ('SurveyQuestions' == $this->name) {
+            $name = 'Qobo/Survey.SurveyAnswers';
+            $conditions = ['survey_question_id' => $parentId];
+        }
+
+        $table = TableRegistry::get($name);
+
+        $query = $table->find()
+            ->where($conditions)
+            ->order(['order' => 'ASC']);
+
+        $entities = $query->all()->toArray();
+
+        $table->setOrder($entities);
+
+        return $this->redirect($this->referer());
+    }
 }
