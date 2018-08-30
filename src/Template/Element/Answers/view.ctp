@@ -16,6 +16,7 @@ $isPublished = empty($survey->survey->publish_date) ? false : true;
     <div class="col-xs-12 col-md-12">
         <div class="pull-right">
             <div class="btn-group btn-group-sm" role="group">
+                <?php if (!$isPublished) : ?>
                 <?= $this->Html->link(
                     '<i class="fa fa-plus"></i> ' . __('Add Answer'),
                     ['controller' => 'SurveyAnswers', 'action' => 'add', $surveyId, $surveyQuestion->id],
@@ -26,6 +27,7 @@ $isPublished = empty($survey->survey->publish_date) ? false : true;
                     ['controller' => 'SurveyQuestions', 'action' => 'sort', $surveyId, $surveyQuestion->id],
                     ['class' => 'btn btn-default', 'escape' => false]
                 )?>
+                <?php endif; ?>
             </div>
         </div>
     </div>
