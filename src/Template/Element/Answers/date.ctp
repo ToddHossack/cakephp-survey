@@ -35,7 +35,7 @@ echo $this->element('Qobo/Survey.SurveyQuestions/view_extras', ['entity' => $ent
             'class' => 'form-control',
             'data-provide' => 'datetimepicker',
             'data-format' => 'YYYY-MM-DD',
-            'data-default-value' => date('YYYY-MM-DD', time()),
+            'data-default-value' => date('Y-m-d', time()),
             'required' => true,
             'templates' => [
                 'input' => '<div class="input-group">
