@@ -97,7 +97,7 @@ class SurveysController extends AppController
         $survey = $this->Surveys->getSurveyData($id);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $validated = $this->Surveys->prepublishValidate($id);
+            $validated = $this->Surveys->prepublishValidate($id, $this->request);
 
             if (false === $validated['status']) {
                 $this->Flash->error(implode("\r\n", $validated['errors']), ['escape' => false]);

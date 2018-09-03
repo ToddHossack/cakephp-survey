@@ -189,9 +189,10 @@ class SurveysTable extends Table
      * one answer option to survey question
      *
      * @param mixed $id of the survey or its slug
+     * @param \Cake\Network\Request $request object from controller
      * @return array $response with status flag and possible errors
      */
-    public function prepublishValidate($id)
+    public function prepublishValidate($id, $request = null)
     {
         $response = [
             'status' => false,
@@ -209,6 +210,18 @@ class SurveysTable extends Table
 
         if (empty($response['errors'])) {
             $response['status'] = true;
+        }
+
+        if (!empty($request)) {
+            $data = $request->getData();
+            $publish = strtotime($data['Surveys']['publish_date']);
+            $expiry = strtotime($data['Surveys']['expiry_date']);
+            if ($expiry > $publish) {
+                $response['status'] = true;
+            } else {
+                $response['errors'][] = __('Expiry date should be bigger than publish date');
+                $response['status'] = false;
+            }
         }
 
         return $response;
