@@ -120,7 +120,6 @@ class SurveysControllerTest extends IntegrationTestCase
             ->limit(1);
 
         $survey = $query->first();
-
         $edit = [
             'name' => 'Modified Name',
         ];
@@ -153,11 +152,16 @@ class SurveysControllerTest extends IntegrationTestCase
 
     public function testPublishPostOk()
     {
+        $id = '00000000-0000-0000-0000-000000000002';
         $query = $this->Surveys->find()
-            ->limit(1);
+            ->where(['id' => $id]);
         $survey = $query->first();
+
         $data = [
-            'publish_date' => '2018-04-08 09:00:00',
+            'Surveys' => [
+                'publish_date' => '2018-04-08 09:00:00',
+                'expiry_date' => '2019-04-18 09:00:00',
+            ]
         ];
 
         $this->post('/surveys/surveys/publish/' . $survey->id, $data);
@@ -169,7 +173,7 @@ class SurveysControllerTest extends IntegrationTestCase
         $published = $query->first();
 
         $this->assertNotEmpty($published->publish_date);
-        $this->assertEquals($published->publish_date->i18nFormat('yyyy-MM-dd HH:mm:ss'), $data['publish_date']);
+        $this->assertEquals($published->publish_date->i18nFormat('yyyy-MM-dd HH:mm:ss'), $data['Surveys']['publish_date']);
     }
 
     public function testPreviewPost()

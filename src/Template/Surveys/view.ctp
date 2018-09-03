@@ -128,6 +128,12 @@ $options['title'] .= ' &raquo; ' . $survey->name;
                 <div class="col-xs-8 col-md-4">
                     <?= $survey->active ? __('Yes') : __('No'); ?>
                 </div>
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Expiry Date') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= empty($survey->expiry_date) ? 'N/A' : $survey->expiry_date->i18nFormat('yyyy-MM-dd HH:mm') ?>
+                </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Description') ?>:</strong>

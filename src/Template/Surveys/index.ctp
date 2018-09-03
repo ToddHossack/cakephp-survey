@@ -41,6 +41,7 @@ $options['title'] = 'Surveys';
                             <th scope="col"><?= $this->Paginator->sort('active') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                             <th scope="col"><?= $this->Paginator->sort('publish_date') ?></th>
+                            <th scope="col"><?= $this->Paginator->sort('expiry_date') ?></th>
                             <th scope="col" class="actions"><?= __('Actions') ?></th>
                         </tr>
                     </thead>
@@ -53,6 +54,7 @@ $options['title'] = 'Surveys';
                             <td><?= h($survey->active ? __('Yes') : __('No')) ?></td>
                             <td><?= h($survey->created->i18nFormat('yyyy-MM-dd HH:mm')) ?></td>
                             <td><?= !empty($survey->publish_date) ? h($survey->publish_date->i18nFormat('yyyy-MM-dd HH:mm')) : '' ?></td>
+                            <td><?= !empty($survey->expiry_date) ? h($survey->expiry_date->i18nFormat('yyyy-MM-dd HH:mm')) : '' ?></td>
                             <td class="actions btn-group btn-group-xs" role="group">
                                 <?= $this->Html->link(
                                     '<i class="fa fa-eye"></i>',
