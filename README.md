@@ -7,6 +7,7 @@ CakePHP Surveys Plugin
 [![Latest Unstable Version](https://poser.pugx.org/qobo/cakephp-survey/v/unstable)](https://packagist.org/packages/qobo/cakephp-survey)
 [![License](https://poser.pugx.org/qobo/cakephp-survey/license)](https://packagist.org/packages/qobo/cakephp-survey)
 [![codecov](https://codecov.io/gh/QoboLtd/cakephp-survey/branch/master/graph/badge.svg)](https://codecov.io/gh/QoboLtd/cakephp-survey)
+[![BCH compliance](https://bettercodehub.com/edge/badge/QoboLtd/cakephp-survey?branch=master)](https://bettercodehub.com/)
 
 
 About
