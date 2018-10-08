@@ -23,7 +23,9 @@ class AppController extends BaseController
     const DIRECTION_DOWN = 'down';
 
     /**
-     * @{inheritDoc}
+     * Initialization hook method.
+     *
+     * @return void
      */
     public function initialize()
     {

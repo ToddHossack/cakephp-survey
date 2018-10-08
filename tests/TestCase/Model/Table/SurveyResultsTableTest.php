@@ -59,7 +59,7 @@ class SurveyResultsTableTest extends TestCase
     }
 
     /**
-     * @dataProvider testGetResultsProvider
+     * @dataProvider getResultsProvider
      */
     public function testGetResults($data, $expected)
     {
@@ -76,7 +76,7 @@ class SurveyResultsTableTest extends TestCase
         $this->assertEquals(count($result), $expected);
     }
 
-    public function testGetResultsProvider()
+    public function getResultsProvider()
     {
         return [
             [
