@@ -39,10 +39,10 @@ class SurveysTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param mixed[] $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -75,7 +75,7 @@ class SurveysTable extends Table
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): \Cake\Validation\Validator
     {
         $validator
             ->uuid('id')
@@ -117,7 +117,7 @@ class SurveysTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): \Cake\ORM\RulesChecker
     {
         $rules->add($rules->isUnique(['slug']));
 
@@ -127,9 +127,9 @@ class SurveysTable extends Table
     /**
      * Get Survey Categories
      *
-     * @return array $result list of categories.
+     * @return mixed[] $result list of categories.
      */
-    public function getSurveyCategories()
+    public function getSurveyCategories(): array
     {
         $result = [];
         $config = Configure::read('Survey.Categories');
@@ -147,9 +147,9 @@ class SurveysTable extends Table
      * @param string|null $surveyId for the record
      * @param bool $contain to attach containable Q&A entities or not.
      *
-     * @return array $result containing the survey's data.
+     * @return mixed[] $result containing the survey's data.
      */
-    public function getSurveyData($surveyId = null, $contain = false)
+    public function getSurveyData(string $surveyId = null, bool $contain = false)
     {
         $result = [];
 
@@ -192,11 +192,11 @@ class SurveysTable extends Table
      * We make sure the user didn't forget to add at least
      * one answer option to survey question
      *
-     * @param mixed $id of the survey or its slug
+     * @param string $id of the survey or its slug
      * @param \Cake\Network\Request $request object from controller
      * @return array $response with status flag and possible errors
      */
-    public function prepublishValidate($id, $request = null)
+    public function prepublishValidate(string $id, $request = null)
     {
         $response = [
             'status' => false,
@@ -238,10 +238,17 @@ class SurveysTable extends Table
      * @param \Cake\Datasource\EntityInterface $entity of the survey
      * @return bool $sorted for sorting result
      */
-    public function setSequentialOrder(EntityInterface $entity)
+    public function setSequentialOrder(EntityInterface $entity): bool
     {
         $sorted = false;
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $questions
+         */
         $questions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyAnswersTable $answers
+         */
         $answers = TableRegistry::get('Qobo/Survey.SurveyAnswers');
 
         $query = $questions->find()

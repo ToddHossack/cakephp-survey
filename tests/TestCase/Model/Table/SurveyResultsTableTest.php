@@ -61,7 +61,7 @@ class SurveyResultsTableTest extends TestCase
     /**
      * @dataProvider getResultsProvider
      */
-    public function testGetResults($data, $expected)
+    public function testGetResults($data, $expected): void
     {
         $user = ['id' => '123'];
         $survey = (object)[
@@ -104,7 +104,7 @@ class SurveyResultsTableTest extends TestCase
         ];
     }
 
-    public function testSaveData()
+    public function testSaveData(): void
     {
         $survey = $this->Surveys->getSurveyData('survey_-_1', true);
 
@@ -121,7 +121,7 @@ class SurveyResultsTableTest extends TestCase
         $this->assertEquals($result['entity']->result, $data['result']);
     }
 
-    public function testSaveDataErrors()
+    public function testSaveDataErrors(): void
     {
         $survey = $this->Surveys->getSurveyData('survey_-_1', true);
         $data = [

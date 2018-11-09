@@ -20,8 +20,8 @@ use Cake\Validation\Validator;
  * SurveyQuestions Model
  *
  * @property \Qobo\Survey\Model\Table\SurveysTable|\Cake\ORM\Association\BelongsTo $Surveys
- * @property |\Cake\ORM\Association\HasMany $SurveyAnswers
- * @property |\Cake\ORM\Association\HasMany $SurveyResults
+ * @property \Cake\ORM\Association\HasMany $SurveyAnswers
+ * @property \Cake\ORM\Association\HasMany $SurveyResults
  *
  * @method \Qobo\Survey\Model\Entity\SurveyQuestion get($primaryKey, $options = [])
  * @method \Qobo\Survey\Model\Entity\SurveyQuestion newEntity($data = null, array $options = [])
@@ -124,9 +124,9 @@ class SurveyQuestionsTable extends Table
     /**
      * Get defined list of Question types currently available
      *
-     * @return array $list of question types.
+     * @return mixed[] $list of question types.
      */
-    public function getQuestionTypes()
+    public function getQuestionTypes(): array
     {
         return [
             'input' => 'Short Text or Number',

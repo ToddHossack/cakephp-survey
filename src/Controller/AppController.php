@@ -35,12 +35,12 @@ class AppController extends BaseController
     /**
      * Change order of the record
      *
-     * @param uuid $id of the instance
+     * @param string $id of the instance
      * @param string $direction of the movement
      *
-     * @return \Cake\Network\Response
+     * @return \Cake\Network\Response|void|null
      */
-    public function move($id, $direction)
+    public function move(string $id, string $direction)
     {
         $table = TableRegistry::get('Qobo/Survey.' . $this->name);
         $direction = strtolower($direction);

@@ -18,6 +18,16 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         'plugin.qobo/survey.users',
     ];
 
+    /**
+     * @var \Qobo\Survey\Model\Table\SurveysTable $Surveys
+     */
+    public $Surveys;
+
+    /**
+     * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions
+     */
+    public $SurveyQuestions;
+
     public function setUp()
     {
         parent::setUp();
@@ -28,11 +38,21 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
                 'User' => TableRegistry::get('Users')->get($userId)->toArray()
             ]
         ]);
-        $this->Surveys = TableRegistry::get('Surveys', ['className' => SurveysTable::class]);
-        $this->SurveyQuestions = TableRegistry::get('SurveyQuestions', ['className' => SurveyQuestionsTable::class]);
+
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveysTable $table
+         */
+        $table = TableRegistry::get('Survey.Surveys', ['className' => SurveysTable::class]);
+        $this->Surveys = $table;
+
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $table
+         */
+        $table = TableRegistry::get('Survey.SurveyQuestions', ['className' => SurveyQuestionsTable::class]);
+        $this->SurveyQuestions = $table;
     }
 
-    public function testViewOk()
+    public function testViewOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -48,7 +68,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
-    public function testPreviewOk()
+    public function testPreviewOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -68,7 +88,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
-    public function testAddOk()
+    public function testAddOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -80,7 +100,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
-    public function testEditOk()
+    public function testEditOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -97,7 +117,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
-    public function testDeleteOk()
+    public function testDeleteOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -117,7 +137,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
     /**
      * \Cake\Datasource\Exception\RecordNotFoundException
      */
-    public function testDeleteFailed()
+    public function testDeleteFailed(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -135,7 +155,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $this->assertResponseCode(404);
     }
 
-    public function testAddPostOk()
+    public function testAddPostOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -158,7 +178,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $this->assertEquals($question->type, $postData['type']);
     }
 
-    public function testEditPostOk()
+    public function testEditPostOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $questionId = '00000000-0000-0000-0000-000000000001';
@@ -174,6 +194,9 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $query = $this->SurveyQuestions->find()
             ->where(['id' => $questionId]);
 
+        /**
+         * @var \Qobo\Survey\Model\Entity\SurveyQuestion $editedQuestion
+         */
         $editedQuestion = $query->first();
 
         $this->assertRedirect(['controller' => 'SurveyQuestions', 'action' => 'view', $survey->slug, $editedQuestion->id]);

@@ -35,7 +35,7 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
         $this->SurveyAnswers = TableRegistry::get('SurveyAnswers', ['className' => SurveyAnswersTable::class]);
     }
 
-    public function testViewOk()
+    public function testViewOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -54,7 +54,7 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
-    public function testAddGetOk()
+    public function testAddGetOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -68,7 +68,7 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
-    public function testEditGetOk()
+    public function testEditGetOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -87,7 +87,7 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
-    public function testDeleteOk()
+    public function testDeleteOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -107,7 +107,7 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
         $this->assertRedirect($redirect);
     }
 
-    public function testAddPostOk()
+    public function testAddPostOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -137,7 +137,7 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
         $this->assertEquals($saved->answer, $postData['answer']);
     }
 
-    public function testEditPostOk()
+    public function testEditPostOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);

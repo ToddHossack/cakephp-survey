@@ -29,7 +29,7 @@ class SurveysController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|void
+     * @return \Cake\Http\Response|void|null
      */
     public function index()
     {
@@ -45,7 +45,7 @@ class SurveysController extends AppController
      * @param \Cake\Event\Event $event broadcasted.
      * @return void
      */
-    public function beforeFilter(Event $event)
+    public function beforeFilter(Event $event): void
     {
         parent::beforeFilter($event);
 
@@ -57,10 +57,9 @@ class SurveysController extends AppController
      * View method
      *
      * @param string|null $id Survey id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @return \Cake\Http\Response|void|null
      */
-    public function view($id = null)
+    public function view(string $id = null)
     {
         $this->SurveyQuestions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
         $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
@@ -89,10 +88,9 @@ class SurveysController extends AppController
      * Publish method
      *
      * @param string|null $id Survey id.
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
-    public function publish($id = null)
+    public function publish(string $id = null)
     {
         $survey = $this->Surveys->getSurveyData($id);
 
@@ -109,7 +107,7 @@ class SurveysController extends AppController
             $survey = $this->Surveys->patchEntity($survey, $data, ['validate' => false]);
 
             if ($this->Surveys->save($survey)) {
-                $this->Flash->success(__('Survey was successfully saved.'));
+                $this->Flash->success((string)__('Survey was successfully saved.'));
 
                 $fullSurvey = $this->Surveys->getSurveyData($survey->id, true);
 
@@ -124,7 +122,7 @@ class SurveysController extends AppController
                 return $this->redirect(['action' => 'view', $id]);
             }
 
-            $this->Flash->error(__('Couldn\'t publish the survey'));
+            $this->Flash->error((string)__('Couldn\'t publish the survey'));
         }
 
         $this->set(compact('survey'));
@@ -134,10 +132,9 @@ class SurveysController extends AppController
      * Publish method
      *
      * @param string|null $id Survey id.
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
-    public function preview($id = null)
+    public function preview(string $id = null)
     {
         $saved = $data = [];
         $survey = $this->Surveys->getSurveyData($id, true);
@@ -147,7 +144,7 @@ class SurveysController extends AppController
             $user = $this->Auth->user();
             $requestData = $this->request->getData();
             if (empty($requestData['SurveyResults'])) {
-                $this->Flash->error(__('Please submit your survey answers'));
+                $this->Flash->error((string)__('Please submit your survey answers'));
 
                 return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);
             }
@@ -172,11 +169,11 @@ class SurveysController extends AppController
             });
 
             if (empty($failed)) {
-                $this->Flash->success(__('Saved questionnaire results'));
+                $this->Flash->success((string)__('Saved questionnaire results'));
 
                 return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);
             } else {
-                $this->Flash->success(__('Some errors took place during result savings'));
+                $this->Flash->success((string)__('Some errors took place during result savings'));
             }
         }
 
@@ -187,10 +184,9 @@ class SurveysController extends AppController
      * Publish method
      *
      * @param string|null $id Survey id.
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
-    public function duplicate($id = null)
+    public function duplicate(string $id = null)
     {
         $this->autoRender = false;
         $survey = $this->Surveys->getSurveyData($id);
@@ -206,17 +202,17 @@ class SurveysController extends AppController
                 // Fixing order from original survey if there were any order gaps.
                 $sorted = $this->Surveys->setSequentialOrder($duplicated);
 
-                $this->Flash->success(__('Survey was successfully duplicated'));
+                $this->Flash->success((string)__('Survey was successfully duplicated'));
 
                 return $this->redirect(['action' => 'view', $duplicated->id]);
             }
-            $this->Flash->error(__('Couldn\'t duplicate the survey data'));
+            $this->Flash->error((string)__('Couldn\'t duplicate the survey data'));
         }
     }
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -225,11 +221,11 @@ class SurveysController extends AppController
         if ($this->request->is('post')) {
             $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
             if ($this->Surveys->save($survey)) {
-                $this->Flash->success(__('The survey has been saved.'));
+                $this->Flash->success((string)__('The survey has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The survey could not be saved. Please, try again.'));
+            $this->Flash->error((string)__('The survey could not be saved. Please, try again.'));
         }
         $this->set(compact('survey'));
     }
@@ -238,16 +234,15 @@ class SurveysController extends AppController
      * Edit method
      *
      * @param string|null $id Survey id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @return \Cake\Http\Response|void|null Redirects on successful edit, renders view otherwise.
      */
-    public function edit($id = null)
+    public function edit(string $id = null)
     {
         $survey = $this->Surveys->getSurveyData($id);
         $redirect = ['controller' => 'Surveys', 'action' => 'view', $survey->id];
 
         if (!empty($survey->publish_date)) {
-            $this->Flash->error(__('You cannot edit alredy published survey'));
+            $this->Flash->error((string)__('You cannot edit alredy published survey'));
 
             return $this->redirect($redirect);
         }
@@ -255,11 +250,11 @@ class SurveysController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
             if ($this->Surveys->save($survey)) {
-                $this->Flash->success(__('The survey has been saved.'));
+                $this->Flash->success((string)__('The survey has been saved.'));
 
                 return $this->redirect($redirect);
             }
-            $this->Flash->error(__('The survey could not be saved. Please, try again.'));
+            $this->Flash->error((string)__('The survey could not be saved. Please, try again.'));
         }
         $this->set(compact('survey'));
     }
@@ -268,17 +263,16 @@ class SurveysController extends AppController
      * Delete method
      *
      * @param string|null $id Survey id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @return \Cake\Http\Response|void|null Redirects to index.
      */
-    public function delete($id = null)
+    public function delete(string $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $survey = $this->Surveys->getSurveyData($id);
         if ($this->Surveys->delete($survey)) {
-            $this->Flash->success(__('The survey has been deleted.'));
+            $this->Flash->success((string)__('The survey has been deleted.'));
         } else {
-            $this->Flash->error(__('The survey could not be deleted. Please, try again.'));
+            $this->Flash->error((string)__('The survey could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
@@ -290,9 +284,9 @@ class SurveysController extends AppController
      * @param string $surveyId of the given survey
      * @param string $submitId of specific submission
      *
-     * @return \Cake\Network\Response
+     * @return \Cake\Network\Response|void|null
      */
-    public function viewSubmit($surveyId, $submitId)
+    public function viewSubmit(string $surveyId, string $submitId)
     {
         $this->SurveyQuestions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
         $survey = $this->Surveys->getSurveyData($surveyId);

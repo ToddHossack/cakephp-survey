@@ -59,7 +59,7 @@ class SurveysTableTest extends TestCase
      *
      * @return void
      */
-    public function testInitialize()
+    public function testInitialize(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
@@ -69,19 +69,19 @@ class SurveysTableTest extends TestCase
      *
      * @return void
      */
-    public function testValidationDefault()
+    public function testValidationDefault(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
 
-    public function testGetSurveyCategories()
+    public function testGetSurveyCategories(): void
     {
         $result = $this->Surveys->getSurveyCategories();
         $this->assertTrue(is_array($result));
         $this->assertEquals($result['test_default'], 'Test Default');
     }
 
-    public function testGetSurveyData()
+    public function testGetSurveyData(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $result = $this->Surveys->getSurveyData(null);
@@ -100,7 +100,7 @@ class SurveysTableTest extends TestCase
         $this->assertEquals($result->id, $surveyId);
     }
 
-    public function testSetSequentialOrder()
+    public function testSetSequentialOrder(): void
     {
         $id = '00000000-0000-0000-0000-000000000002';
         $survey = $this->Surveys->getSurveyData($id, true);
