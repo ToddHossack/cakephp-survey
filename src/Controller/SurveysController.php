@@ -74,7 +74,7 @@ class SurveysController extends AppController
             'data' => [],
         ]);
 
-        $this->eventManager()->dispatch($event);
+        $this->getEventManager()->dispatch($event);
 
         if (!empty($event->result)) {
             $submits = $event->result;
@@ -119,7 +119,7 @@ class SurveysController extends AppController
                         'survey' => $fullSurvey,
                     ]
                 ]);
-                $this->eventManager()->dispatch($event);
+                $this->getEventManager()->dispatch($event);
 
                 return $this->redirect(['action' => 'view', $id]);
             }
@@ -145,17 +145,18 @@ class SurveysController extends AppController
         if ($this->request->is(['post', 'put', 'patch'])) {
             $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
             $user = $this->Auth->user();
-            if (empty($this->request->data['SurveyResults'])) {
+            $requestData = $this->request->getData();
+            if (empty($requestData['SurveyResults'])) {
                 $this->Flash->error(__('Please submit your survey answers'));
 
                 return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);
             }
 
-            foreach ($this->request->data['SurveyResults'] as $k => $item) {
+            foreach ($requestData['SurveyResults'] as $k => $item) {
                 $results = $this->SurveyResults->getResults($item, [
                     'user' => $user,
                     'survey' => $survey,
-                    'data' => $this->request->data
+                    'data' => $requestData
                 ]);
 
                 $data = array_merge($data, $results);

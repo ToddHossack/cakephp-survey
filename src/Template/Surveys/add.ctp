@@ -33,18 +33,18 @@ echo $this->Html->script([
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('name'); ?>
+                    <?php echo $this->Form->control('name'); ?>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('category', ['options' => $categories]); ?>
+                    <?php echo $this->Form->control('category', ['options' => $categories]); ?>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('description');?>
+                    <?php echo $this->Form->control('description');?>
                 </div>
                 <div class="col-xs-12 col-md-6">
                     <?php
                     $label = $this->Form->label('active');
-                    echo $this->Form->input('active', [
+                    echo $this->Form->control('active', [
                         'type' => 'checkbox',
                         'checked' => $checked,
                         'class' => 'square',

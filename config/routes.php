@@ -5,7 +5,7 @@ Router::plugin(
     'Qobo/Survey',
     ['path' => '/surveys'],
     function ($routes) {
-        $routes->extensions(['json']);
+        $routes->setExtensions(['json']);
 
         $routes->scope('/survey', function ($routes) {
             $routes->connect(

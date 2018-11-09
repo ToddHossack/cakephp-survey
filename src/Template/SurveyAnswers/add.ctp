@@ -33,10 +33,10 @@ $options['title'] .= __('Create {0}', ['Question Option']);
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?= $this->Form->input('answer') ?>
-                    <?= $this->Form->input('comment') ?>
-                    <?= $this->Form->input('score') ?>
-                    <?= $this->Form->input('order') ?>
+                    <?= $this->Form->control('answer') ?>
+                    <?= $this->Form->control('comment') ?>
+                    <?= $this->Form->control('score') ?>
+                    <?= $this->Form->control('order') ?>
                 </div>
             </div>
         <?= $this->Form->button(__('Submit')) ?>

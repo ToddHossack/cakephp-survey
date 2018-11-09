@@ -34,7 +34,7 @@ echo $this->Html->script([
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?= $this->Form->input('Surveys.publish_date', [
+                    <?= $this->Form->control('Surveys.publish_date', [
                         'type' => 'text',
                         'class' => 'form-control',
                         'data-provide' => 'datetimepicker',
@@ -53,7 +53,7 @@ echo $this->Html->script([
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?= $this->Form->input('Surveys.expiry_date', [
+                    <?= $this->Form->control('Surveys.expiry_date', [
                         'type' => 'text',
                         'class' => 'form-control',
                         'data-provide' => 'datetimepicker',

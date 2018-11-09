@@ -159,8 +159,12 @@ class SurveysTable extends Table
 
         $query = $this->find('all');
         $query->limit(1);
-        $query->where(['Surveys.id' => $surveyId]);
-        $query->orWhere(['Surveys.slug' => $surveyId]);
+        $query->where([
+            'OR' => [
+                'Surveys.id' => $surveyId,
+                'Surveys.slug' => $surveyId
+            ]
+        ]);
         if ($contain) {
             $query->contain(['SurveyQuestions' => [
                 'sort' => ['SurveyQuestions.order' => 'ASC'],
