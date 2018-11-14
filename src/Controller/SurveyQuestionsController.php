@@ -15,6 +15,10 @@ use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Qobo\Survey\Controller\AppController;
 
+/**
+ * @property \Qobo\Survey\Model\Table\SurveysTable $Surveys
+ * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions
+ */
 class SurveyQuestionsController extends AppController
 {
     /**
@@ -26,7 +30,11 @@ class SurveyQuestionsController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-        $this->Surveys = TableRegistry::get('Qobo/Survey.Surveys');
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveysTable $table
+         */
+        $table = TableRegistry::get('Qobo/Survey.Surveys');
+        $this->Surveys = $table;
     }
 
     /**
@@ -109,7 +117,11 @@ class SurveyQuestionsController extends AppController
         $survey = $this->Surveys->getSurveyData($surveyId);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, $this->request->getData());
+            /**
+             * @var array $data
+             */
+            $data = $this->request->getData();
+            $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, $data);
             $saved = $this->SurveyQuestions->save($surveyQuestion);
 
             if ($saved) {
@@ -136,7 +148,11 @@ class SurveyQuestionsController extends AppController
         $surveyQuestion = $this->SurveyQuestions->get($id);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, $this->request->getData());
+            /**
+             * @var array $data
+             */
+            $data = $this->request->getData();
+            $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, $data);
             if ($this->SurveyQuestions->save($surveyQuestion)) {
                 $this->Flash->success((string)__('The survey question has been saved.'));
 

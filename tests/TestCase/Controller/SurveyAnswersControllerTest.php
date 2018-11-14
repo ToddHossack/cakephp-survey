@@ -8,6 +8,11 @@ use Qobo\Survey\Model\Table\SurveyAnswersTable;
 use Qobo\Survey\Model\Table\SurveyQuestionsTable;
 use Qobo\Survey\Model\Table\SurveysTable;
 
+/**
+ * @property \Qobo\Survey\Model\Table\SurveysTable $Surveys
+ * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions
+ * @property \Qobo\Survey\Model\Table\SurveyAnswersTable $SurveyAnswers
+ */
 class SurveyAnswersControllerTest extends IntegrationTestCase
 {
 
@@ -30,9 +35,23 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
             ]
         ]);
 
-        $this->Surveys = TableRegistry::get('Surveys', ['className' => SurveysTable::class]);
-        $this->SurveyQuestions = TableRegistry::get('SurveyQuestions', ['className' => SurveyQuestionsTable::class]);
-        $this->SurveyAnswers = TableRegistry::get('SurveyAnswers', ['className' => SurveyAnswersTable::class]);
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveysTable $table
+         */
+        $table = TableRegistry::get('Surveys', ['className' => SurveysTable::class]);
+        $this->Surveys = $table;
+
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $table
+         */
+        $table = TableRegistry::get('SurveyQuestions', ['className' => SurveyQuestionsTable::class]);
+        $this->SurveyQuestions = $table;
+
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyAnswersTable $table
+         */
+        $table = TableRegistry::get('SurveyAnswers', ['className' => SurveyAnswersTable::class]);
+        $this->SurveyAnswers = $table;
     }
 
     public function testViewOk(): void

@@ -193,7 +193,7 @@ class SurveysTable extends Table
      * one answer option to survey question
      *
      * @param string $id of the survey or its slug
-     * @param \Cake\Network\Request $request object from controller
+     * @param \Cake\Http\Request $request object from controller
      * @return array $response with status flag and possible errors
      */
     public function prepublishValidate(string $id, $request = null)

@@ -17,6 +17,7 @@ use Qobo\Survey\Controller\AppController;
 /**
  * SurveyAnswers Controller
  *
+ * @property \Qobo\Survey\Model\Table\SurveysTable $Surveys
  * @property \Qobo\Survey\Model\Table\SurveyAnswersTable $SurveyAnswers
  *
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
@@ -32,7 +33,11 @@ class SurveyAnswersController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Surveys = TableRegistry::get('Qobo/Survey.Surveys');
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveysTable $table
+         */
+        $table = TableRegistry::get('Qobo/Survey.Surveys');
+        $this->Surveys = $table;
     }
     /**
      * View method

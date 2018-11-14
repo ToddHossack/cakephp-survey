@@ -38,7 +38,7 @@ class AppController extends BaseController
      * @param string $id of the instance
      * @param string $direction of the movement
      *
-     * @return \Cake\Network\Response|void|null
+     * @return \Cake\Http\Response|void|null
      */
     public function move(string $id, string $direction)
     {

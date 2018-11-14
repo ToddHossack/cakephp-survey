@@ -20,6 +20,8 @@ use Qobo\Survey\Event\EventName;
  * Surveys Controller
  *
  * @property \Qobo\Survey\Model\Table\SurveysTable $Surveys
+ * @property \Qobo\Survey\Model\Table\SurveyAnswersTable $SurveyAnswers
+ * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions
  *
  * @method \Qobo\Survey\Model\Entity\Survey[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
@@ -61,8 +63,17 @@ class SurveysController extends AppController
      */
     public function view(string $id = null)
     {
-        $this->SurveyQuestions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
-        $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $table
+         */
+        $table = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+        $this->SurveyQuestions = $table;
+
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyResultsTable $table
+         */
+        $table = TableRegistry::get('Qobo/Survey.SurveyResults');
+        $this->SurveyResults = $table;
 
         $questionTypes = $this->SurveyQuestions->getQuestionTypes();
         $survey = $this->Surveys->getSurveyData($id, true);
@@ -284,7 +295,7 @@ class SurveysController extends AppController
      * @param string $surveyId of the given survey
      * @param string $submitId of specific submission
      *
-     * @return \Cake\Network\Response|void|null
+     * @return \Cake\Http\Response|void|null
      */
     public function viewSubmit(string $surveyId, string $submitId)
     {

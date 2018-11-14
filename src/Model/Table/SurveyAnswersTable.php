@@ -19,8 +19,8 @@ use Cake\Validation\Validator;
 /**
  * SurveyAnswers Model
  *
- * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable|\Cake\ORM\Association\BelongsTo $SurveyQuestions
- * @property \Cake\ORM\Association\HasMany $SurveyResults
+ * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions
+ * @property \Qobo\Survey\Model\Table\SurveyResultsTable $SurveyResults
  *
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer get($primaryKey, $options = [])
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer newEntity($data = null, array $options = [])
