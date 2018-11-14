@@ -1,6 +1,7 @@
 <?php
 namespace Qobo\Survey\Test\TestCase\Controller;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 use Qobo\Survey\Controller\SurveysController;
@@ -57,18 +58,27 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
     public function testViewOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $survey = $this->Surveys->getSurveyData($surveyId);
 
         $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->id]);
+            ->where(['survey_id' => $survey->get('id')]);
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $question = $query->first();
 
         $query = $this->SurveyAnswers->find()
-            ->where(['survey_question_id' => $question->id]);
+            ->where(['survey_question_id' => $question->get('id')]);
 
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $answer = $query->first();
 
-        $url = '/surveys/survey/' . $survey->slug . '/answers/view/' . $question->id . '/' . $answer->id;
+        $url = '/surveys/survey/' . $survey->get('slug') . '/answers/view/' . $question->get('id') . '/' . $answer->get('id');
         $this->get($url);
         $this->assertResponseOk();
     }
@@ -76,13 +86,20 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
     public function testAddGetOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $survey = $this->Surveys->getSurveyData($surveyId);
 
         $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->id]);
+            ->where(['survey_id' => $survey->get('id')]);
+
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $question = $query->first();
 
-        $url = '/surveys/survey/' . $survey->slug . '/answers/add/' . $question->id;
+        $url = '/surveys/survey/' . $survey->get('slug') . '/answers/add/' . $question->get('id');
         $this->get($url);
         $this->assertResponseOk();
     }
@@ -90,18 +107,28 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
     public function testEditGetOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $survey = $this->Surveys->getSurveyData($surveyId);
 
         $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->id]);
+            ->where(['survey_id' => $survey->get('id')]);
+
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $question = $query->first();
 
         $query = $this->SurveyAnswers->find()
-            ->where(['survey_question_id' => $question->id]);
+            ->where(['survey_question_id' => $question->get('id')]);
 
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $answer = $query->first();
 
-        $url = '/surveys/survey/' . $survey->slug . '/answers/edit/' . $question->id . '/' . $answer->id;
+        $url = '/surveys/survey/' . $survey->get('slug') . '/answers/edit/' . $question->get('id') . '/' . $answer->get('id');
         $this->get($url);
         $this->assertResponseOk();
     }
@@ -109,67 +136,95 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
     public function testDeleteOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $survey = $this->Surveys->getSurveyData($surveyId);
 
         $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->id]);
+            ->where(['survey_id' => $survey->get('id')]);
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $question = $query->first();
 
         $query = $this->SurveyAnswers->find()
-            ->where(['survey_question_id' => $question->id]);
-
+            ->where(['survey_question_id' => $question->get('id')]);
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $answer = $query->first();
 
-        $url = '/surveys/survey/' . $survey->slug . '/answers/delete/' . $question->id . '/' . $answer->id;
+        $url = '/surveys/survey/' . $survey->get('slug') . '/answers/delete/' . $question->get('id') . '/' . $answer->get('id');
         $this->delete($url);
-        $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->slug, $question->id];
+        $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->get('slug'), $question->get('id')];
         $this->assertRedirect($redirect);
     }
 
     public function testAddPostOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $survey = $this->Surveys->getSurveyData($surveyId);
 
         $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->id]);
+            ->where(['survey_id' => $survey->get('id')]);
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $question = $query->first();
 
         $postData = [
             'answer' => 'Whaat',
-            'survey_question_id' => $question->id,
+            'survey_question_id' => $question->get('id'),
             'score' => 999,
             'order' => 5,
         ];
 
         $this->post(
-            '/surveys/survey/' . $survey->slug . '/answers/add/' . $question->id,
+            '/surveys/survey/' . $survey->get('slug') . '/answers/add/' . $question->get('id'),
             $postData
         );
 
         $query = $this->SurveyAnswers->find()
             ->where(['score' => $postData['score']]);
 
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $saved = $query->first();
-        $this->assertRedirect(['controller' => 'SurveyQuestions', 'action' => 'view', $survey->slug, $question->id]);
-        $this->assertEquals($saved->order, $postData['order']);
-        $this->assertEquals($saved->answer, $postData['answer']);
+
+        $this->assertRedirect(['controller' => 'SurveyQuestions', 'action' => 'view', $survey->get('slug'), $question->get('id')]);
+        $this->assertEquals($saved->get('order'), $postData['order']);
+        $this->assertEquals($saved->get('answer'), $postData['answer']);
     }
 
     public function testEditPostOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
+
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $survey = $this->Surveys->getSurveyData($surveyId);
 
         $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->id]);
+            ->where(['survey_id' => $survey->get('id')]);
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $question = $query->first();
 
         $query = $this->SurveyAnswers->find()
-            ->where(['survey_question_id' => $question->id]);
+            ->where(['survey_question_id' => $question->get('id')]);
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $answer = $query->first();
 
-        $url = '/surveys/survey/' . $survey->slug . '/answers/edit/' . $question->id . '/' . $answer->id;
+        $url = '/surveys/survey/' . $survey->get('slug') . '/answers/edit/' . $question->get('id') . '/' . $answer->get('id');
 
         $editData = [
             'answer' => 'Doctor Who?',
@@ -177,14 +232,16 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
 
         $this->post($url, $editData);
 
-        $this->assertRedirect(['controller' => 'SurveyQuestions', 'action' => 'view', $survey->slug, $question->id]);
+        $this->assertRedirect(['controller' => 'SurveyQuestions', 'action' => 'view', $survey->get('slug'), $question->get('id')]);
 
         $query = $this->SurveyAnswers->find()
-            ->where(['id' => $answer->id]);
-
+            ->where(['id' => $answer->get('id')]);
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $edited = $query->first();
 
-        $this->assertEquals($edited->answer, $editData['answer']);
-        $this->assertEquals($edited->id, $answer->id);
+        $this->assertEquals($edited->get('answer'), $editData['answer']);
+        $this->assertEquals($edited->get('id'), $answer->get('id'));
     }
 }

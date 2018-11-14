@@ -29,6 +29,7 @@ use Cake\Validation\Validator;
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer[] patchEntities($entities, array $data, array $options = [])
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer findOrCreate($search, callable $callback = null, $options = [])
+ * @method \ADmad\Sequence\Model\Behavior\SequenceBehavior setOrder(array $records)
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */

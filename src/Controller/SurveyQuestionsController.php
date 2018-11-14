@@ -146,6 +146,7 @@ class SurveyQuestionsController extends AppController
     {
         $survey = $this->Surveys->getSurveyData($surveyId);
         $surveyQuestion = $this->SurveyQuestions->get($id);
+        $redirect = ['controller' => 'Surveys', 'action' => 'view', $surveyId];
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             /**
@@ -156,7 +157,9 @@ class SurveyQuestionsController extends AppController
             if ($this->SurveyQuestions->save($surveyQuestion)) {
                 $this->Flash->success((string)__('The survey question has been saved.'));
 
-                $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->slug, $surveyQuestion->id];
+                if (! empty($survey)) {
+                    $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->get('slug'), $surveyQuestion->get('id')];
+                }
 
                 return $this->redirect($redirect);
             }
@@ -179,7 +182,11 @@ class SurveyQuestionsController extends AppController
 
         $question = $this->SurveyQuestions->get($id);
         $survey = $this->Surveys->getSurveyData($surveyId);
-        $surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
+
+        if (! empty($survey)) {
+            $surveyId = empty($survey->get('slug')) ? $survey->get('id') : $survey->get('slug');
+        }
+
         $redirect = ['controller' => 'Surveys', 'action' => 'view', $surveyId];
 
         if ($this->SurveyQuestions->delete($question)) {

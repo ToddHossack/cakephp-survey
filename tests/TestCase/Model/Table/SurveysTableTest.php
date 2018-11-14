@@ -2,6 +2,7 @@
 namespace Qobo\Survey\Test\TestCase\Model\Table;
 
 use Cake\Core\Configure;
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Qobo\Survey\Model\Table\SurveysTable;
@@ -39,7 +40,12 @@ class SurveysTableTest extends TestCase
     {
         parent::setUp();
         $config = TableRegistry::exists('Surveys') ? [] : ['className' => SurveysTable::class];
-        $this->Surveys = TableRegistry::get('Surveys', $config);
+
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveysTable $table
+         */
+        $table = TableRegistry::getTableLocator()->get('Surveys', $config);
+        $this->Surveys = $table;
     }
 
     /**
@@ -85,58 +91,77 @@ class SurveysTableTest extends TestCase
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $result = $this->Surveys->getSurveyData(null);
+
         $this->assertEmpty($result);
-
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $result = $this->Surveys->getSurveyData($surveyId);
-        $this->assertEquals($result->id, $surveyId);
+        $this->assertInstanceOf(EntityInterface::class, $result);
+        $this->assertEquals($result->get('id'), $surveyId);
 
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $result = $this->Surveys->getSurveyData($surveyId, true);
-        $this->assertTrue((count($result->survey_questions) > 0));
+        $this->assertInstanceOf(EntityInterface::class, $result);
+        $this->assertTrue((count($result->get('survey_questions')) > 0));
 
         $result = $this->Surveys->getSurveyData('foobar_slug');
         $this->assertEmpty($result);
 
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $result = $this->Surveys->getSurveyData('survey_-_1');
-        $this->assertEquals($result->id, $surveyId);
+        $this->assertInstanceOf(EntityInterface::class, $result);
+        $this->assertEquals($result->get('id'), $surveyId);
     }
 
     public function testSetSequentialOrder(): void
     {
         $id = '00000000-0000-0000-0000-000000000002';
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $survey = $this->Surveys->getSurveyData($id, true);
         $sorted = $this->Surveys->setSequentialOrder($survey);
 
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $modified = $this->Surveys->getSurveyData($id, true);
+        $this->assertInstanceOf(EntityInterface::class, $modified);
 
         $oldQuestionOrders = array_map(
             function ($item) {
-                return $item->order;
+                return $item->get('order');
             },
-            $survey->survey_questions
+            $survey->get('survey_questions')
         );
 
         $newQuestionOrders = array_map(
             function ($item) {
                 return $item->order;
             },
-            $modified->survey_questions
+            $modified->get('survey_questions')
         );
 
         $this->assertNotEquals($oldQuestionOrders, $newQuestionOrders);
 
-        foreach ($survey->survey_questions as $k => $question) {
+        foreach ($survey->get('survey_questions') as $k => $question) {
             $oldAnswerOrder = array_map(
                 function ($item) {
-                    return $item->order;
+                    return $item->get('order');
                 },
-                $question->survey_answers
+                $question->get('survey_answers')
             );
 
             $newAnwserOrder = array_map(
                 function ($item) {
-                    return $item->order;
+                    return $item->get('order');
                 },
-                $modified->survey_questions[$k]->survey_answers
+                $modified->get('survey_questions')[$k]->get('survey_answers')
             );
 
             $this->assertNotEquals($oldAnswerOrder, $newAnwserOrder);

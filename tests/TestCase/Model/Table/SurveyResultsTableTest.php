@@ -1,6 +1,7 @@
 <?php
 namespace Qobo\Survey\Test\TestCase\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Qobo\Survey\Model\Table\SurveyResultsTable;
@@ -124,13 +125,18 @@ class SurveyResultsTableTest extends TestCase
 
     public function testSaveData(): void
     {
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $survey = $this->Surveys->getSurveyData('survey_-_1', true);
+
+        $this->assertInstanceOf(EntityInterface::class, $survey);
 
         $data = [
             'user_id' => '00000000-0000-0000-0000-000000000001',
-            'survey_id' => $survey->id,
-            'survey_question_id' => $survey->survey_questions[0]->id,
-            'survey_answer_id' => $survey->survey_questions[0]->survey_answers[0]->id,
+            'survey_id' => $survey->get('id'),
+            'survey_question_id' => $survey->get('survey_questions')[0]->get('id'),
+            'survey_answer_id' => $survey->get('survey_questions')[0]->get('survey_answers')[0]->get('id'),
             'result' => 'w00t',
         ];
 
@@ -141,12 +147,15 @@ class SurveyResultsTableTest extends TestCase
 
     public function testSaveDataErrors(): void
     {
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $survey = $this->Surveys->getSurveyData('survey_-_1', true);
         $data = [
             'user_id' => '00000000-0000-0000-0000-000000000001',
             'survey_id' => $survey->id,
             'survey_answer_id' => null,
-            'survey_question_id' => $survey->survey_questions[0]->id,
+            'survey_question_id' => $survey->get('survey_questions')[0]->get('id'),
             'result' => 'w00t',
         ];
 

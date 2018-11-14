@@ -13,6 +13,7 @@ namespace Qobo\Survey\Model\Table;
 
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
+use Cake\Http\ServerRequest;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -30,6 +31,8 @@ use Cake\Validation\Validator;
  * @method \Qobo\Survey\Model\Entity\Survey patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Qobo\Survey\Model\Entity\Survey[] patchEntities($entities, array $data, array $options = [])
  * @method \Qobo\Survey\Model\Entity\Survey findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Duplicatable\Model\Behavior\DuplicatableBehavior duplicate($id)
+ * @method \ADmad\Sequence\Model\Behavior\SequenceBehavior setOrder(array $records)
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
@@ -147,11 +150,11 @@ class SurveysTable extends Table
      * @param string|null $surveyId for the record
      * @param bool $contain to attach containable Q&A entities or not.
      *
-     * @return mixed[] $result containing the survey's data.
+     * @return \Cake\Datasource\EntityInterface|null $result containing the survey's data.
      */
-    public function getSurveyData(string $surveyId = null, bool $contain = false)
+    public function getSurveyData(string $surveyId = null, bool $contain = false): ?EntityInterface
     {
-        $result = [];
+        $result = null;
 
         if (empty($surveyId)) {
             return $result;
@@ -159,6 +162,8 @@ class SurveysTable extends Table
 
         $query = $this->find('all');
         $query->limit(1);
+        // making sure that entities returned instead of arrays.
+        $query->enableHydration(true);
         $query->where([
             'OR' => [
                 'Surveys.id' => $surveyId,
@@ -177,11 +182,14 @@ class SurveysTable extends Table
 
         $query->execute();
 
-        if (!$query->count()) {
+        if (! $query->count()) {
             return $result;
         }
 
-        $result = $query->firstOrFail();
+        /**
+         * @var \Cake\Datasource\EntityInterface|null
+         */
+        $result = $query->first();
 
         return $result;
     }
@@ -193,10 +201,10 @@ class SurveysTable extends Table
      * one answer option to survey question
      *
      * @param string $id of the survey or its slug
-     * @param \Cake\Http\Request $request object from controller
-     * @return array $response with status flag and possible errors
+     * @param \Cake\Http\ServerRequest $request object from controller
+     * @return mixed[] $response with status flag and possible errors
      */
-    public function prepublishValidate(string $id, $request = null)
+    public function prepublishValidate(string $id, ServerRequest $request = null): array
     {
         $response = [
             'status' => false,
@@ -204,7 +212,13 @@ class SurveysTable extends Table
         ];
         $entity = $this->getSurveyData($id, true);
 
-        foreach ($entity->survey_questions as $question) {
+        if (empty($entity)) {
+            $response['errors'][] = (string)__("Couldn't find Survey by given id");
+
+            return $response;
+        }
+
+        foreach ($entity->get('survey_questions') as $question) {
             if (!empty($question->survey_answers)) {
                 continue;
             }
@@ -236,9 +250,9 @@ class SurveysTable extends Table
      * sequence
      *
      * @param \Cake\Datasource\EntityInterface $entity of the survey
-     * @return bool $sorted for sorting result
+     * @return \ADmad\Sequence\Model\Behavior\SequenceBehavior|bool $sorted for sorting result
      */
-    public function setSequentialOrder(EntityInterface $entity): bool
+    public function setSequentialOrder(EntityInterface $entity)
     {
         $sorted = false;
         /**
@@ -252,7 +266,7 @@ class SurveysTable extends Table
         $answers = TableRegistry::get('Qobo/Survey.SurveyAnswers');
 
         $query = $questions->find()
-            ->where(['survey_id' => $entity->id])
+            ->where(['survey_id' => $entity->get('id')])
             ->order(['order' => 'ASC']);
 
         $entities = $query->all()->toArray();
