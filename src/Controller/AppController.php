@@ -16,6 +16,7 @@ use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use Exception;
+use RuntimeException;
 
 class AppController extends BaseController
 {
@@ -42,6 +43,9 @@ class AppController extends BaseController
      */
     public function move(string $id, string $direction)
     {
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveysTable
+         */
         $table = TableRegistry::get('Qobo/Survey.' . $this->name);
         $direction = strtolower($direction);
 
@@ -57,6 +61,7 @@ class AppController extends BaseController
             }
         } catch (Exception $e) {
             Log::warning($e->getMessage());
+            throw new RuntimeException("Couldn't move entity record", 0, $e);
         }
 
         return $this->redirect($this->referer());

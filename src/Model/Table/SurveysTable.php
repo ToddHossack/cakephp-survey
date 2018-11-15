@@ -33,6 +33,8 @@ use Cake\Validation\Validator;
  * @method \Qobo\Survey\Model\Entity\Survey findOrCreate($search, callable $callback = null, $options = [])
  * @method \Duplicatable\Model\Behavior\DuplicatableBehavior duplicate($id)
  * @method \ADmad\Sequence\Model\Behavior\SequenceBehavior setOrder(array $records)
+ * @method \ADmad\Sequence\Model\Behavior\SequenceBehavior moveUp($entity)
+ * @method \ADmad\Sequence\Model\Behavior\SequenceBehavior moveDown($entity)
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
