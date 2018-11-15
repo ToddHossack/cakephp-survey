@@ -17,10 +17,14 @@ use Cake\ORM\Entity;
  * Survey Entity
  *
  * @property string $id
+ * @property string $parent_id
  * @property string $name
+ * @property string $slug
  * @property string $version
  * @property string $description
  * @property bool $active
+ * @property \Cake\I18n\Time $publish_date
+ * @property \Cake\I18n\Time $expiry_date
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  * @property \Cake\I18n\Time $trashed

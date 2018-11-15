@@ -11,6 +11,7 @@
  */
 namespace Qobo\Survey\Controller;
 
+use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Qobo\Survey\Controller\AppController;
@@ -20,6 +21,9 @@ use Qobo\Survey\Event\EventName;
  * Surveys Controller
  *
  * @property \Qobo\Survey\Model\Table\SurveysTable $Surveys
+ * @property \Qobo\Survey\Model\Table\SurveyAnswersTable $SurveyAnswers
+ * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions
+ * @property \Qobo\Survey\Model\Table\SurveyResultsTable $SurveyResults
  *
  * @method \Qobo\Survey\Model\Entity\Survey[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
@@ -29,7 +33,7 @@ class SurveysController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|void
+     * @return \Cake\Http\Response|void|null
      */
     public function index()
     {
@@ -45,7 +49,7 @@ class SurveysController extends AppController
      * @param \Cake\Event\Event $event broadcasted.
      * @return void
      */
-    public function beforeFilter(Event $event)
+    public function beforeFilter(Event $event): void
     {
         parent::beforeFilter($event);
 
@@ -57,13 +61,21 @@ class SurveysController extends AppController
      * View method
      *
      * @param string|null $id Survey id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @return \Cake\Http\Response|void|null
      */
-    public function view($id = null)
+    public function view(?string $id)
     {
-        $this->SurveyQuestions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
-        $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $table
+         */
+        $table = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+        $this->SurveyQuestions = $table;
+
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyResultsTable $table
+         */
+        $table = TableRegistry::get('Qobo/Survey.SurveyResults');
+        $this->SurveyResults = $table;
 
         $questionTypes = $this->SurveyQuestions->getQuestionTypes();
         $survey = $this->Surveys->getSurveyData($id, true);
@@ -74,12 +86,14 @@ class SurveysController extends AppController
             'data' => [],
         ]);
 
-        $this->eventManager()->dispatch($event);
+        $this->getEventManager()->dispatch($event);
 
         if (!empty($event->result)) {
             $submits = $event->result;
         } else {
-            $submits = $this->SurveyResults->getSubmits($survey->id);
+            if (! empty($survey)) {
+                $submits = $this->SurveyResults->getSubmits($survey->get('id'));
+            }
         }
 
         $this->set(compact('survey', 'questionTypes', 'submits'));
@@ -88,13 +102,18 @@ class SurveysController extends AppController
     /**
      * Publish method
      *
-     * @param string|null $id Survey id.
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @param string $id Survey id.
+     * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
-    public function publish($id = null)
+    public function publish(string $id)
     {
         $survey = $this->Surveys->getSurveyData($id);
+
+        if (empty($survey)) {
+            $this->Flash->error((string)__('Couldn\'t find a survey with given id'));
+
+            return $this->redirect($this->referer());
+        }
 
         if ($this->request->is(['post', 'put', 'patch'])) {
             $validated = $this->Surveys->prepublishValidate($id, $this->request);
@@ -106,10 +125,10 @@ class SurveysController extends AppController
             }
 
             $data = $this->request->getData();
-            $survey = $this->Surveys->patchEntity($survey, $data, ['validate' => false]);
+            $survey = $this->Surveys->patchEntity($survey, (array)$data, ['validate' => false]);
 
             if ($this->Surveys->save($survey)) {
-                $this->Flash->success(__('Survey was successfully saved.'));
+                $this->Flash->success((string)__('Survey was successfully saved.'));
 
                 $fullSurvey = $this->Surveys->getSurveyData($survey->id, true);
 
@@ -119,12 +138,12 @@ class SurveysController extends AppController
                         'survey' => $fullSurvey,
                     ]
                 ]);
-                $this->eventManager()->dispatch($event);
+                $this->getEventManager()->dispatch($event);
 
                 return $this->redirect(['action' => 'view', $id]);
             }
 
-            $this->Flash->error(__('Couldn\'t publish the survey'));
+            $this->Flash->error((string)__('Couldn\'t publish the survey'));
         }
 
         $this->set(compact('survey'));
@@ -133,29 +152,34 @@ class SurveysController extends AppController
     /**
      * Publish method
      *
-     * @param string|null $id Survey id.
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @param string $id Survey id.
+     * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
-    public function preview($id = null)
+    public function preview(string $id)
     {
         $saved = $data = [];
         $survey = $this->Surveys->getSurveyData($id, true);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $this->SurveyResults = TableRegistry::get('Qobo/Survey.SurveyResults');
+            /**
+             * @var \Qobo\Survey\Model\Table\SurveyResultsTable $table
+             */
+            $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+            $this->SurveyResults = $table;
+
             $user = $this->Auth->user();
-            if (empty($this->request->data['SurveyResults'])) {
-                $this->Flash->error(__('Please submit your survey answers'));
+            $requestData = $this->request->getData();
+            if (empty($requestData['SurveyResults'])) {
+                $this->Flash->error((string)__('Please submit your survey answers'));
 
                 return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);
             }
 
-            foreach ($this->request->data['SurveyResults'] as $k => $item) {
+            foreach ($requestData['SurveyResults'] as $k => $item) {
                 $results = $this->SurveyResults->getResults($item, [
                     'user' => $user,
                     'survey' => $survey,
-                    'data' => $this->request->data
+                    'data' => $requestData
                 ]);
 
                 $data = array_merge($data, $results);
@@ -171,11 +195,11 @@ class SurveysController extends AppController
             });
 
             if (empty($failed)) {
-                $this->Flash->success(__('Saved questionnaire results'));
+                $this->Flash->success((string)__('Saved questionnaire results'));
 
                 return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);
             } else {
-                $this->Flash->success(__('Some errors took place during result savings'));
+                $this->Flash->success((string)__('Some errors took place during result savings'));
             }
         }
 
@@ -186,49 +210,58 @@ class SurveysController extends AppController
      * Publish method
      *
      * @param string|null $id Survey id.
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
-    public function duplicate($id = null)
+    public function duplicate(?string $id)
     {
         $this->autoRender = false;
         $survey = $this->Surveys->getSurveyData($id);
 
+        if (empty($survey)) {
+            $this->Flash->error((string)__('Couldn\'t duplicate the survey data'));
+
+            return $this->redirect($this->referer());
+        }
+
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $duplicated = $this->Surveys->duplicate($survey->id);
+            /**
+             * @var \Cake\Datasource\EntityInterface
+             */
+            $duplicated = $this->Surveys->duplicate($survey->get('id'));
 
-            if ($duplicated) {
+            if (! empty($duplicated)) {
                 // @NOTE: saving parent_id as Duplicatable unsets origin id
-                $duplicated = $this->Surveys->patchEntity($duplicated, ['parent_id' => $survey->id]);
+                $duplicated = $this->Surveys->patchEntity($duplicated, ['parent_id' => $survey->get('id')]);
                 $duplicated = $this->Surveys->save($duplicated);
+                if ($duplicated instanceof EntityInterface) {
+                    // Fixing order from original survey if there were any order gaps.
+                    $sorted = $this->Surveys->setSequentialOrder($duplicated);
 
-                // Fixing order from original survey if there were any order gaps.
-                $sorted = $this->Surveys->setSequentialOrder($duplicated);
+                    $this->Flash->success((string)__('Survey was successfully duplicated'));
 
-                $this->Flash->success(__('Survey was successfully duplicated'));
-
-                return $this->redirect(['action' => 'view', $duplicated->id]);
+                    return $this->redirect(['action' => 'view', $duplicated->get('id')]);
+                }
             }
-            $this->Flash->error(__('Couldn\'t duplicate the survey data'));
+            $this->Flash->error((string)__('Couldn\'t duplicate the survey data'));
         }
     }
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
         $survey = $this->Surveys->newEntity();
 
         if ($this->request->is('post')) {
-            $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
+            $survey = $this->Surveys->patchEntity($survey, (array)$this->request->getData());
             if ($this->Surveys->save($survey)) {
-                $this->Flash->success(__('The survey has been saved.'));
+                $this->Flash->success((string)__('The survey has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The survey could not be saved. Please, try again.'));
+            $this->Flash->error((string)__('The survey could not be saved. Please, try again.'));
         }
         $this->set(compact('survey'));
     }
@@ -236,29 +269,34 @@ class SurveysController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Survey id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @param string $id Survey id.
+     * @return \Cake\Http\Response|void|null Redirects on successful edit, renders view otherwise.
      */
-    public function edit($id = null)
+    public function edit(string $id)
     {
         $survey = $this->Surveys->getSurveyData($id);
-        $redirect = ['controller' => 'Surveys', 'action' => 'view', $survey->id];
+        $redirect = ['controller' => 'Surveys', 'action' => 'view', $id];
+
+        if (empty($survey)) {
+            $this->Flash->error((string)__('Couldn\'t find Survey with given id'));
+
+            return $this->redirect($this->referer());
+        }
 
         if (!empty($survey->publish_date)) {
-            $this->Flash->error(__('You cannot edit alredy published survey'));
+            $this->Flash->error((string)__('You cannot edit alredy published survey'));
 
             return $this->redirect($redirect);
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $survey = $this->Surveys->patchEntity($survey, $this->request->getData());
+            $survey = $this->Surveys->patchEntity($survey, (array)$this->request->getData());
             if ($this->Surveys->save($survey)) {
-                $this->Flash->success(__('The survey has been saved.'));
+                $this->Flash->success((string)__('The survey has been saved.'));
 
                 return $this->redirect($redirect);
             }
-            $this->Flash->error(__('The survey could not be saved. Please, try again.'));
+            $this->Flash->error((string)__('The survey could not be saved. Please, try again.'));
         }
         $this->set(compact('survey'));
     }
@@ -266,18 +304,24 @@ class SurveysController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Survey id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     * @param string $id Survey id.
+     * @return \Cake\Http\Response|void|null Redirects to index.
      */
-    public function delete($id = null)
+    public function delete(string $id)
     {
         $this->request->allowMethod(['post', 'delete']);
         $survey = $this->Surveys->getSurveyData($id);
+
+        if (empty($survey)) {
+            $this->Flash->error((string)__('The survey could not be deleted. Please, try again.'));
+
+            return $this->redirect(['action' => 'index']);
+        }
+
         if ($this->Surveys->delete($survey)) {
-            $this->Flash->success(__('The survey has been deleted.'));
+            $this->Flash->success((string)__('The survey has been deleted.'));
         } else {
-            $this->Flash->error(__('The survey could not be deleted. Please, try again.'));
+            $this->Flash->error((string)__('The survey could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
@@ -289,22 +333,36 @@ class SurveysController extends AppController
      * @param string $surveyId of the given survey
      * @param string $submitId of specific submission
      *
-     * @return \Cake\Network\Response
+     * @return \Cake\Http\Response|void|null
      */
-    public function viewSubmit($surveyId, $submitId)
+    public function viewSubmit(string $surveyId, string $submitId)
     {
-        $this->SurveyQuestions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+        $surveyResults = [];
+        $survey = null;
+
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $table
+         */
+        $table = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+        $this->SurveyQuestions = $table;
+
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->id])
-            ->contain([
-                'SurveyAnswers' => ['SurveyResults' => function ($q) use ($submitId) {
-                    return $q->where(['submit_id' => $submitId]);
-                }]
-            ]);
+        if (! empty($survey)) {
+            $query = $this->SurveyQuestions->find()
+                ->where(['survey_id' => $survey->get('id')]);
+            $query->enableHydration(true);
+            $query->contain([
+                    'SurveyAnswers' => ['SurveyResults' => function ($q) use ($submitId) {
+                        return $q->where(['submit_id' => $submitId]);
+                    }]
+                ]);
 
-        $surveyResults = $query->all();
+            if ($query->count()) {
+                $surveyResults = $query->all();
+            }
+        }
+
         $this->set(compact('survey', 'surveyResults'));
     }
 }

@@ -36,8 +36,12 @@ class SurveyQuestionsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('SurveyQuestions') ? [] : ['className' => SurveyQuestionsTable::class];
-        $this->SurveyQuestions = TableRegistry::get('SurveyQuestions', $config);
+        $config = TableRegistry::exists('Survey.SurveyQuestions') ? [] : ['className' => SurveyQuestionsTable::class];
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $table
+         */
+        $table = TableRegistry::get('Survey.SurveyQuestions', $config);
+        $this->SurveyQuestions = $table;
     }
 
     /**
@@ -52,7 +56,7 @@ class SurveyQuestionsTableTest extends TestCase
         parent::tearDown();
     }
 
-    public function testGetQuestionTypes()
+    public function testGetQuestionTypes(): void
     {
         $result = $this->SurveyQuestions->getQuestionTypes();
         $this->assertTrue(is_array($result));

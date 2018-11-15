@@ -1,6 +1,7 @@
 <?php
 namespace Qobo\Survey\Test\TestCase\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Qobo\Survey\Model\Table\SurveyResultsTable;
@@ -18,6 +19,11 @@ class SurveyResultsTableTest extends TestCase
      * @var \Qobo\Survey\Model\Table\SurveyResultsTable
      */
     public $SurveyResults;
+
+    /**
+     * @var \Qobo\Survey\Model\Table\SurveysTable
+     */
+    public $Surveys;
 
     /**
      * Fixtures
@@ -40,10 +46,18 @@ class SurveyResultsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('SurveyResults') ? [] : ['className' => SurveyResultsTable::class];
-        $this->SurveyResults = TableRegistry::get('SurveyResults', $config);
+        $config = TableRegistry::exists('Qobo\Survey.SurveyResults') ? [] : ['className' => SurveyResultsTable::class];
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyResultsTable $table
+         */
+        $table = TableRegistry::get('SurveyResults', $config);
+        $this->SurveyResults = $table;
 
-        $this->Surveys = TableRegistry::get('Surveys', ['className' => SurveysTable::class]);
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveysTable $table
+         */
+        $table = TableRegistry::get('Surveys', ['className' => SurveysTable::class]);
+        $this->Surveys = $table;
     }
 
     /**
@@ -60,8 +74,10 @@ class SurveyResultsTableTest extends TestCase
 
     /**
      * @dataProvider getResultsProvider
+     * @param mixed[] $data Data
+     * @param int $expected Expected result
      */
-    public function testGetResults($data, $expected)
+    public function testGetResults(array $data, int $expected): void
     {
         $user = ['id' => '123'];
         $survey = (object)[
@@ -76,7 +92,10 @@ class SurveyResultsTableTest extends TestCase
         $this->assertEquals(count($result), $expected);
     }
 
-    public function getResultsProvider()
+    /**
+     * @return mixed[]
+     */
+    public function getResultsProvider(): array
     {
         return [
             [
@@ -104,15 +123,20 @@ class SurveyResultsTableTest extends TestCase
         ];
     }
 
-    public function testSaveData()
+    public function testSaveData(): void
     {
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $survey = $this->Surveys->getSurveyData('survey_-_1', true);
+
+        $this->assertInstanceOf(EntityInterface::class, $survey);
 
         $data = [
             'user_id' => '00000000-0000-0000-0000-000000000001',
-            'survey_id' => $survey->id,
-            'survey_question_id' => $survey->survey_questions[0]->id,
-            'survey_answer_id' => $survey->survey_questions[0]->survey_answers[0]->id,
+            'survey_id' => $survey->get('id'),
+            'survey_question_id' => $survey->get('survey_questions')[0]->get('id'),
+            'survey_answer_id' => $survey->get('survey_questions')[0]->get('survey_answers')[0]->get('id'),
             'result' => 'w00t',
         ];
 
@@ -121,14 +145,17 @@ class SurveyResultsTableTest extends TestCase
         $this->assertEquals($result['entity']->result, $data['result']);
     }
 
-    public function testSaveDataErrors()
+    public function testSaveDataErrors(): void
     {
+        /**
+         * @var \Cake\Datasource\EntityInterface
+         */
         $survey = $this->Surveys->getSurveyData('survey_-_1', true);
         $data = [
             'user_id' => '00000000-0000-0000-0000-000000000001',
             'survey_id' => $survey->id,
             'survey_answer_id' => null,
-            'survey_question_id' => $survey->survey_questions[0]->id,
+            'survey_question_id' => $survey->get('survey_questions')[0]->get('id'),
             'result' => 'w00t',
         ];
 

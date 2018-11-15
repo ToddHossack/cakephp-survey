@@ -37,7 +37,7 @@ $options['title'] .= $this->Html->link(
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('question', ['type' => 'text']); ?>
+                    <?php echo $this->Form->control('question', ['type' => 'text']); ?>
                 </div>
             </div>
             <div class="row">
@@ -48,17 +48,17 @@ $options['title'] .= $this->Html->link(
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('active'); ?>
+                    <?php echo $this->Form->control('active'); ?>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('type', ['options' => $questionTypes]); ?>
+                    <?php echo $this->Form->control('type', ['options' => $questionTypes]); ?>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->input('order');?>
+                    <?php echo $this->Form->control('order');?>
                 </div>
             </div>
 

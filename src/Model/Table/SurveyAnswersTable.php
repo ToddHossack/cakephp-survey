@@ -19,8 +19,8 @@ use Cake\Validation\Validator;
 /**
  * SurveyAnswers Model
  *
- * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable|\Cake\ORM\Association\BelongsTo $SurveyQuestions
- * @property |\Cake\ORM\Association\HasMany $SurveyResults
+ * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions
+ * @property \Qobo\Survey\Model\Table\SurveyResultsTable $SurveyResults
  *
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer get($primaryKey, $options = [])
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer newEntity($data = null, array $options = [])
@@ -29,6 +29,7 @@ use Cake\Validation\Validator;
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer[] patchEntities($entities, array $data, array $options = [])
  * @method \Qobo\Survey\Model\Entity\SurveyAnswer findOrCreate($search, callable $callback = null, $options = [])
+ * @method \ADmad\Sequence\Model\Behavior\SequenceBehavior setOrder(array $records)
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */

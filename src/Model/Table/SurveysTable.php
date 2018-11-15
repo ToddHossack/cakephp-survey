@@ -13,6 +13,7 @@ namespace Qobo\Survey\Model\Table;
 
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
+use Cake\Http\ServerRequest;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -30,6 +31,10 @@ use Cake\Validation\Validator;
  * @method \Qobo\Survey\Model\Entity\Survey patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
  * @method \Qobo\Survey\Model\Entity\Survey[] patchEntities($entities, array $data, array $options = [])
  * @method \Qobo\Survey\Model\Entity\Survey findOrCreate($search, callable $callback = null, $options = [])
+ * @method \Duplicatable\Model\Behavior\DuplicatableBehavior duplicate($id)
+ * @method \ADmad\Sequence\Model\Behavior\SequenceBehavior setOrder(array $records)
+ * @method \ADmad\Sequence\Model\Behavior\SequenceBehavior moveUp($entity)
+ * @method \ADmad\Sequence\Model\Behavior\SequenceBehavior moveDown($entity)
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
@@ -39,10 +44,10 @@ class SurveysTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param mixed[] $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -75,7 +80,7 @@ class SurveysTable extends Table
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->uuid('id')
@@ -117,7 +122,7 @@ class SurveysTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->isUnique(['slug']));
 
@@ -127,9 +132,9 @@ class SurveysTable extends Table
     /**
      * Get Survey Categories
      *
-     * @return array $result list of categories.
+     * @return mixed[] $result list of categories.
      */
-    public function getSurveyCategories()
+    public function getSurveyCategories(): array
     {
         $result = [];
         $config = Configure::read('Survey.Categories');
@@ -147,11 +152,11 @@ class SurveysTable extends Table
      * @param string|null $surveyId for the record
      * @param bool $contain to attach containable Q&A entities or not.
      *
-     * @return array $result containing the survey's data.
+     * @return \Cake\Datasource\EntityInterface|null $result containing the survey's data.
      */
-    public function getSurveyData($surveyId = null, $contain = false)
+    public function getSurveyData(string $surveyId = null, bool $contain = false): ?EntityInterface
     {
-        $result = [];
+        $result = null;
 
         if (empty($surveyId)) {
             return $result;
@@ -159,8 +164,14 @@ class SurveysTable extends Table
 
         $query = $this->find('all');
         $query->limit(1);
-        $query->where(['Surveys.id' => $surveyId]);
-        $query->orWhere(['Surveys.slug' => $surveyId]);
+        // making sure that entities returned instead of arrays.
+        $query->enableHydration(true);
+        $query->where([
+            'OR' => [
+                'Surveys.id' => $surveyId,
+                'Surveys.slug' => $surveyId
+            ]
+        ]);
         if ($contain) {
             $query->contain(['SurveyQuestions' => [
                 'sort' => ['SurveyQuestions.order' => 'ASC'],
@@ -173,11 +184,14 @@ class SurveysTable extends Table
 
         $query->execute();
 
-        if (!$query->count()) {
+        if (! $query->count()) {
             return $result;
         }
 
-        $result = $query->firstOrFail();
+        /**
+         * @var \Cake\Datasource\EntityInterface|null
+         */
+        $result = $query->first();
 
         return $result;
     }
@@ -188,11 +202,11 @@ class SurveysTable extends Table
      * We make sure the user didn't forget to add at least
      * one answer option to survey question
      *
-     * @param mixed $id of the survey or its slug
-     * @param \Cake\Network\Request $request object from controller
-     * @return array $response with status flag and possible errors
+     * @param string $id of the survey or its slug
+     * @param \Cake\Http\ServerRequest $request object from controller
+     * @return mixed[] $response with status flag and possible errors
      */
-    public function prepublishValidate($id, $request = null)
+    public function prepublishValidate(string $id, ServerRequest $request = null): array
     {
         $response = [
             'status' => false,
@@ -200,7 +214,13 @@ class SurveysTable extends Table
         ];
         $entity = $this->getSurveyData($id, true);
 
-        foreach ($entity->survey_questions as $question) {
+        if (empty($entity)) {
+            $response['errors'][] = (string)__("Couldn't find Survey by given id");
+
+            return $response;
+        }
+
+        foreach ($entity->get('survey_questions') as $question) {
             if (!empty($question->survey_answers)) {
                 continue;
             }
@@ -232,16 +252,23 @@ class SurveysTable extends Table
      * sequence
      *
      * @param \Cake\Datasource\EntityInterface $entity of the survey
-     * @return bool $sorted for sorting result
+     * @return \ADmad\Sequence\Model\Behavior\SequenceBehavior|bool $sorted for sorting result
      */
     public function setSequentialOrder(EntityInterface $entity)
     {
         $sorted = false;
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $questions
+         */
         $questions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyAnswersTable $answers
+         */
         $answers = TableRegistry::get('Qobo/Survey.SurveyAnswers');
 
         $query = $questions->find()
-            ->where(['survey_id' => $entity->id])
+            ->where(['survey_id' => $entity->get('id')])
             ->order(['order' => 'ASC']);
 
         $entities = $query->all()->toArray();

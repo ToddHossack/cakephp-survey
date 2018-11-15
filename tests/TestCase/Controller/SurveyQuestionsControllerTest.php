@@ -1,6 +1,7 @@
 <?php
 namespace Qobo\Survey\Test\TestCase\Controller;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 use Qobo\Survey\Controller\SurveysController;
@@ -18,6 +19,16 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         'plugin.qobo/survey.users',
     ];
 
+    /**
+     * @var \Qobo\Survey\Model\Table\SurveysTable $Surveys
+     */
+    public $Surveys;
+
+    /**
+     * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions
+     */
+    public $SurveyQuestions;
+
     public function setUp()
     {
         parent::setUp();
@@ -28,38 +39,73 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
                 'User' => TableRegistry::get('Users')->get($userId)->toArray()
             ]
         ]);
-        $this->Surveys = TableRegistry::get('Surveys', ['className' => SurveysTable::class]);
-        $this->SurveyQuestions = TableRegistry::get('SurveyQuestions', ['className' => SurveyQuestionsTable::class]);
+
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveysTable $table
+         */
+        $table = TableRegistry::get('Survey.Surveys', ['className' => SurveysTable::class]);
+        $this->Surveys = $table;
+
+        /**
+         * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $table
+         */
+        $table = TableRegistry::get('Survey.SurveyQuestions', ['className' => SurveyQuestionsTable::class]);
+        $this->SurveyQuestions = $table;
     }
 
-    public function testViewOk()
+    public function testViewOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        $slug = $survey->slug;
+        if (! $survey instanceof EntityInterface || is_null($survey)) {
+            $this->fail("Survey is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+
+        $slug = $survey->get('slug');
 
         $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->id]);
+            ->where(['survey_id' => $survey->get('id')]);
 
         $question = $query->first();
 
-        $this->get('/surveys/survey/' . $survey->slug . '/questions/view/' . $question->id);
+        if (! $question instanceof EntityInterface) {
+            $this->fail("Question query result is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+
+        $this->get('/surveys/survey/' . $survey->get('slug') . '/questions/view/' . $question->get('id'));
         $this->assertResponseOk();
     }
 
-    public function testPreviewOk()
+    public function testPreviewOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        $slug = $survey->slug;
+        if (! $survey instanceof EntityInterface || is_null($survey)) {
+            $this->fail("Survey is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+
+        $slug = $survey->get('slug');
 
         $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->id]);
+            ->where(['survey_id' => $survey->get('id')]);
 
         $question = $query->first();
-        $url = '/surveys/survey/' . $survey->slug . '/questions/preview/' . $question->id;
+
+        if (! $question instanceof EntityInterface) {
+            $this->fail("Question is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+
+        $url = '/surveys/survey/' . $survey->get('slug') . '/questions/preview/' . $question->get('id');
 
         $this->get($url);
         $this->assertResponseOk();
@@ -68,115 +114,181 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $this->assertResponseOk();
     }
 
-    public function testAddOk()
+    public function testAddOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        $slug = $survey->slug;
-        $url = '/surveys/survey/' . $survey->slug . '/questions/add';
+        if (! $survey instanceof EntityInterface || is_null($survey)) {
+            $this->fail("Survey is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+
+        $slug = $survey->get('slug');
+        $url = '/surveys/survey/' . $slug . '/questions/add';
 
         $this->get($url);
         $this->assertResponseOk();
     }
 
-    public function testEditOk()
+    public function testEditOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        $slug = $survey->slug;
+        if (! $survey instanceof EntityInterface) {
+            $this->fail("EntityInterface is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+
+        $slug = $survey->get('slug');
 
         $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->id]);
+            ->where(['survey_id' => $survey->get('id')]);
 
         $question = $query->first();
-        $url = '/surveys/survey/' . $survey->slug . '/questions/edit/' . $question->id;
+
+        if (! $question instanceof EntityInterface) {
+            $this->fail("Question is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+
+        $url = '/surveys/survey/' . $slug . '/questions/edit/' . $question->get('id');
 
         $this->get($url);
         $this->assertResponseOk();
     }
 
-    public function testDeleteOk()
+    public function testDeleteOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        $slug = $survey->slug;
+        if (! $survey instanceof EntityInterface) {
+            $this->fail("Survey is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+
+        $slug = $survey->get('slug');
 
         $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->id]);
+            ->where(['survey_id' => $survey->get('id')]);
 
         $question = $query->first();
-        $url = '/surveys/survey/' . $survey->slug . '/questions/delete/' . $question->id;
 
+        if (! $question instanceof EntityInterface) {
+            $this->fail("Question is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+
+        $url = '/surveys/survey/' . $slug . '/questions/delete/' . $question->get('id');
         $this->delete($url);
-        $this->assertRedirect(['controller' => 'Surveys', 'action' => 'view', $survey->slug]);
+        $this->assertRedirect(['controller' => 'Surveys', 'action' => 'view', $slug]);
     }
 
     /**
      * \Cake\Datasource\Exception\RecordNotFoundException
      */
-    public function testDeleteFailed()
+    public function testDeleteFailed(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        $slug = $survey->slug;
+        if (! $survey instanceof EntityInterface || is_null($survey)) {
+            $this->fail("Survey is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+
+        $slug = $survey->get('slug');
 
         $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->id]);
+            ->where(['survey_id' => $survey->get('id')]);
 
         $question = $query->first();
-        $url = '/surveys/survey/' . $survey->slug . '/questions/delete/' . $question->id;
+
+        if (! $question instanceof EntityInterface) {
+            $this->fail("Question is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+
+        $url = '/surveys/survey/' . $slug . '/questions/delete/' . $question->get('id');
 
         $fakeUrl = $url . '-fake';
         $this->delete($fakeUrl);
         $this->assertResponseCode(404);
     }
 
-    public function testAddPostOk()
+    public function testAddPostOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
-        $slug = $survey->slug;
+
+        if (! $survey instanceof EntityInterface) {
+            $this->fail("Survey is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+        $slug = $survey->get('slug');
 
         $postData = [
-            'survey_id' => $survey->id,
+            'survey_id' => $survey->get('id'),
             'question' => 'Who are you?',
             'type' => 'checkbox',
             'order' => 1
         ];
 
-        $this->post('/surveys/survey/' . $survey->slug . '/questions/add', $postData);
+        $this->post('/surveys/survey/' . $slug . '/questions/add', $postData);
         $query = $this->SurveyQuestions->find()
             ->where(['question' => $postData['question']]);
 
         $question = $query->first();
-        $this->assertRedirect(['controller' => 'SurveyAnswers', 'action' => 'add', $survey->slug, $question->id]);
-        $this->assertEquals($question->question, $postData['question']);
-        $this->assertEquals($question->type, $postData['type']);
+
+        if (! $question instanceof EntityInterface) {
+            $this->fail("Question is not of type EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+
+        $this->assertRedirect(['controller' => 'SurveyAnswers', 'action' => 'add', $survey->get('slug'), $question->get('id')]);
+        $this->assertEquals($question->get('question'), $postData['question']);
+        $this->assertEquals($question->get('type'), $postData['type']);
     }
 
-    public function testEditPostOk()
+    public function testEditPostOk(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $questionId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
-        $slug = $survey->slug;
+
+        if (! $survey instanceof EntityInterface) {
+            $this->fail("Survey is not of EntityInterface type: " . __METHOD__);
+
+            return;
+        }
+        $slug = $survey->get('slug');
 
         $editData = [
             'question' => 'Who are they?',
         ];
 
-        $this->post('/surveys/survey/' . $survey->slug . '/questions/edit/' . $questionId, $editData);
+        $this->post('/surveys/survey/' . $slug . '/questions/edit/' . $questionId, $editData);
 
         $query = $this->SurveyQuestions->find()
             ->where(['id' => $questionId]);
 
+        /**
+         * @var \Qobo\Survey\Model\Entity\SurveyQuestion $editedQuestion
+         */
         $editedQuestion = $query->first();
 
-        $this->assertRedirect(['controller' => 'SurveyQuestions', 'action' => 'view', $survey->slug, $editedQuestion->id]);
+        $this->assertRedirect(['controller' => 'SurveyQuestions', 'action' => 'view', $slug, $editedQuestion->get('id')]);
         $this->assertEquals($editedQuestion->question, $editData['question']);
         $this->assertEquals($editedQuestion->id, $questionId);
     }

@@ -21,7 +21,7 @@ use Cake\Validation\Validator;
  *
  * @property \Qobo\Survey\Model\Table\SurveysTable|\Cake\ORM\Association\BelongsTo $Surveys
  * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable|\Cake\ORM\Association\BelongsTo $SurveyQuestions
- * @property |\Cake\ORM\Association\BelongsTo $SurveyAnswers
+ * @property \Cake\ORM\Association\BelongsTo $SurveyAnswers
  * @property \Qobo\Survey\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  *
  * @method \Qobo\Survey\Model\Entity\SurveyResult get($primaryKey, $options = [])
@@ -40,10 +40,10 @@ class SurveyResultsTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param mixed[] $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -81,7 +81,7 @@ class SurveyResultsTable extends Table
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->uuid('id')
@@ -106,7 +106,7 @@ class SurveyResultsTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['survey_id'], 'Surveys'));
         $rules->add($rules->existsIn(['survey_question_id'], 'SurveyQuestions'));
@@ -121,12 +121,12 @@ class SurveyResultsTable extends Table
      * multiple answers, thus we create indexed array of those
      * records for later saving in DB table.
      *
-     * @param array $data containing SurveyResults request data item
-     * @param array $options containing user and survey instances
+     * @param mixed[] $data containing SurveyResults request data item
+     * @param mixed[] $options containing user and survey instances
      *
-     * @return array $result containing flat indexed array of all results.
+     * @return mixed[] $result containing flat indexed array of all results.
      */
-    public function getResults(array $data = [], array $options = [])
+    public function getResults(array $data = [], array $options = []): array
     {
         $result = [];
 
@@ -161,10 +161,10 @@ class SurveyResultsTable extends Table
     /**
      * Saving Survey Results
      *
-     * @param array $data containing results info
-     * @return array $result containing save status
+     * @param mixed[] $data containing results info
+     * @return mixed[] $result containing save status
      */
-    public function saveData(array $data = [])
+    public function saveData(array $data = []): array
     {
         $result = [
             'status' => false,
@@ -191,11 +191,11 @@ class SurveyResultsTable extends Table
      * Get Survey Results group by submit_id
      *
      * @param string $surveyId with primary key
-     * @param array $options with extra configs
+     * @param mixed[] $options with extra configs
      *
-     * @return \Cake\ORM\Query|null $result with submits
+     * @return \Cake\Datasource\ResultSetInterface|null $result with submits
      */
-    public function getSubmits($surveyId = null, array $options = [])
+    public function getSubmits(string $surveyId = null, array $options = []): ?\Cake\Datasource\ResultSetInterface
     {
         $result = null;
 
