@@ -43,12 +43,12 @@ class SurveyAnswersController extends AppController
      * View method
      *
      * @param string $surveyId it's either slug or survey id.
-     * @param string $questionId id of an instance
+     * @param string|null $questionId id of an instance
      * @param string|null $id Survey Answer id.
      *
      * @return \Cake\Http\Response|void|null
      */
-    public function view(string $surveyId, string $questionId = null, string $id = null)
+    public function view(string $surveyId, ?string $questionId, ?string $id)
     {
         $survey = $this->Surveys->getSurveyData($surveyId, false);
         $questionTypes = $this->SurveyAnswers->SurveyQuestions->getQuestionTypes();
