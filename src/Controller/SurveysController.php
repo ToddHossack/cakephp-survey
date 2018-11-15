@@ -63,7 +63,7 @@ class SurveysController extends AppController
      * @param string|null $id Survey id.
      * @return \Cake\Http\Response|void|null
      */
-    public function view(string $id = null)
+    public function view(?string $id)
     {
         /**
          * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $table
@@ -152,10 +152,10 @@ class SurveysController extends AppController
     /**
      * Publish method
      *
-     * @param string|null $id Survey id.
+     * @param string $id Survey id.
      * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
-    public function preview(string $id = null)
+    public function preview(string $id)
     {
         $saved = $data = [];
         $survey = $this->Surveys->getSurveyData($id, true);
@@ -212,7 +212,7 @@ class SurveysController extends AppController
      * @param string|null $id Survey id.
      * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
-    public function duplicate(string $id = null)
+    public function duplicate(?string $id)
     {
         $this->autoRender = false;
         $survey = $this->Surveys->getSurveyData($id);
@@ -304,10 +304,10 @@ class SurveysController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Survey id.
+     * @param string $id Survey id.
      * @return \Cake\Http\Response|void|null Redirects to index.
      */
-    public function delete(string $id = null)
+    public function delete(string $id)
     {
         $this->request->allowMethod(['post', 'delete']);
         $survey = $this->Surveys->getSurveyData($id);

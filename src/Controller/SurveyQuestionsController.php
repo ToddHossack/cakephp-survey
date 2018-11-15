@@ -60,7 +60,7 @@ class SurveyQuestionsController extends AppController
      * @param string|null $id Survey Question id.
      * @return \Cake\Http\Response|void|null
      */
-    public function view(string $surveyId, string $id = null)
+    public function view(string $surveyId, ?string $id)
     {
         $query = $this->SurveyQuestions->find();
         $query->where(['SurveyQuestions.id' => $id]);
@@ -86,7 +86,7 @@ class SurveyQuestionsController extends AppController
      * @param string|null $id Survey Question id.
      * @return \Cake\Http\Response|void|null
      */
-    public function preview(string $surveyId, string $id = null)
+    public function preview(string $surveyId, ?string $id)
     {
         $savedResults = [];
         $surveyQuestion = $this->SurveyQuestions->get($id, [
@@ -142,7 +142,7 @@ class SurveyQuestionsController extends AppController
      * @param string|null $id Survey Question id.
      * @return \Cake\Http\Response|void|null Redirects on successful edit, renders view otherwise.
      */
-    public function edit(string $surveyId, string $id = null)
+    public function edit(string $surveyId, ?string $id)
     {
         $survey = $this->Surveys->getSurveyData($surveyId);
         $surveyQuestion = $this->SurveyQuestions->get($id);
@@ -176,7 +176,7 @@ class SurveyQuestionsController extends AppController
      * @param string|null $id Survey Question id.
      * @return \Cake\Http\Response|void|null Redirects to index.
      */
-    public function delete(string $surveyId, string $id = null)
+    public function delete(string $surveyId, ?string $id)
     {
         $this->request->allowMethod(['post', 'delete']);
 

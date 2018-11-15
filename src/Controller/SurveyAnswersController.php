@@ -64,11 +64,11 @@ class SurveyAnswersController extends AppController
      * Add method
      *
      * @param string $surveyId it's either slug or survey id.
-     * @param string $questionId of related instance
+     * @param string|null $questionId of related instance
      *
      * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
-    public function add(string $surveyId = null, string $questionId = null)
+    public function add(string $surveyId, ?string $questionId)
     {
         $surveyAnswer = $this->SurveyAnswers->newEntity();
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -100,7 +100,7 @@ class SurveyAnswersController extends AppController
      *
      * @return \Cake\Http\Response|void|null Redirects on successful edit, renders view otherwise.
      */
-    public function edit(string $surveyId, string $questionId = null, string $id = null)
+    public function edit(string $surveyId, string $questionId, ?string $id)
     {
         $surveyAnswer = $this->SurveyAnswers->get($id);
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -132,7 +132,7 @@ class SurveyAnswersController extends AppController
      *
      * @return \Cake\Http\Response|void|null Redirects to index.
      */
-    public function delete(string $surveyId, string $questionId = null, string $id = null)
+    public function delete(string $surveyId, string $questionId, ?string $id)
     {
         $this->request->allowMethod(['post', 'delete']);
 
