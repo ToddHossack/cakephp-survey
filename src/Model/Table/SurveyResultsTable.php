@@ -199,7 +199,7 @@ class SurveyResultsTable extends Table
     {
         $result = null;
 
-        $options['contains'] = empty($options['contains']) ? ['Users'] : $options['contains'];
+        $options['contains'] = empty($options['contains']) ? ['Users', 'SurveyAnswers'] : $options['contains'];
 
         if (empty($surveyId)) {
             return $result;
@@ -216,6 +216,36 @@ class SurveyResultsTable extends Table
         }
 
         $result = $query->all();
+
+        return $result;
+    }
+
+    /**
+     * Retrieve total Survey Score per submit
+     *
+     * @param string $submitId of the survey result
+     * @param string $surveyId of the record
+     *
+     * @return int $result of the score.
+     */
+    public function getTotalScorePerSubmit(string $submitId, string $surveyId): int
+    {
+        $result = 0;
+        $query = $this->find()
+            ->enableHydration(true)
+            ->where([
+                'survey_id' => $surveyId,
+                'submit_id' => $submitId,
+            ]);
+        $query->contain(['SurveyAnswers']);
+
+        if (! $query->count()) {
+            return $result;
+        }
+
+        foreach ($query->all() as $item) {
+            $result += (int)$item->get('survey_answer')->get('score');
+        }
 
         return $result;
     }
