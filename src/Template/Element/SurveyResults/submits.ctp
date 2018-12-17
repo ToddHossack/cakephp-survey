@@ -1,4 +1,9 @@
 <?php
+use Cake\ORM\TableRegistry;
+
+/** @var \Qobo\Survey\Model\Table\SurveyResultsTable $table */
+$table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+
 $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
 ?>
 <table class="table table-hover table-condensed table-vertical-align table-datatable" width="100%">
@@ -6,6 +11,7 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
         <tr>
             <th scope="col"><?= __('User') ?></th>
             <th scope="col"><?= __('Submit Date') ?></th>
+            <th scope="col"><?= __('Score') ?> </th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
@@ -13,7 +19,8 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
     <?php foreach ($submits as $item) : ?>
     <tr>
         <td><?= !empty($item->user->get('name')) ? $item->user->get('name') : $item->user->username ?></td>
-        <td><?= h($item->submit_date);?></td>
+        <td><?= h($item->get('submit_date')->i18nFormat('yyyy-MM-dd HH:mm'));?></td>
+        <td><?= h($table->getTotalScorePerSubmit($item->get('submit_id'), $item->get('survey_id')));?></td>
         <td class="actions">
             <div class="btn-group btn-group-xs">
                 <?= $this->Html->link(
@@ -36,4 +43,3 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
     <?php endforeach; ?>
     </tbody>
 </table>
-
