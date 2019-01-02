@@ -16,7 +16,7 @@ $table = TableRegistry::get($this->name);
 
 echo $this->Html->scriptBlock('var apiToken="' . Configure::read('API.token') . '";', ['block' => 'scriptBottom']);
 echo $this->Html->css([
-    'AdminLTE./plugins/morris/morris',
+    'AdminLTE./bower_components/morris.js/morris',
 ], [
     'block' => 'scriptBottom'
 ]);
@@ -24,7 +24,7 @@ echo $this->Html->css([
 echo $this->Html->script(
     [
         'Qobo/Survey.raphael-min',
-        'AdminLTE./plugins/morris/morris.min',
+        'AdminLTE./bower_components/morris.js/morris.min',
         'Qobo/Survey.init',
     ],
     [

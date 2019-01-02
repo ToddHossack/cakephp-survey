@@ -9,10 +9,10 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-echo $this->Html->css('AdminLTE./plugins/daterangepicker/daterangepicker');
+echo $this->Html->css('AdminLTE./bower_components/bootstrap-daterangepicker/daterangepicker');
 echo $this->Html->script([
-    'AdminLTE./plugins/daterangepicker/moment.min',
-    'AdminLTE./plugins/daterangepicker/daterangepicker',
+    'AdminLTE./bower_components/moment/min/moment.min',
+    'AdminLTE./bower_components/bootstrap-daterangepicker/daterangepicker',
     'Qobo/Survey.init',
     ], [
         'block' => 'scriptBottom'
