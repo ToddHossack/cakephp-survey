@@ -51,7 +51,7 @@ $isPublished = empty($survey->survey->publish_date) ? false : true;
                 ?>
             </td>
             <td><?= h($surveyAnswer->score) ?></td>
-            <td><?= h($surveyAnswer->created->i18nFormat('yyyy-MM-DD HH:mm')) ?></td>
+            <td><?= h($surveyAnswer->created->i18nFormat('yyyy-MM-dd HH:mm')) ?></td>
             <td class="actions">
                 <div class="btn-group btn-group-xs">
                 <?php if (!$isPublished) : ?>
