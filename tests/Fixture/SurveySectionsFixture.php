@@ -21,6 +21,7 @@ class SurveySectionsFixture extends TestFixture
         'survey_id' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'name' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'active' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '1', 'comment' => '', 'precision' => null],
+        'order' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'trashed' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
@@ -43,13 +44,14 @@ class SurveySectionsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => '63a7b40c-6603-49ea-92de-68c6ad66ec15',
+                'id' => 'db2d11c3-24d7-4c90-87bd-686d8a024d37',
                 'survey_id' => 'Lorem ipsum dolor sit amet',
                 'name' => 'Lorem ipsum dolor sit amet',
                 'active' => 1,
-                'created' => '2019-01-14 14:19:35',
-                'modified' => '2019-01-14 14:19:35',
-                'trashed' => '2019-01-14 14:19:35'
+                'order' => 1,
+                'created' => '2019-01-14 16:51:57',
+                'modified' => '2019-01-14 16:51:57',
+                'trashed' => '2019-01-14 16:51:57'
             ],
         ];
         parent::init();
