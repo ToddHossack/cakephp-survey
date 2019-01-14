@@ -72,6 +72,11 @@ class SurveysTable extends Table
             'foreignKey' => 'survey_id',
             'className' => 'Qobo/Survey.SurveyQuestions',
         ]);
+
+        $this->hasMany('SurveySections', [
+            'foreignKey' => 'survey_id',
+            'className' => 'Qobo/Survey.SurveySections',
+        ]);
     }
 
     /**
@@ -173,8 +178,12 @@ class SurveysTable extends Table
             ]
         ]);
         if ($contain) {
-            $query->contain(['SurveyQuestions' => [
-                'sort' => ['SurveyQuestions.order' => 'ASC'],
+            $query->contain([
+                'SurveySections' => [
+                    'sort' => ['SurveySections.order' => 'ASC'],
+                ],
+                'SurveyQuestions' => [
+                    'sort' => ['SurveyQuestions.order' => 'ASC'],
                 'SurveyAnswers' => [
                     'sort' => ['SurveyAnswers.order' => 'ASC'],
                     'SurveyResults'
