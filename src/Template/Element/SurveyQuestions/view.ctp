@@ -32,16 +32,19 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
             <th scope="col"><?= __('Order') ?></th>
             <th scope="col"><?= __('Question') ?></th>
             <th scope="col"><?= __('Type') ?></th>
+            <th scope="col"><?= __('Section') ?></th>
             <th scope="col"><?= __('Active') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
     <tbody>
-    <?php foreach ($survey->survey_questions as $surveyQuestion) : ?>
+    <?php foreach ($survey->get('survey_questions') as $surveyQuestion) : ?>
     <tr>
+        <?php $sectionName = (!empty($surveyQuestion->get('survey_section')) ? $surveyQuestion->get('survey_section')->get('name') : ''); ?>
         <td><?= h($surveyQuestion->order) ?></td>
         <td><?= h($surveyQuestion->question) ?></td>
         <td><?= h($questionTypes[$surveyQuestion->type]) ?></td>
+        <td><?= h($sectionName) ?> </td>
         <td><?= h($surveyQuestion->active ? __('Yes') : __('No')) ?></td>
         <td class="actions">
             <div class="btn-group btn-group-xs">

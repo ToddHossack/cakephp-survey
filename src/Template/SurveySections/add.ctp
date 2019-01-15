@@ -67,7 +67,7 @@ echo $this->Html->script([
                 <div class="col-xs-12 col-md-6">
                 <?php if (!empty($questions)) : ?>
                 <label>Add Questions to current Section:</label>
-                <select multiple="multiple" class="my-select" name="survey_question_ids[]">
+                <select multiple="multiple" class="my-select" name="section_questions[_ids][]">
                   <?php foreach ($questions as $item) : ?>
                       <option value="<?= $item->get('id')?>"><?= $item->get('question');?></option>
                   <?php endforeach; ?>

@@ -31,15 +31,18 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
         <tr>
             <th scope="col"><?= __('Order') ?></th>
             <th scope="col"><?= __('Name') ?></th>
+            <th scope="col"><?= __('Questions') ?></th>
             <th scope="col"><?= __('Active') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($survey->get('survey_sections') as $item) : ?>
-            <tr>
+            <?php $hasQuestions = count($item->get('survey_questions')) ? true : false; ?>
+             <tr>
                 <td><?= h($item->get('order')) ?></td>
                 <td><?= h($item->get('name')) ?></td>
+                <td><?= h(count($item->get('survey_questions'))) ?></td>
                 <td><?= h($item->get('active') ? __('Yes') : __('No')) ?></td>
                 <td class="actions">
                     <div class="btn-group btn-group-xs">
@@ -48,7 +51,9 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
                         <?= $this->Form->postLink('<i class="fa fa-arrow-down"></i>', ['controller' => 'SurveySections', 'action' => 'move', $item->get('id'), 'down'], ['escape' => false, 'class' => 'btn btn-default']) ?>
 
                         <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['controller' => 'SurveySections', 'action' => 'edit', $surveyId, $item->get('id')], ['escape' => false, 'class' => 'btn btn-default']) ?>
-                        <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['controller' => 'SurveySections', 'action' => 'delete', $surveyId, $item->get('id')], ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete {0}?', $item->get('name'))]) ?>
+                        <?php if (! $hasQuestions) : ?>
+                            <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['controller' => 'SurveySections', 'action' => 'delete', $surveyId, $item->get('id')], ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete {0}?', $item->get('name'))]) ?>
+                        <?php endif; ?>
                     <?php endif;?>
                     </div>
                 </td>

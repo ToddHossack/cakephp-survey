@@ -60,11 +60,20 @@ class SurveySectionsController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 
-            $data['survey_questions'] = $this->SurveySections->getJoinTableIds($data);
+            $entity = $this->SurveySections->patchEntity($surveySection, $data);
+            $saved = $this->SurveySections->save($entity);
 
-            $entity = $this->SurveySections->patchEntity($surveySection, $data, ['associated' => 'SurveyQuestions']);
+            if ($saved) {
+                $entities = [];
+                if (!empty($data['section_questions'])) {
+                    foreach ($data['section_questions']['_ids'] as $id) {
+                        $entity = $this->SurveyQuestions->get($id);
+                        $entity->set('survey_section_id', $saved->get('id'));
+                        $entities[] = $entity;
+                    }
+                    $this->SurveyQuestions->saveMany($entities);
+                }
 
-            if ($this->SurveySections->save($entity)) {
                 $this->Flash->success(__('The survey section has been saved.'));
 
                 return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $surveyId]);
@@ -91,21 +100,37 @@ class SurveySectionsController extends AppController
 
         $query = $this->SurveyQuestions->find()
             ->where([
-                'survey_id' => $survey->get('id')
+                'survey_id' => $survey->get('id'),
             ]);
         $questions = $query->all();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $data = $this->request->getData();
-            $data['survey_questions'] = $this->SurveySections->getJoinTableIds($data);
 
-            $entity = $this->SurveySections->patchEntity($surveySection, $data, ['associated' => 'SurveyQuestions']);
+            foreach ($surveySection->get('survey_questions') as $item) {
+                $item->set('survey_section_id', null);
+                $this->SurveyQuestions->save($item);
+            }
 
-            if ($this->SurveySections->save($entity)) {
+            $entity = $this->SurveySections->patchEntity($surveySection, $data);
+            $saved = $this->SurveySections->save($entity);
+
+            if ($saved) {
+                $entities = [];
+                if (!empty($data['section_questions'])) {
+                    foreach ($data['section_questions']['_ids'] as $id) {
+                        $entity = $this->SurveyQuestions->get($id);
+                        $entity->set('survey_section_id', $saved->get('id'));
+                        $entities[] = $entity;
+                    }
+                    $this->SurveyQuestions->saveMany($entities);
+                }
+
                 $this->Flash->success(__('The survey section has been saved.'));
 
                 return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $surveyId]);
             }
+
             $this->Flash->error(__('The survey section could not be saved. Please, try again.'));
         }
         $surveys = $this->SurveySections->Surveys->find('list', ['limit' => 200]);

@@ -180,9 +180,11 @@ class SurveysTable extends Table
         if ($contain) {
             $query->contain([
                 'SurveySections' => [
+                    'SurveyQuestions',
                     'sort' => ['SurveySections.order' => 'ASC'],
                 ],
                 'SurveyQuestions' => [
+                    'SurveySections',
                     'sort' => ['SurveyQuestions.order' => 'ASC'],
                 'SurveyAnswers' => [
                     'sort' => ['SurveyAnswers.order' => 'ASC'],
