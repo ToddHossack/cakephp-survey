@@ -71,6 +71,12 @@ class SurveyQuestionsTable extends Table
             'foreignKey' => 'survey_question_id',
             'className' => 'Qobo/Survey.SurveyResults'
         ]);
+
+
+        $this->belongsToMany('SurveySections', [
+            'through' => 'SectionsQuestions',
+            'targetForeignKey' => 'survey_section_id'
+        ]);
     }
 
     /**

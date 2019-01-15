@@ -11,10 +11,17 @@
  */
 $checked = $surveySection->active ? $surveySection->active : true;
 
-echo $this->Html->css('AdminLTE./plugins/iCheck/all', ['block' => 'css']);
+echo $this->Html->css([
+    'AdminLTE./plugins/iCheck/all',
+    'Qobo/Survey.multi-select.dist'
+], [
+    'block' => 'css'
+]);
 echo $this->Html->script([
     'AdminLTE./plugins/iCheck/icheck.min',
-    'Cms.icheck.init'
+    'Cms.icheck.init',
+    'Qobo/Survey.jquery.multi-select',
+    'Qobo/Survey.init'
     ], ['block' => 'scriptBottom']);
 ?>
 <section class="content-header">
@@ -56,9 +63,20 @@ echo $this->Html->script([
                     <?= $this->Form->control('order') ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                <?php if (!empty($questions)) : ?>
+                <select multiple="multiple" class="my-select" name="survey_question_ids[]">
+                  <?php foreach ($questions as $item) : ?>
+                      <option value="<?= $item->get('id')?>"><?= $item->get('question');?></option>
+                  <?php endforeach; ?>
+                </select>
+                <?php endif; ?>
+                </div>
+            </div>
 
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
         </div>
     </div>
+    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->end() ?>
 </section>

@@ -51,6 +51,11 @@ class SurveySectionsTable extends Table
             'joinType' => 'INNER',
             'className' => 'Qobo/Survey.Surveys'
         ]);
+
+        $this->belongsToMany('SurveyQuestions', [
+            'through' => 'SectionsQuestions',
+            'targetForeignKey' => 'survey_question_id',
+        ]);
     }
 
     /**
@@ -94,5 +99,30 @@ class SurveySectionsTable extends Table
         $rules->add($rules->existsIn(['survey_id'], 'Surveys'));
 
         return $rules;
+    }
+
+    public function getJoinTableIds(array $data = []): array
+    {
+        $result = [];
+        $count = 1;
+
+        if (empty($data['survey_question_ids'])) {
+            return $result;
+        }
+
+        foreach ($data['survey_question_ids'] as $item) {
+            array_push(
+                $result,
+                [
+                    'id' => $item,
+                    '_joinData' => [
+                        'order' => $count,
+                    ]
+                ]
+            );
+            $count++;
+        }
+
+        return $result;
     }
 }

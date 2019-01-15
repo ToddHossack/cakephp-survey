@@ -20,6 +20,10 @@ class SurveySectionsController extends AppController
         /** @var \Qobo\Survey\Model\Table\SurveysTable $table */
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.Surveys');
         $this->Surveys = $table;
+
+        /** @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $table */
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyQuestions');
+        $this->SurveyQuestions = $table;
     }
 
     /**
@@ -63,17 +67,28 @@ class SurveySectionsController extends AppController
         $surveySection = $this->SurveySections->newEntity();
         $survey = $this->Surveys->getSurveyData($surveyId);
 
+        $query = $this->SurveyQuestions->find()
+            ->where([
+                'survey_id' => $survey->get('id')
+            ]);
+        $questions = $query->all();
+
         if ($this->request->is('post')) {
-            $surveySection = $this->SurveySections->patchEntity($surveySection, $this->request->getData());
-            if ($this->SurveySections->save($surveySection)) {
+            $data = $this->request->getData();
+
+            $data['survey_questions'] = $this->SurveySections->getJoinTableIds($data);
+
+            $entity = $this->SurveySections->patchEntity($surveySection, $data, ['associated' => 'SurveyQuestions']);
+
+            if ($this->SurveySections->save($entity)) {
                 $this->Flash->success(__('The survey section has been saved.'));
 
-                return $this->redirect(['controller' => 'SurveySections', 'action' => 'view', $surveyId]);
+                return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $surveyId]);
             }
             $this->Flash->error(__('The survey section could not be saved. Please, try again.'));
         }
         $surveys = $this->SurveySections->Surveys->find('list', ['limit' => 200]);
-        $this->set(compact('surveySection', 'survey'));
+        $this->set(compact('surveySection', 'survey', 'questions'));
     }
 
     /**
@@ -87,12 +102,22 @@ class SurveySectionsController extends AppController
     {
         $survey = $this->Surveys->getSurveyData($surveyId);
         $surveySection = $this->SurveySections->get($id, [
-            'contain' => []
+            'contain' => ['SurveyQuestions']
         ]);
+
+        $query = $this->SurveyQuestions->find()
+            ->where([
+                'survey_id' => $survey->get('id')
+            ]);
+        $questions = $query->all();
+
         if ($this->request->is(['patch', 'post', 'put'])) {
-            // dd($this->request->getData());
-            $surveySection = $this->SurveySections->patchEntity($surveySection, $this->request->getData());
-            if ($this->SurveySections->save($surveySection)) {
+            $data = $this->request->getData();
+            $data['survey_questions'] = $this->SurveySections->getJoinTableIds($data);
+
+            $entity = $this->SurveySections->patchEntity($surveySection, $data, ['associated' => 'SurveyQuestions']);
+
+            if ($this->SurveySections->save($entity)) {
                 $this->Flash->success(__('The survey section has been saved.'));
 
                 return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $surveyId]);
@@ -100,7 +125,7 @@ class SurveySectionsController extends AppController
             $this->Flash->error(__('The survey section could not be saved. Please, try again.'));
         }
         $surveys = $this->SurveySections->Surveys->find('list', ['limit' => 200]);
-        $this->set(compact('surveySection', 'survey'));
+        $this->set(compact('surveySection', 'survey', 'questions'));
     }
 
     /**

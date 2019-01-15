@@ -9,6 +9,8 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 (function ($) {
+    $('.my-select').multiSelect({ keepOrder: true });
+
     $('[data-provide="datetimepicker"]').each(function () {
         var options = {
             singleDatePicker: true,
