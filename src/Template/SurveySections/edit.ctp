@@ -73,6 +73,7 @@ if (!empty($surveySection->get('survey_questions'))) {
             <div class="row">
                 <div class="col-xs-12 col-md-6">
                 <?php if (!empty($questions)) : ?>
+                <label>Add Questions to current Section:</label>
                 <select multiple="multiple" class="my-select" name="survey_question_ids[]">
                   <?php foreach ($questions as $item) : ?>
                       <option value="<?= $item->get('id')?>" <?= (in_array($item->get('id'), $selectedQuestions) ? 'selected' : '')?>><?= $item->get('question');?></option>

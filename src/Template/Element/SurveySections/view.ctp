@@ -47,7 +47,6 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
                         <?= $this->Form->postLink('<i class="fa fa-arrow-up"></i>', ['controller' => 'SurveySections', 'action' => 'move', $item->get('id'), 'up'], ['escape' => false, 'class' => 'btn btn-default']) ?>
                         <?= $this->Form->postLink('<i class="fa fa-arrow-down"></i>', ['controller' => 'SurveySections', 'action' => 'move', $item->get('id'), 'down'], ['escape' => false, 'class' => 'btn btn-default']) ?>
 
-                        <?= $this->Html->link('<i class="fa fa-eye"></i>', ['controller' => 'SurveySections', 'action' => 'view', $surveyId, $item->get('id')], ['escape' => false, 'class' => 'btn btn-default', 'title' => __('Preview')]) ?>
                         <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['controller' => 'SurveySections', 'action' => 'edit', $surveyId, $item->get('id')], ['escape' => false, 'class' => 'btn btn-default']) ?>
                         <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['controller' => 'SurveySections', 'action' => 'delete', $surveyId, $item->get('id')], ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete {0}?', $item->get('name'))]) ?>
                     <?php endif;?>
