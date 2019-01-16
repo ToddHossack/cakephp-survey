@@ -159,7 +159,7 @@ class SurveysController extends AppController
     {
         $saved = $data = [];
         $survey = $this->Surveys->getSurveyData($id, true);
-        dd($this->Surveys->getSurveyBySections($id));
+
         if ($this->request->is(['post', 'put', 'patch'])) {
             /**
              * @var \Qobo\Survey\Model\Table\SurveyResultsTable $table
