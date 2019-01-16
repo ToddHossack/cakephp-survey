@@ -11,8 +11,10 @@
  */
 namespace Qobo\Survey\Model\Table;
 
+use ArrayObject;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -134,6 +136,25 @@ class SurveysTable extends Table
         return $rules;
     }
 
+    public function afterSave(Event $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        if ($entity->isNew()) {
+            /** @var \Qobo\Survey\Model\Table\SurveySectionsTable $table */
+            $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveySections');
+
+            $query = $table->find()
+                ->where([
+                    'survey_id' => $entity->get('id'),
+                    'name' => $table::DEFAULT_SECTION_NAME,
+                ]);
+
+            if (! $query->count()) {
+                $table->createDefaultSection($entity->get('id'));
+            }
+        }
+
+    }
+
     /**
      * Get Survey Categories
      *
@@ -168,7 +189,7 @@ class SurveysTable extends Table
         }
 
         $query = $this->find('all');
-        $query->limit(1);
+        // $query->limit(1);
         // making sure that entities returned instead of arrays.
         $query->enableHydration(true);
         $query->where([
@@ -180,17 +201,16 @@ class SurveysTable extends Table
         if ($contain) {
             $query->contain([
                 'SurveySections' => [
-                    'SurveyQuestions',
                     'sort' => ['SurveySections.order' => 'ASC'],
+                    'SurveyQuestions' => [
+                        'sort' => ['SurveyQuestions.order' => 'ASC'],
+                        'SurveyAnswers' => [
+                            'sort' => ['SurveyAnswers.order' => 'ASC'],
+                            'SurveyResults'
+                        ]
+                    ]
                 ],
-                'SurveyQuestions' => [
-                    'SurveySections',
-                    'sort' => ['SurveyQuestions.order' => 'ASC'],
-                'SurveyAnswers' => [
-                    'sort' => ['SurveyAnswers.order' => 'ASC'],
-                    'SurveyResults'
-                ]
-            ]]);
+            ]);
         }
 
         $query->execute();

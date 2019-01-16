@@ -35,28 +35,33 @@ $options['title'] .= __('Add {0}', ['Survey Question']);
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->control('question', ['type' => 'text']); ?>
+                    <?= $this->Form->control('question', ['type' => 'text']); ?>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->textarea('extras', ['class' => 'tinymce']); ?>
+                    <?= $this->Form->textarea('extras', ['class' => 'tinymce']); ?>
                     <?= $this->element('Qobo/Survey.tinymce');?>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->control('active', ['checked' => true]); ?>
+                    <?= $this->Form->control('active', ['checked' => true]); ?>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->control('type', ['options' => $questionTypes]); ?>
+                    <?= $this->Form->control('survey_section_id', ['type' => 'select', 'options' => $sections]); ?>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?php echo $this->Form->control('order');?>
+                    <?= $this->Form->control('type', ['options' => $questionTypes]); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <?= $this->Form->control('order');?>
                 </div>
             </div>
 

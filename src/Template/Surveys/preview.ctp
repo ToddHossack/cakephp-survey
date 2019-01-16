@@ -46,20 +46,47 @@ $count = 1;
 <?= $this->Form->create($survey); ?>
 <?= $this->Form->hidden('submit_id', ['value' => Text::uuid()]) ?>
 <?= $this->Form->hidden('submit_date', ['value' => date('Y-m-d H:i:s', time())]) ?>
-<?php foreach ($survey->survey_questions as $k => $question) : ?>
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <h3 class="box-title"><?= $count ?>. <?= $question->question;?></h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-            </div>
-        </div>
+<div class="box-group" id="accordion">
+<?php foreach ($survey->get('survey_sections') as $section) :?>
+<div class="panel box box-primary">
+    <div class="box-header with-border">
+        <h4 class="box-title">
+            <?= $this->Html->link(
+                $section->get('name'),
+                '#'. $section->get('id'),
+                [
+                    'data-toggle' => 'collapse',
+                    'data-parent' => '#accordion',
+                    'aria-expanded' => 'false',
+                ]
+            ) ?>
+        </h4>
+    </div>
+    <div id="<?= $section->get('id')?>" class="panel-collapse collapse" aria-expanded="true">
         <div class="box-body">
-            <?= $this->element('Qobo/Survey.Answers/' . $question->type, ['entity' => $question, 'key' => $k, 'collapsed' => false]);?>
+            <?php foreach ($section->get('survey_questions') as $k => $question) : ?>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><?= $count ?>. <?= $question->get('question');?></h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <?= $this->element('Qobo/Survey.Answers/' . $question->type, ['entity' => $question, 'key' => $k, 'collapsed' => false]);?>
+                    </div>
+                </div>
+                <?php $count++; ?>
+            <?php endforeach; ?>
         </div>
     </div>
-    <?php $count++; ?>
+</div>
+
 <?php endforeach; ?>
+</div>
+
+<?= $this->Form->submit(__('A'));?>
+<?= $this->Form->end();?>
 </section>

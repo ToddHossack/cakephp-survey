@@ -18,6 +18,7 @@ use Qobo\Survey\Controller\AppController;
 /**
  * @property \Qobo\Survey\Model\Table\SurveysTable $Surveys
  * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions
+ * @property \Qobo\Survey\Model\Table\SurveySectionsTable $SurveySections
  */
 class SurveyQuestionsController extends AppController
 {
@@ -35,6 +36,10 @@ class SurveyQuestionsController extends AppController
          */
         $table = TableRegistry::get('Qobo/Survey.Surveys');
         $this->Surveys = $table;
+
+        /** @var \Qobo\Survey\Model\Table\SurveySectionsTable $table */
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveySections');
+        $this->SurveySections = $table;
     }
 
     /**
@@ -116,6 +121,8 @@ class SurveyQuestionsController extends AppController
         $surveyQuestion = $this->SurveyQuestions->newEntity();
         $survey = $this->Surveys->getSurveyData($surveyId);
 
+        $sections = $this->SurveySections->getSurveySectionsList($survey->get('id'));
+
         if ($this->request->is(['post', 'put', 'patch'])) {
             /**
              * @var array $data
@@ -132,7 +139,7 @@ class SurveyQuestionsController extends AppController
             $this->Flash->error((string)__('The survey question could not be saved. Please, try again.'));
         }
 
-        $this->set(compact('surveyQuestion', 'survey'));
+        $this->set(compact('surveyQuestion', 'survey', 'sections'));
     }
 
     /**
@@ -146,6 +153,9 @@ class SurveyQuestionsController extends AppController
     {
         $survey = $this->Surveys->getSurveyData($surveyId);
         $surveyQuestion = $this->SurveyQuestions->get($id);
+
+        $sections = $this->SurveySections->getSurveySectionsList($survey->get('id'));
+
         $redirect = ['controller' => 'Surveys', 'action' => 'view', $surveyId];
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -166,7 +176,7 @@ class SurveyQuestionsController extends AppController
             $this->Flash->error((string)__('The survey question could not be saved. Please, try again.'));
         }
 
-        $this->set(compact('surveyQuestion', 'survey'));
+        $this->set(compact('surveyQuestion', 'survey', 'sections'));
     }
 
     /**

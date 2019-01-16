@@ -12,10 +12,6 @@ use Cake\Datasource\EntityInterface;
  */
 class AddDefaultSectionsTask extends Shell
 {
-    const DEFAULT_SECTION_NAME = 'Default';
-    const DEFAULT_SECTION_ORDER = 1;
-    const DEFAULT_ACTIVE_FLAG = true;
-
     /** @var \Qobo\Survey\Model\Table\SurveysTable $Surveys */
     public $Surveys;
 
@@ -76,14 +72,7 @@ class AddDefaultSectionsTask extends Shell
                 continue;
             }
 
-            $section = $this->SurveySections->newEntity();
-
-            $section->set('name', self::DEFAULT_SECTION_NAME);
-            $section->set('survey_id', $survey->get('id'));
-            $section->set('active', self::DEFAULT_ACTIVE_FLAG);
-            $section->set('order', self::DEFAULT_SECTION_ORDER);
-
-            $saved = $this->SurveySections->save($section);
+            $saved = $this->SurveySections->createDefaultSection($survey->get('id'));
 
             if (! $saved instanceof EntityInterface) {
                 $this->warning("Couldn't save default section for survey {$survey->get('name')} [{$survey->get('id')}]");
@@ -92,7 +81,7 @@ class AddDefaultSectionsTask extends Shell
                 $this->success("Created Section [{$saved->get('name')}] for survey [{$survey->get('name')}]. Updating questions..");
             }
 
-            $updated = $this->linkQuestionsToSection($survey);
+            $updated = $this->linkQuestionsToSection($survey, $saved->get('id'));
 
             if (empty($updated)) {
                 continue;
@@ -116,10 +105,11 @@ class AddDefaultSectionsTask extends Shell
      * Link Questions to Survey Section
      *
      * @param \Cake\Datasource\EntityInterface $survey
+     * @param string $sectionId of the section
      *
      * @return mixed[] $result with question id and status of update.
      */
-    protected function linkQuestionsToSection(EntityInterface $survey): array
+    protected function linkQuestionsToSection(EntityInterface $survey, string $sectionId): array
     {
         $result = [];
 
@@ -137,7 +127,7 @@ class AddDefaultSectionsTask extends Shell
         }
 
         foreach ($query->all() as $question) {
-            $question->set('survey_section_id', $survey->get('id'));
+            $question->set('survey_section_id', $sectionId);
             if ($this->SurveyQuestions->save($question)) {
                 $result[$question->get('id')] = true;
             } else {

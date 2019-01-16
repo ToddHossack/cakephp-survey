@@ -24,6 +24,11 @@ use Cake\Validation\Validator;
  */
 class SurveySectionsTable extends Table
 {
+    const DEFAULT_SECTION_NAME = 'Default';
+
+    const DEFAULT_SECTION_ORDER = 1;
+
+    const DEFAULT_ACTIVE_FLAG = true;
 
     /**
      * Initialize method
@@ -99,5 +104,44 @@ class SurveySectionsTable extends Table
         $rules->add($rules->existsIn(['survey_id'], 'Surveys'));
 
         return $rules;
+    }
+
+    /**
+     * Create Default Section for the survey
+     *
+     * @param string $surveyId for the relation.
+     * @return \Cake\Datasource\EntityInterface|false $result
+     */
+    public function createDefaultSection(string $surveyId)
+    {
+        $entity = $this->newEntity();
+
+        $entity->set('name', self::DEFAULT_SECTION_NAME);
+        $entity->set('order', self::DEFAULT_SECTION_ORDER);
+        $entity->set('active', self::DEFAULT_ACTIVE_FLAG);
+
+        $entity->set('survey_id', $surveyId);
+
+        return $this->save($entity);
+    }
+
+    /**
+     * Get Survey Sections list
+     *
+     * @param string $id of the survey (not slug)
+     * @return mixed[] $result
+     */
+    public function getSurveySectionsList(string $id): array
+    {
+        $result = [];
+
+        $query = $this->find('list')
+            ->where([
+                'survey_id' => $id,
+            ]);
+
+        $result = $query->toArray();
+
+        return $result;
     }
 }
