@@ -21,9 +21,10 @@ echo $this->Html->script([
     'AdminLTE./plugins/iCheck/icheck.min',
     'Cms.icheck.init',
     'Qobo/Survey.jquery.multi-select',
-    'Qobo/Survey.init'
+    'Qobo/Survey.multiselect.init'
     ], ['block' => 'scriptBottom']);
 ?>
+
 <section class="content-header">
     <div class="row">
         <div class="col-xs-12 col-md-6">
