@@ -3,15 +3,27 @@ namespace Qobo\Survey\Shell\Task;
 
 use Cake\Console\Shell;
 use Cake\ORM\TableRegistry;
+use Cake\Datasource\EntityInterface;
 
 /**
  * AddSections shell task.
+ * @method \Cake\Console\ConsoleIo info($message = null, $newlines = 1, $level = self::NORMAL)
+ * @method \Cake\Console\ConsoleIo warning($message = null, $newlines = 1)
  */
 class AddDefaultSectionsTask extends Shell
 {
     const DEFAULT_SECTION_NAME = 'Default';
     const DEFAULT_SECTION_ORDER = 1;
     const DEFAULT_ACTIVE_FLAG = true;
+
+    /** @var \Qobo\Survey\Model\Table\SurveysTable $Surveys */
+    public $Surveys;
+
+    /** @var \Qobo\Survey\Model\Table\SurveySectionsTable $SurveySections */
+    public $SurveySections;
+
+    /** @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions */
+    public $SurveyQuestions;
 
     /**
      * Manage the available sub-commands along with their arguments and help
@@ -41,10 +53,6 @@ class AddDefaultSectionsTask extends Shell
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveySections');
         $this->SurveySections = $table;
 
-        /** @var \Qobo\Survey\Model\Table\SurveyQuestions $table */
-        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyQuestions');
-        $this->SurveyQuestions = $table;
-
         $query = $this->Surveys->find()
             ->where();
 
@@ -53,7 +61,7 @@ class AddDefaultSectionsTask extends Shell
         if (! $query->count()) {
             $this->info("No surveys found. Quiting...");
 
-            return;
+            return true;
         }
 
         foreach ($query->all() as $survey) {
@@ -77,32 +85,67 @@ class AddDefaultSectionsTask extends Shell
 
             $saved = $this->SurveySections->save($section);
 
-            if (! $saved) {
+            if (! $saved instanceof EntityInterface) {
                 $this->warning("Couldn't save default section for survey {$survey->get('name')} [{$survey->get('id')}]");
+                continue;
+            } else {
+                $this->success("Created Section [{$saved->get('name')}] for survey [{$survey->get('name')}]. Updating questions..");
             }
 
-            $query = $this->SurveyQuestions->find()
-                ->where([
-                    'survey_id' => $survey->get('id')
-                ]);
+            $updated = $this->linkQuestionsToSection($survey);
 
-            if (! $query->count()) {
+            if (empty($updated)) {
                 continue;
             }
 
-            $this->info("Linking questions to default section [{$saved->get('id')}]");
-
-            foreach ($query->all() as $question) {
-                $question->set('survey_section_id', $saved->get('id'));
-                $this->SurveyQuestions->save($question);
+            foreach ($updated as $questionId => $status) {
+                if (!$status) {
+                    $this->warning("Question [$questionId] update status [" . (bool)$status . "]");
+                } else {
+                    $this->info("Question [$questionId] update status [" . (bool)$status . "]");
+                }
             }
         }
+        $this->hr();
+        $this->out("Done updating surveys. Exiting..");
+
+        return true;
     }
 
-    protected function linkQuestionsToSection(string $id): void
+    /**
+     * Link Questions to Survey Section
+     *
+     * @param \Cake\Datasource\EntityInterface $survey
+     *
+     * @return mixed[] $result with question id and status of update.
+     */
+    protected function linkQuestionsToSection(EntityInterface $survey): array
     {
-        /** @var \Qobo\Survey\Model\Table\SurveyQuestions $table */
+        $result = [];
+
+        /** @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $table */
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyQuestions');
         $this->SurveyQuestions = $table;
+
+        $query = $this->SurveyQuestions->find()
+            ->where([
+                'survey_id' => $survey->get('id')
+            ]);
+
+        if (! $query->count()) {
+            return $result;
+        }
+
+        foreach ($query->all() as $question) {
+            $question->set('survey_section_id', $survey->get('id'));
+            if ($this->SurveyQuestions->save($question)) {
+                $result[$question->get('id')] = true;
+            } else {
+                $result[$question->get('id')] = false;
+            }
+
+        }
+
+        return $result;
     }
 }

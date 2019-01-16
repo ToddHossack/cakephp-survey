@@ -5,6 +5,8 @@ use Cake\Console\Shell;
 
 /**
  * Surveys shell command.
+ *
+ * @property \Qobo\Survey\Shell\Task\AddDefaultSectionsTask $AddDefaultSections
  */
 class SurveysShell extends Shell
 {
