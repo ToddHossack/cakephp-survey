@@ -9,7 +9,7 @@ use Cake\Console\Shell;
 class SurveysShell extends Shell
 {
     public $tasks = [
-        'Qobo/Survey.AddSections'
+        'Qobo/Survey.AddDefaultSections',
     ];
     /**
      * Manage the available sub-commands along with their arguments and help
@@ -24,10 +24,10 @@ class SurveysShell extends Shell
 
         $parser->setDescription('Surveys shell handles related survey tasks.')
             ->addSubcommand(
-                'add_sections',
+                'add_default_sections',
                 [
                     'help' => 'Add default sections to existing surveys',
-                    'parser' => $this->AddSections->getOptionParser()
+                    'parser' => $this->AddDefaultSections->getOptionParser()
                 ]
             );
 
