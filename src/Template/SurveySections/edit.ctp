@@ -30,18 +30,28 @@ if (!empty($surveySection->get('survey_questions'))) {
         array_push($selectedQuestions, $item->get('id'));
     }
 }
+
+$options['title'] = $this->Html->link(
+    $survey->get('name'),
+    [
+        'controller' => 'Surveys',
+        'action' => 'view',
+        $survey->get('slug')
+    ]);
+$options['title'] .= ' &raquo; ';
+$options['title'] .= __('Edit "{0}"', [$surveySection->get('name')]);
 ?>
 <section class="content-header">
     <div class="row">
         <div class="col-xs-12 col-md-6">
-            <h4><?= __('Create {0}', ['Survey Section']);?></h4>
+            <h4><?= $options['title'] ?></h4>
         </div>
     </div>
 </section>
 <section class="content">
     <?= $this->Form->create($surveySection) ?>
     <?= $this->Form->hidden('survey_id', ['value' => $survey->get('id')]) ?>
-    <div class="box box-solid">
+    <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title"><?= __('Details')?></h3>
         </div>
@@ -85,6 +95,6 @@ if (!empty($surveySection->get('survey_questions'))) {
 
         </div>
     </div>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Save')) ?>
     <?= $this->Form->end() ?>
 </section>

@@ -165,7 +165,7 @@ $options['title'] .= ' &raquo; ' . $survey->name;
             </li>
             <li role="presentation">
                 <a href="#manage-survey-submits" aria-controls="manage-survey-submits" role="tab" data-toggle="tab">
-                    <?= __('Results'); ?>
+                    <i class="fa fa-chart-line"></i> <?= __('Results'); ?>
                 </a>
             </li>
         </ul>

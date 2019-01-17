@@ -23,7 +23,7 @@ $options['title'] .= $this->Html->link(
     ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $questionId]
 );
 $options['title'] .= ' &raquo; ';
-$options['title'] .= empty($surveyAnswer->answer) ? $surveyAnswer->comment : $survey->answer;
+$options['title'] .= empty($surveyAnswer->get('answer')) ? $surveyAnswer->comment : $surveyAnswer->get('answer');
 ?>
 <section class="content-header">
     <div class="row">
