@@ -34,7 +34,7 @@ $options['title'] .= __('Add {0}', ['Survey Question']);
 <section class="content">
     <?= $this->Form->create($surveyQuestion) ?>
     <?= $this->Form->hidden('survey_id', ['value' => $survey->id]);?>
-    <div class="box box-solid">
+    <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title"><?= __('Details');?></h3>
         </div>
@@ -74,6 +74,6 @@ $options['title'] .= __('Add {0}', ['Survey Question']);
 
         </div>
     </div>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Save')) ?>
     <?= $this->Form->end() ?>
 </section>

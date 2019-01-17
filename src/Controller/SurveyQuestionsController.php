@@ -94,6 +94,8 @@ class SurveyQuestionsController extends AppController
     public function preview(string $surveyId, ?string $id)
     {
         $savedResults = [];
+        $survey = $this->Surveys->getSurveyData($surveyId);
+
         $surveyQuestion = $this->SurveyQuestions->get($id, [
             'contain' => [
                 'Surveys',
@@ -107,7 +109,7 @@ class SurveyQuestionsController extends AppController
             $savedResults = $this->request->getData();
         }
 
-        $this->set(compact('surveyQuestion', 'savedResults'));
+        $this->set(compact('surveyQuestion', 'savedResults', 'survey'));
     }
 
     /**
