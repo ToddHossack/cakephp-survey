@@ -251,14 +251,15 @@ class SurveysTable extends Table
             return $response;
         }
 
-        foreach ($entity->get('survey_questions') as $question) {
-            if (!empty($question->survey_answers)) {
-                continue;
+        foreach ($entity->get('survey_sections') as $section) {
+            foreach ($section->get('survey_questions') as $question) {
+                if (!empty($question->get('survey_answers'))) {
+                    continue;
+                }
+
+                $response['errors'][] = "Question \"" . $question->get('question') . "\" must have at least one answer option.";
             }
-
-            $response['errors'][] = "Question \"" . $question->question . "\" must have at least one answer option.";
         }
-
         if (empty($response['errors'])) {
             $response['status'] = true;
         }
