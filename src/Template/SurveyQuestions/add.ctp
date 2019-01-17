@@ -11,7 +11,13 @@
  */
 
 $surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
-$options['title'] = $this->Html->link(
+
+$options['title'] = $this->Html->link(__('Surveys'), [
+    'controller' => 'Surveys',
+    'action' => 'index'
+]);
+$options['title'] .= " &raquo; ";
+$options['title'] .= $this->Html->link(
     $survey->name,
     ['controller' => 'Surveys', 'action' => 'view', $surveyId]
 );
@@ -40,6 +46,7 @@ $options['title'] .= __('Add {0}', ['Survey Question']);
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
+                    <label>Extra Information/Comment:</label>
                     <?= $this->Form->textarea('extras', ['class' => 'tinymce']); ?>
                     <?= $this->element('Qobo/Survey.tinymce');?>
                 </div>
