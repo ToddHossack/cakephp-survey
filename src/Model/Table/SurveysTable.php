@@ -63,7 +63,7 @@ class SurveysTable extends Table
 
         $this->addBehavior('Duplicatable.Duplicatable', [
             'finder' => 'all',
-            'contain' => ['SurveyQuestions.SurveyAnswers'],
+            'contain' => ['SurveySections.SurveyQuestions.SurveyAnswers'],
             'remove' => ['publish_date', 'created', 'modified', 'slug'],
             'append' => [
                 'name' => ' - (duplicated: ' . date('Y-m-d H:i', time()) . ')',
