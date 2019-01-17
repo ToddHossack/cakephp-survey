@@ -69,18 +69,19 @@ class SurveySectionsController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 
-            $entity = $this->SurveySections->patchEntity($surveySection, $data);
+            $entity = $this->SurveySections->patchEntity($surveySection, (array)$data);
             $saved = $this->SurveySections->save($entity);
 
             if ($saved instanceof EntityInterface) {
-                /** @var \Cake\ORM\ResultSet&iterable<\Cake\Datasource\EntityInterface> $entities */
-                $entities = [];
+                $items = [];
                 if (!empty($data['section_questions'])) {
                     foreach ($data['section_questions']['_ids'] as $id) {
                         $entity = $this->SurveyQuestions->get($id);
                         $entity->set('survey_section_id', $saved->get('id'));
-                        $entities[] = $entity;
+                        $items[] = $entity;
                     }
+                    /** @var \Cake\ORM\ResultSet&iterable<\Cake\Datasource\EntityInterface> $entities */
+                    $entities = $items;
                     $this->SurveyQuestions->saveMany($entities);
                 }
 
@@ -123,18 +124,19 @@ class SurveySectionsController extends AppController
                 $this->SurveyQuestions->save($item);
             }
 
-            $entity = $this->SurveySections->patchEntity($surveySection, $data);
+            $entity = $this->SurveySections->patchEntity($surveySection, (array)$data);
             $saved = $this->SurveySections->save($entity);
 
             if ($saved instanceof EntityInterface) {
-                /** @var \Cake\ORM\ResultSet&iterable<\Cake\Datasource\EntityInterface> $entities */
-                $entities = [];
+                $items = [];
                 if (!empty($data['section_questions'])) {
                     foreach ($data['section_questions']['_ids'] as $id) {
                         $entity = $this->SurveyQuestions->get($id);
                         $entity->set('survey_section_id', $saved->get('id'));
-                        $entities[] = $entity;
+                        $items[] = $entity;
                     }
+                    /** @var \Cake\ORM\ResultSet&iterable<\Cake\Datasource\EntityInterface> $entities */
+                    $entities = $items;
                     $this->SurveyQuestions->saveMany($entities);
                 }
 

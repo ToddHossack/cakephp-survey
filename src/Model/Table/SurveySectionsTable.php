@@ -111,7 +111,7 @@ class SurveySectionsTable extends Table
      * Create Default Section for the survey
      *
      * @param string $surveyId for the relation.
-     * @return \Cake\Datasource\EntityInterface|false $result
+     * @return \Cake\Datasource\EntityInterface|bool $result
      */
     public function createDefaultSection(string $surveyId)
     {

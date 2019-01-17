@@ -121,6 +121,7 @@ class SurveyQuestionsController extends AppController
     public function add(string $surveyId)
     {
         $surveyQuestion = $this->SurveyQuestions->newEntity();
+        /** @var \Cake\Datasource\EntityInterface $survey */
         $survey = $this->Surveys->getSurveyData($surveyId);
 
         $sections = $this->SurveySections->getSurveySectionsList($survey->get('id'));
@@ -153,6 +154,7 @@ class SurveyQuestionsController extends AppController
      */
     public function edit(string $surveyId, ?string $id)
     {
+        /** @var \Cake\Datasource\EntityInterface $survey */
         $survey = $this->Surveys->getSurveyData($surveyId);
         $surveyQuestion = $this->SurveyQuestions->get($id);
 
