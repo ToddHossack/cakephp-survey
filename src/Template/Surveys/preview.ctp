@@ -12,7 +12,7 @@
 
 use Cake\Utility\Text;
 
-$surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
+$surveyId = empty($survey->get('slug')) ? $survey->get('id') : $survey->get('slug');
 
 $options['title'] = $this->Html->link(__('Surveys'), [
     'controller' => 'Surveys',
@@ -87,6 +87,5 @@ $count = 1;
 <?php endforeach; ?>
 </div>
 
-<?= $this->Form->submit(__('A'));?>
 <?= $this->Form->end();?>
 </section>
