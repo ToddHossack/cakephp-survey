@@ -2,8 +2,8 @@
 namespace Qobo\Survey\Shell\Task;
 
 use Cake\Console\Shell;
-use Cake\ORM\TableRegistry;
 use Cake\Datasource\EntityInterface;
+use Cake\ORM\TableRegistry;
 
 /**
  * AddSections shell task.
@@ -67,7 +67,7 @@ class AddDefaultSectionsTask extends Shell
                 ]);
 
             if ($query->count()) {
-                $this->info("Skipping. Survey [{$survey->get('name')}] has [" . $query->count(). "] sections.");
+                $this->info("Skipping. Survey [{$survey->get('name')}] has [" . $query->count() . "] sections.");
 
                 continue;
             }
@@ -104,7 +104,7 @@ class AddDefaultSectionsTask extends Shell
     /**
      * Link Questions to Survey Section
      *
-     * @param \Cake\Datasource\EntityInterface $survey
+     * @param \Cake\Datasource\EntityInterface $survey instance
      * @param string $sectionId of the section
      *
      * @return mixed[] $result with question id and status of update.
@@ -133,7 +133,6 @@ class AddDefaultSectionsTask extends Shell
             } else {
                 $result[$question->get('id')] = false;
             }
-
         }
 
         return $result;

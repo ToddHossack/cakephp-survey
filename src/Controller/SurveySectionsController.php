@@ -1,8 +1,8 @@
 <?php
 namespace Qobo\Survey\Controller;
 
-use Cake\ORM\TableRegistry;
 use Cake\Datasource\EntityInterface;
+use Cake\ORM\TableRegistry;
 use Qobo\Survey\Controller\AppController;
 
 /**
@@ -16,6 +16,11 @@ use Qobo\Survey\Controller\AppController;
  */
 class SurveySectionsController extends AppController
 {
+    /**
+     * Initialize hook method
+     *
+     * @return void
+     */
     public function initialize(): void
     {
         parent::initialize();

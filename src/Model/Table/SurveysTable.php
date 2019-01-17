@@ -136,6 +136,16 @@ class SurveysTable extends Table
         return $rules;
     }
 
+    /**
+     * afterSave callback.
+     *
+     * Dispatches current model after save event(s).
+     *
+     * @param \Cake\Event\Event $event The afterSave event that was fired.
+     * @param \Cake\Datasource\EntityInterface $entity The entity that was saved.
+     * @param \ArrayObject $options The entity that was saved.
+     * @return void
+     */
     public function afterSave(Event $event, EntityInterface $entity, ArrayObject $options): void
     {
         if ($entity->isNew()) {
@@ -152,7 +162,6 @@ class SurveysTable extends Table
                 $table->createDefaultSection($entity->get('id'));
             }
         }
-
     }
 
     /**
