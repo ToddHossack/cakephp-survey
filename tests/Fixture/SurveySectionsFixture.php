@@ -44,14 +44,24 @@ class SurveySectionsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 'db2d11c3-24d7-4c90-87bd-686d8a024d37',
-                'survey_id' => 'Lorem ipsum dolor sit amet',
-                'name' => 'Lorem ipsum dolor sit amet',
+                'id' => '00000000-0000-0000-0000-000000000001',
+                'survey_id' => '00000000-0000-0000-0000-000000000001',
+                'name' => 'Default',
                 'active' => 1,
                 'order' => 1,
-                'created' => '2019-01-14 16:51:57',
+                'created' => '2018-01-14 16:51:57',
                 'modified' => '2019-01-14 16:51:57',
-                'trashed' => '2019-01-14 16:51:57'
+                'trashed' => null
+            ],
+            [
+                'id' => '00000000-0000-0000-0000-000000000002',
+                'survey_id' => '00000000-0000-0000-0000-000000000002',
+                'name' => 'Section - 1',
+                'active' => 1,
+                'order' => 1,
+                'created' => '2018-01-14 16:51:57',
+                'modified' => '2019-01-14 16:51:57',
+                'trashed' => null
             ],
         ];
         parent::init();

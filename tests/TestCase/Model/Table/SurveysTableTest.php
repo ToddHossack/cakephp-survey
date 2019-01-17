@@ -29,6 +29,7 @@ class SurveysTableTest extends TestCase
         'plugin.qobo/survey.surveys',
         'plugin.qobo/survey.survey_questions',
         'plugin.qobo/survey.survey_answers',
+        'plugin.qobo/survey.survey_sections',
     ];
 
     /**
@@ -105,7 +106,7 @@ class SurveysTableTest extends TestCase
          */
         $result = $this->Surveys->getSurveyData($surveyId, true);
         $this->assertInstanceOf(EntityInterface::class, $result);
-        $this->assertTrue((count($result->get('survey_questions')) > 0));
+        $this->assertTrue((count($result->get('survey_sections')) > 0));
 
         $result = $this->Surveys->getSurveyData('foobar_slug');
         $this->assertEmpty($result);
@@ -137,34 +138,36 @@ class SurveysTableTest extends TestCase
             function ($item) {
                 return $item->get('order');
             },
-            $survey->get('survey_questions')
+            $survey->get('survey_sections')[0]->get('survey_questions')
         );
 
         $newQuestionOrders = array_map(
             function ($item) {
                 return $item->order;
             },
-            $modified->get('survey_questions')
+            $modified->get('survey_sections')[0]->get('survey_questions')
         );
 
         $this->assertNotEquals($oldQuestionOrders, $newQuestionOrders);
 
-        foreach ($survey->get('survey_questions') as $k => $question) {
-            $oldAnswerOrder = array_map(
-                function ($item) {
-                    return $item->get('order');
-                },
-                $question->get('survey_answers')
-            );
+        foreach ($survey->get('survey_sections') as $section) {
+            foreach ($section->get('survey_questions') as $k => $question) {
+                $oldAnswerOrder = array_map(
+                    function ($item) {
+                        return $item->get('order');
+                    },
+                    $question->get('survey_answers')
+                );
 
-            $newAnwserOrder = array_map(
-                function ($item) {
-                    return $item->get('order');
-                },
-                $modified->get('survey_questions')[$k]->get('survey_answers')
-            );
+                $newAnwserOrder = array_map(
+                    function ($item) {
+                        return $item->get('order');
+                    },
+                    $modified->get('survey_sections')[0]->get('survey_questions')[$k]->get('survey_answers')
+                );
 
-            $this->assertNotEquals($oldAnswerOrder, $newAnwserOrder);
+                $this->assertNotEquals($oldAnswerOrder, $newAnwserOrder);
+            }
         }
     }
 }

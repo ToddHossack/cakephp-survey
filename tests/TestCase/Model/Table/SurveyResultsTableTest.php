@@ -35,6 +35,7 @@ class SurveyResultsTableTest extends TestCase
         'plugin.qobo/survey.surveys',
         'plugin.qobo/survey.survey_questions',
         'plugin.qobo/survey.survey_answers',
+        'plugin.qobo/survey.survey_sections',
         'plugin.qobo/survey.users'
     ];
 
@@ -135,8 +136,8 @@ class SurveyResultsTableTest extends TestCase
         $data = [
             'user_id' => '00000000-0000-0000-0000-000000000001',
             'survey_id' => $survey->get('id'),
-            'survey_question_id' => $survey->get('survey_questions')[0]->get('id'),
-            'survey_answer_id' => $survey->get('survey_questions')[0]->get('survey_answers')[0]->get('id'),
+            'survey_question_id' => $survey->get('survey_sections')[0]->get('survey_questions')[0]->get('id'),
+            'survey_answer_id' => $survey->get('survey_sections')[0]->get('survey_questions')[0]->get('survey_answers')[0]->get('id'),
             'result' => 'w00t',
         ];
 
@@ -155,7 +156,7 @@ class SurveyResultsTableTest extends TestCase
             'user_id' => '00000000-0000-0000-0000-000000000001',
             'survey_id' => $survey->id,
             'survey_answer_id' => null,
-            'survey_question_id' => $survey->get('survey_questions')[0]->get('id'),
+            'survey_question_id' => $survey->get('survey_sections')[0]->get('survey_questions')[0]->get('id'),
             'result' => 'w00t',
         ];
 
