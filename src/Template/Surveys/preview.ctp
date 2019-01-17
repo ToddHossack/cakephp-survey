@@ -47,7 +47,12 @@ $count = 1;
 <?= $this->Form->hidden('submit_id', ['value' => Text::uuid()]) ?>
 <?= $this->Form->hidden('submit_date', ['value' => date('Y-m-d H:i:s', time())]) ?>
 <div class="box-group" id="accordion">
-<?php foreach ($survey->get('survey_sections') as $section) :?>
+<?php foreach ($survey->get('survey_sections') as $k => $section) :?>
+<?php
+    if (! count($section->get('survey_questions'))) {
+        continue;
+    }
+?>
 <div class="panel box box-primary">
     <div class="box-header with-border">
         <h4 class="box-title">
@@ -62,10 +67,10 @@ $count = 1;
             ) ?>
         </h4>
     </div>
-    <div id="<?= $section->get('id')?>" class="panel-collapse collapse" aria-expanded="true">
+    <div id="<?= $section->get('id')?>" class="panel-collapse collapse <?= ($k == 0) ? 'in' : '' ?>" aria-expanded="true">
         <div class="box-body">
             <?php foreach ($section->get('survey_questions') as $k => $question) : ?>
-                <div class="box box-primary">
+                <div class="box box-solid">
                     <div class="box-header with-border">
                         <h3 class="box-title"><?= $count ?>. <?= $question->get('question');?></h3>
                         <div class="box-tools pull-right">
@@ -78,7 +83,6 @@ $count = 1;
                         <?= $this->element('Qobo/Survey.Answers/' . $question->type, ['entity' => $question, 'key' => $k, 'collapsed' => false]);?>
                     </div>
                 </div>
-                <?php $count++; ?>
             <?php endforeach; ?>
         </div>
     </div>
