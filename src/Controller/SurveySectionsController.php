@@ -36,6 +36,7 @@ class SurveySectionsController extends AppController
 
     /**
      * Add method
+     * @param string $surveyId id of the survey
      *
      * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
      */
