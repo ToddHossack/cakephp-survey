@@ -4,8 +4,8 @@ namespace Qobo\Survey\Test\TestCase\Controller;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 use Qobo\Survey\Controller\SurveySectionsController;
-use Qobo\Survey\Model\Table\SurveysTable;
 use Qobo\Survey\Model\Table\SurveySectionsTable;
+use Qobo\Survey\Model\Table\SurveysTable;
 
 /**
  * Qobo\Survey\Controller\SurveySectionsController Test Case
@@ -17,7 +17,9 @@ class SurveySectionsControllerTest extends IntegrationTestCase
      */
     public $Surveys;
 
-    /** @var \Qobo\Survey\Model\Table\SurveySectionsTable $SurveySections */
+    /**
+     * @var \Qobo\Survey\Model\Table\SurveySectionsTable $SurveySections
+     */
     public $SurveySections;
 
     /**
@@ -25,7 +27,7 @@ class SurveySectionsControllerTest extends IntegrationTestCase
      *
      * @var array
      */
-     public $fixtures = [
+    public $fixtures = [
          'plugin.qobo/survey.survey_results',
          'plugin.qobo/survey.survey_questions',
          'plugin.qobo/survey.survey_answers',
@@ -34,8 +36,12 @@ class SurveySectionsControllerTest extends IntegrationTestCase
          'plugin.qobo/survey.users',
      ];
 
-     public function setUp()
-     {
+    /**
+     * Setup method callback
+     * @return void
+     */
+    public function setUp(): void
+    {
          parent::setUp();
 
          $userId = '00000000-0000-0000-0000-000000000001';
@@ -54,23 +60,27 @@ class SurveySectionsControllerTest extends IntegrationTestCase
          /** @var \Qobo\Survey\Model\Table\SurveySectionsTable $table */
          $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveySections', ['className' => SurveySectionsTable::class]);
          $this->SurveySections = $table;
-     }
+    }
 
-     public function tearDown()
-     {
+    /**
+     * Tear down callback
+     */
+    public function tearDown(): void
+    {
          unset($this->Surveys);
          unset($this->SurveySections);
          parent::tearDown();
-     }
+    }
 
     /**
      * Test add method
      *
      * @return void
      */
-    public function testAdd()
+    public function testAdd(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
+        /** @var \Cake\Datasource\EntityInterface $survey */
         $survey = $this->Surveys->getSurveyData($surveyId);
 
         $data = [
@@ -101,9 +111,10 @@ class SurveySectionsControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testEdit()
+    public function testEdit(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
+        /** @var \Cake\Datasource\EntityInterface $survey */
         $survey = $this->Surveys->getSurveyData($surveyId);
 
         $entity = $this->SurveySections->get($surveyId);
@@ -131,9 +142,10 @@ class SurveySectionsControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
+        /** @var \Cake\Datasource\EntityInterface $survey */
         $survey = $this->Surveys->getSurveyData($surveyId);
 
         $section = $this->SurveySections->get($surveyId);
