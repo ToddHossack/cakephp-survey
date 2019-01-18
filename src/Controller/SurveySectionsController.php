@@ -35,21 +35,6 @@ class SurveySectionsController extends AppController
     }
 
     /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => ['Surveys']
-        ];
-        $surveySections = $this->paginate($this->SurveySections);
-
-        $this->set(compact('surveySections'));
-    }
-
-    /**
      * Add method
      *
      * @return \Cake\Http\Response|void|null Redirects on successful add, renders view otherwise.
