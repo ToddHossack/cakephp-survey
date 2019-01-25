@@ -15,7 +15,7 @@ $options['title'] = $this->Html->link(
     ['controller' => 'Surveys', 'action' => 'view', $surveyId]
 );
 $options['title'] .= " &raquo; ";
-$options['title'] .= $surveyQuestion->question;
+$options['title'] .= '"' . $surveyQuestion->get('question') . '" question';
 
 ?>
 <section class="content-header">

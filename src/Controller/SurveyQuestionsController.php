@@ -18,6 +18,7 @@ use Qobo\Survey\Controller\AppController;
 /**
  * @property \Qobo\Survey\Model\Table\SurveysTable $Surveys
  * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions
+ * @property \Qobo\Survey\Model\Table\SurveySectionsTable $SurveySections
  */
 class SurveyQuestionsController extends AppController
 {
@@ -35,6 +36,10 @@ class SurveyQuestionsController extends AppController
          */
         $table = TableRegistry::get('Qobo/Survey.Surveys');
         $this->Surveys = $table;
+
+        /** @var \Qobo\Survey\Model\Table\SurveySectionsTable $table */
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveySections');
+        $this->SurveySections = $table;
     }
 
     /**
@@ -89,6 +94,8 @@ class SurveyQuestionsController extends AppController
     public function preview(string $surveyId, ?string $id)
     {
         $savedResults = [];
+        $survey = $this->Surveys->getSurveyData($surveyId);
+
         $surveyQuestion = $this->SurveyQuestions->get($id, [
             'contain' => [
                 'Surveys',
@@ -102,7 +109,7 @@ class SurveyQuestionsController extends AppController
             $savedResults = $this->request->getData();
         }
 
-        $this->set(compact('surveyQuestion', 'savedResults'));
+        $this->set(compact('surveyQuestion', 'savedResults', 'survey'));
     }
 
     /**
@@ -114,7 +121,10 @@ class SurveyQuestionsController extends AppController
     public function add(string $surveyId)
     {
         $surveyQuestion = $this->SurveyQuestions->newEntity();
+        /** @var \Cake\Datasource\EntityInterface $survey */
         $survey = $this->Surveys->getSurveyData($surveyId);
+
+        $sections = $this->SurveySections->getSurveySectionsList($survey->get('id'));
 
         if ($this->request->is(['post', 'put', 'patch'])) {
             /**
@@ -132,7 +142,7 @@ class SurveyQuestionsController extends AppController
             $this->Flash->error((string)__('The survey question could not be saved. Please, try again.'));
         }
 
-        $this->set(compact('surveyQuestion', 'survey'));
+        $this->set(compact('surveyQuestion', 'survey', 'sections'));
     }
 
     /**
@@ -144,8 +154,12 @@ class SurveyQuestionsController extends AppController
      */
     public function edit(string $surveyId, ?string $id)
     {
+        /** @var \Cake\Datasource\EntityInterface $survey */
         $survey = $this->Surveys->getSurveyData($surveyId);
         $surveyQuestion = $this->SurveyQuestions->get($id);
+
+        $sections = $this->SurveySections->getSurveySectionsList($survey->get('id'));
+
         $redirect = ['controller' => 'Surveys', 'action' => 'view', $surveyId];
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -166,7 +180,7 @@ class SurveyQuestionsController extends AppController
             $this->Flash->error((string)__('The survey question could not be saved. Please, try again.'));
         }
 
-        $this->set(compact('surveyQuestion', 'survey'));
+        $this->set(compact('surveyQuestion', 'survey', 'sections'));
     }
 
     /**

@@ -24,9 +24,8 @@ $options['title'] .= __('Create {0}', ['Question Option']);
     </div>
 </section>
 <section class="content">
-<div class="surveyChoices form large-9 medium-8 columns content">
     <?= $this->Form->create($surveyAnswer) ?>
-    <div class="box box-solid">
+    <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title"><?= __('Details');?></h3>
         </div>
@@ -39,9 +38,8 @@ $options['title'] .= __('Create {0}', ['Question Option']);
                     <?= $this->Form->control('order') ?>
                 </div>
             </div>
-        <?= $this->Form->button(__('Submit')) ?>
-        <?= $this->Form->end() ?>
         </div>
     </div>
-</div>
+    <?= $this->Form->button(__('Save')) ?>
+    <?= $this->Form->end() ?>
 </section>

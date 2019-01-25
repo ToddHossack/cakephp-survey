@@ -149,6 +149,11 @@ $options['title'] .= ' &raquo; ' . $survey->name;
     <div class="nav-tabs-custom">
         <ul id="relatedTabs" class="nav nav-tabs" role="tablist">
             <li role="presentation">
+                <a href="#manage-survey-sections" aria-controls="manage-content" role="tab" data-toggle="tab">
+                    <i class="fa fa-list-ul"></i> <i class="fa question-circle"></i> <?= __('Sections'); ?>
+                </a>
+            </li>
+            <li role="presentation">
                 <a href="#manage-survey-questions" aria-controls="manage-content" role="tab" data-toggle="tab">
                     <i class="fa fa-question-circle"></i> <i class="fa question-circle"></i> <?= __('Questions'); ?>
                 </a>
@@ -160,13 +165,16 @@ $options['title'] .= ' &raquo; ' . $survey->name;
             </li>
             <li role="presentation">
                 <a href="#manage-survey-submits" aria-controls="manage-survey-submits" role="tab" data-toggle="tab">
-                    <?= __('Results'); ?>
+                    <i class="fa fa-chart-line"></i> <?= __('Results'); ?>
                 </a>
             </li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane" id="manage-survey-questions">
                 <?= $this->element('Qobo/Survey.SurveyQuestions/view', ['survey' => $survey]); ?>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="manage-survey-sections">
+                <?= $this->element('Qobo/Survey.SurveySections/view', ['survey' => $survey]); ?>
             </div>
             <div role="tabpanel" class="tab-pane" id="manage-survey-results">
                 <?= $this->element('Qobo/Survey.SurveyResults/view', ['survey' => $survey]); ?>

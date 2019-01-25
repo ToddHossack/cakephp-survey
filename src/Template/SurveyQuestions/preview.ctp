@@ -9,7 +9,9 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-$options['title'] = 'Preview Question';
+$options['title'] = $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $survey->get('slug')]);
+$options['title'] .= ' &raquo; ';
+$options['title'] .= 'Preview Question';
 ?>
 <section class="content-header">
     <div class="row">
@@ -18,7 +20,23 @@ $options['title'] = 'Preview Question';
         </div>
         <div class="col-xs-12 col-md-6">
             <div class="pull-right">
-                <div class="btn-group btn-group-sm" role="group"></div>
+                <div class="btn-group btn-group-sm" role="group">
+                    <?php if (empty($survey->get('publish_date'))) : ?>
+                        <?= $this->Html->link(
+                            '<i class="fa fa-pencil"></i> ' . __('Edit'),
+                            [
+                                'controller' => 'SurveyQuestions',
+                                'action' => 'edit',
+                                $survey->get('slug'),
+                                $surveyQuestion->get('id')
+                            ],
+                            [
+                                'class' => 'btn btn-default',
+                                'escape' => false
+                            ]
+                        ) ?>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
     </div>
@@ -27,7 +45,7 @@ $options['title'] = 'Preview Question';
 <section class="content">
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title"><?= h($surveyQuestion->question) ?></h3>
+            <h3 class="box-title"><?= h($surveyQuestion->get('question')) ?></h3>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
                     <i class="fa fa-minus"></i>

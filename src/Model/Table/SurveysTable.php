@@ -11,8 +11,10 @@
  */
 namespace Qobo\Survey\Model\Table;
 
+use ArrayObject;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\Http\ServerRequest;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -61,7 +63,7 @@ class SurveysTable extends Table
 
         $this->addBehavior('Duplicatable.Duplicatable', [
             'finder' => 'all',
-            'contain' => ['SurveyQuestions.SurveyAnswers'],
+            'contain' => ['SurveySections.SurveyQuestions.SurveyAnswers'],
             'remove' => ['publish_date', 'created', 'modified', 'slug'],
             'append' => [
                 'name' => ' - (duplicated: ' . date('Y-m-d H:i', time()) . ')',
@@ -71,6 +73,11 @@ class SurveysTable extends Table
         $this->hasMany('SurveyQuestions', [
             'foreignKey' => 'survey_id',
             'className' => 'Qobo/Survey.SurveyQuestions',
+        ]);
+
+        $this->hasMany('SurveySections', [
+            'foreignKey' => 'survey_id',
+            'className' => 'Qobo/Survey.SurveySections',
         ]);
     }
 
@@ -130,6 +137,34 @@ class SurveysTable extends Table
     }
 
     /**
+     * afterSave callback.
+     *
+     * Dispatches current model after save event(s).
+     *
+     * @param \Cake\Event\Event $event The afterSave event that was fired.
+     * @param \Cake\Datasource\EntityInterface $entity The entity that was saved.
+     * @param \ArrayObject $options The entity that was saved.
+     * @return void
+     */
+    public function afterSave(Event $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        if ($entity->isNew()) {
+            /** @var \Qobo\Survey\Model\Table\SurveySectionsTable $table */
+            $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveySections');
+
+            $query = $table->find()
+                ->where([
+                    'survey_id' => $entity->get('id'),
+                    'name' => $table::DEFAULT_SECTION_NAME,
+                ]);
+
+            if (! $query->count()) {
+                $table->createDefaultSection($entity->get('id'));
+            }
+        }
+    }
+
+    /**
      * Get Survey Categories
      *
      * @return mixed[] $result list of categories.
@@ -163,7 +198,7 @@ class SurveysTable extends Table
         }
 
         $query = $this->find('all');
-        $query->limit(1);
+        // $query->limit(1);
         // making sure that entities returned instead of arrays.
         $query->enableHydration(true);
         $query->where([
@@ -173,13 +208,18 @@ class SurveysTable extends Table
             ]
         ]);
         if ($contain) {
-            $query->contain(['SurveyQuestions' => [
-                'sort' => ['SurveyQuestions.order' => 'ASC'],
-                'SurveyAnswers' => [
-                    'sort' => ['SurveyAnswers.order' => 'ASC'],
-                    'SurveyResults'
-                ]
-            ]]);
+            $query->contain([
+                'SurveySections' => [
+                    'sort' => ['SurveySections.order' => 'ASC'],
+                    'SurveyQuestions' => [
+                        'sort' => ['SurveyQuestions.order' => 'ASC'],
+                        'SurveyAnswers' => [
+                            'sort' => ['SurveyAnswers.order' => 'ASC'],
+                            'SurveyResults'
+                        ]
+                    ]
+                ],
+            ]);
         }
 
         $query->execute();
@@ -220,14 +260,15 @@ class SurveysTable extends Table
             return $response;
         }
 
-        foreach ($entity->get('survey_questions') as $question) {
-            if (!empty($question->survey_answers)) {
-                continue;
+        foreach ($entity->get('survey_sections') as $section) {
+            foreach ($section->get('survey_questions') as $question) {
+                if (!empty($question->get('survey_answers'))) {
+                    continue;
+                }
+
+                $response['errors'][] = "Question \"" . $question->get('question') . "\" must have at least one answer option.";
             }
-
-            $response['errors'][] = "Question \"" . $question->question . "\" must have at least one answer option.";
         }
-
         if (empty($response['errors'])) {
             $response['status'] = true;
         }

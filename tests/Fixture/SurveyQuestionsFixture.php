@@ -20,6 +20,7 @@ class SurveyQuestionsFixture extends TestFixture
         'id' => ['type' => 'uuid', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'reference_id' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'survey_id' => ['type' => 'uuid', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
+        'survey_section_id' => ['type' => 'uuid', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'question' => ['type' => 'text', 'length' => 4294967295, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null],
         'type' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'active' => ['type' => 'boolean', 'length' => null, 'null' => true, 'default' => '0', 'comment' => '', 'precision' => null],
@@ -48,6 +49,7 @@ class SurveyQuestionsFixture extends TestFixture
         [
             'id' => '00000000-0000-0000-0000-000000000001',
             'survey_id' => '00000000-0000-0000-0000-000000000001',
+            'survey_section_id' => '00000000-0000-0000-0000-000000000001',
             'question' => 'To be or not to be?',
             'type' => 'checkbox',
             'active' => 1,
@@ -59,6 +61,7 @@ class SurveyQuestionsFixture extends TestFixture
         [
             'id' => '00000000-0000-0000-0000-000000000002',
             'survey_id' => '00000000-0000-0000-0000-000000000002',
+            'survey_section_id' => '00000000-0000-0000-0000-000000000002',
             'question' => 'Do you agree?',
             'type' => 'checkbox',
             'active' => 1,
@@ -70,6 +73,7 @@ class SurveyQuestionsFixture extends TestFixture
         [
             'id' => '00000000-0000-0000-0000-000000000003',
             'survey_id' => '00000000-0000-0000-0000-000000000002',
+            'survey_section_id' => '00000000-0000-0000-0000-000000000001',
             'question' => 'Your birthdate?',
             'type' => 'date',
             'active' => 1,

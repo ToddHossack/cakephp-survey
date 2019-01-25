@@ -15,6 +15,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         'plugin.qobo/survey.survey_results',
         'plugin.qobo/survey.survey_questions',
         'plugin.qobo/survey.survey_answers',
+        'plugin.qobo/survey.survey_sections',
         'plugin.qobo/survey.surveys',
         'plugin.qobo/survey.users',
     ];
@@ -239,6 +240,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
 
         $postData = [
             'survey_id' => $survey->get('id'),
+            'survey_section_id' => $surveyId,
             'question' => 'Who are you?',
             'type' => 'checkbox',
             'order' => 1
