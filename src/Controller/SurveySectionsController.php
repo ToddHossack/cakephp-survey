@@ -84,7 +84,9 @@ class SurveySectionsController extends AppController
     /**
      * Edit method
      *
+     * @param string $surveyId survey id
      * @param string|null $id Survey Section id.
+     *
      * @return \Cake\Http\Response|void|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
