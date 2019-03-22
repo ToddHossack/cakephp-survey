@@ -71,8 +71,8 @@ echo $this->Html->script([
                 </div>
             </div>
             <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Html->link(__('Cancel'), ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'view', $survey->get('id')]) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>
 </section>
-
