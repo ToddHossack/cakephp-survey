@@ -115,6 +115,11 @@ class SurveysController extends AppController
             return $this->redirect($this->referer());
         }
 
+        // Fix for existing copied surveys
+        if (empty($survey->get('publish_date'))) {
+            $survey->set('expiry_date', null);
+        }
+
         if ($this->request->is(['post', 'put', 'patch'])) {
             $validated = $this->Surveys->prepublishValidate($id, $this->request);
 
@@ -130,7 +135,7 @@ class SurveysController extends AppController
             if ($this->Surveys->save($survey)) {
                 $this->Flash->success((string)__('Survey was successfully saved.'));
 
-                $fullSurvey = $this->Surveys->getSurveyData($survey->id, true);
+                $fullSurvey = $this->Surveys->getSurveyData($survey->get('id'), true);
 
                 $event = new Event((string)EventName::PUBLISH_SURVEY(), $this, [
                     'data' => [
@@ -231,7 +236,11 @@ class SurveysController extends AppController
 
             if (! empty($duplicated)) {
                 // @NOTE: saving parent_id as Duplicatable unsets origin id
-                $duplicated = $this->Surveys->patchEntity($duplicated, ['parent_id' => $survey->get('id')]);
+                $duplicated = $this->Surveys->patchEntity($duplicated, [
+                    'parent_id' => $survey->get('id'),
+                    'publish_date' => null,
+                    'expiry_date' => null
+                ]);
                 $duplicated = $this->Surveys->save($duplicated);
                 if ($duplicated instanceof EntityInterface) {
                     // Fixing order from original survey if there were any order gaps.
