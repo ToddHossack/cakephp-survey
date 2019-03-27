@@ -22,6 +22,7 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
+use Webmozart\Assert\Assert;
 
 /**
  * Surveys Model
@@ -253,12 +254,7 @@ class SurveysTable extends Table
             'errors' => []
         ];
         $entity = $this->getSurveyData($id, true);
-
-        if (empty($entity)) {
-            $response['errors'][] = (string)__("Couldn't find Survey by given id");
-
-            return $response;
-        }
+        Assert::isInstanceOf($entity, EntityInterface::class);
 
         foreach ($entity->get('survey_sections') as $section) {
             foreach ($section->get('survey_questions') as $question) {
@@ -274,18 +270,32 @@ class SurveysTable extends Table
         }
 
         if (!empty($request)) {
-            $data = $request->getData();
-            $publish = strtotime($data['Surveys']['publish_date']);
-            $expiry = strtotime($data['Surveys']['expiry_date']);
-            if ($expiry > $publish) {
-                $response['status'] = true;
-            } else {
+            $validated = $this->validatePublishDate((array)$request->getData());
+            $response['status'] = $validated;
+            if(! $validated) {
                 $response['errors'][] = __('Expiry date should be bigger than publish date');
-                $response['status'] = false;
             }
         }
 
         return $response;
+    }
+
+    /**
+     * Validate That Survey has correct expiration date
+     *
+     * @param mixed[] $data containing Surveys request data
+     * @return bool $validated for expiration date.
+     */
+    public function validatePublishDate(array $data = []) : bool
+    {
+        $validated = false;
+
+        $publish = strtotime($data['Surveys']['publish_date']);
+        $expiry  = strtotime($data['Surveys']['expiry_date']);
+
+        $validated = ($expiry > $publish) ? true : false;
+
+        return $validated;
     }
 
     /**

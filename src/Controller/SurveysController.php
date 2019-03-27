@@ -116,16 +116,10 @@ class SurveysController extends AppController
     public function publish(string $id)
     {
         $survey = $this->Surveys->getSurveyData($id);
-
-        if (empty($survey)) {
-            $this->Flash->error((string)__('Couldn\'t find a survey with given id'));
-
-            return $this->redirect($this->referer());
-        }
+        Assert::isInstanceOf($survey, EntityInterface::class);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
             $validated = $this->Surveys->prepublishValidate($id, $this->request);
-
             if (false === $validated['status']) {
                 $this->Flash->error(implode("\r\n", $validated['errors']), ['escape' => false]);
 
@@ -167,10 +161,11 @@ class SurveysController extends AppController
     {
         $saved = $data = [];
         $survey = $this->Surveys->getSurveyData($id, true);
+        Assert::isInstanceOf($survey, EntityInterface::class);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $user = $this->Auth->user();
-            $requestData = $this->request->getData();
+            $requestData = (array)$this->request->getData();
+
             if (empty($requestData['SurveyResults'])) {
                 $this->Flash->error((string)__('Please submit your survey answers'));
 
@@ -179,7 +174,7 @@ class SurveysController extends AppController
 
             foreach ($requestData['SurveyResults'] as $k => $item) {
                 $results = $this->SurveyResults->getResults($item, [
-                    'user' => $user,
+                    'user' => $this->Auth->user(),
                     'survey' => $survey,
                     'data' => $requestData
                 ]);
@@ -246,13 +241,14 @@ class SurveysController extends AppController
     {
         $survey = $this->Surveys->newEntity();
 
-        if ($this->request->is('post')) {
+        if ($this->request->is(['post', 'put', 'patch'])) {
             $survey = $this->Surveys->patchEntity($survey, (array)$this->request->getData());
             if ($this->Surveys->save($survey)) {
                 $this->Flash->success((string)__('The survey has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
+
             $this->Flash->error((string)__('The survey could not be saved. Please, try again.'));
         }
         $this->set(compact('survey'));

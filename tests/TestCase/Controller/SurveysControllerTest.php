@@ -137,6 +137,18 @@ class SurveysControllerTest extends IntegrationTestCase
         $this->assertEquals($survey->name, $data['name']);
     }
 
+    public function testAddPostError(): void
+    {
+        $this->enableRetainFlashMessages();
+        $data = [
+            'active' => true,
+            'slug' => 'test_foobar',
+        ];
+
+        $this->post('/surveys/surveys/add', $data);
+        $this->assertSession('The survey could not be saved. Please, try again.', 'Flash.flash.0.message');
+    }
+
     public function testEditPostOk(): void
     {
         $query = $this->Surveys->find()
@@ -163,6 +175,20 @@ class SurveysControllerTest extends IntegrationTestCase
         $this->assertEquals($newSurvey->name, $edit['name']);
     }
 
+    public function testEditPostError(): void
+    {
+        // you cannot publish already published survey
+        $id = '00000000-0000-0000-0000-000000000002';
+        $survey = $this->Surveys->get($id);
+
+        $edit = [
+            'name' => 'Modified Name',
+        ];
+
+        $this->post('/surveys/surveys/edit/' . $survey->get('id'), $edit);
+        $this->assertSession('You cannot edit alredy published survey', 'Flash.flash.0.message');
+    }
+
     public function testDuplicatePostOk(): void
     {
         $query = $this->Surveys->find()
@@ -187,7 +213,7 @@ class SurveysControllerTest extends IntegrationTestCase
 
     public function testPublishPostOk(): void
     {
-        $id = '00000000-0000-0000-0000-000000000002';
+        $id = '00000000-0000-0000-0000-000000000003';
         $query = $this->Surveys->find()
             ->where(['id' => $id]);
         /**
@@ -215,6 +241,27 @@ class SurveysControllerTest extends IntegrationTestCase
 
         $this->assertNotEmpty($published->publish_date);
         $this->assertEquals($published->publish_date->i18nFormat('yyyy-MM-dd HH:mm:ss'), $data['Surveys']['publish_date']);
+    }
+
+    public function testPublishPostError(): void
+    {
+        $id = '00000000-0000-0000-0000-000000000003';
+        $query = $this->Surveys->find()
+            ->where(['id' => $id]);
+        /**
+         * @var \Qobo\Survey\Model\Entity\Survey $survey
+         */
+        $survey = $query->first();
+
+        $data = [
+            'Surveys' => [
+                'publish_date' => '2018-04-08 09:00:00',
+                'expiry_date' => '2017-04-18 09:00:00',
+            ]
+        ];
+
+        $this->post('/surveys/surveys/publish/' . $survey->get('id'), $data);
+        $this->assertSession('Expiry date should be bigger than publish date', 'Flash.flash.0.message');
     }
 
     public function testPreviewPost(): void
