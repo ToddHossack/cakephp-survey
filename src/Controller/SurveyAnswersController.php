@@ -11,8 +11,10 @@
  */
 namespace Qobo\Survey\Controller;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 use Qobo\Survey\Controller\AppController;
+use Webmozart\Assert\Assert;
 
 /**
  * SurveyAnswers Controller
@@ -85,7 +87,6 @@ class SurveyAnswersController extends AppController
 
                 return $this->redirect($redirect);
             }
-            $this->Flash->error((string)__('The survey answer could not be saved. Please, try again.'));
         }
 
         $this->set(compact('surveyAnswer', 'survey', 'question'));
@@ -117,7 +118,6 @@ class SurveyAnswersController extends AppController
 
                 return $this->redirect($redirect);
             }
-            $this->Flash->error((string)__('The survey answer could not be saved. Please, try again.'));
         }
 
         $this->set(compact('surveyAnswer', 'survey', 'question'));
@@ -137,13 +137,12 @@ class SurveyAnswersController extends AppController
         $this->request->allowMethod(['post', 'delete']);
 
         $answer = $this->SurveyAnswers->get($id);
-        $survey = $this->Surveys->getSurveyData($surveyId);
+        Assert::isInstanceOf($answer, EntityInterface::class);
+
         $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $questionId];
 
         if ($this->SurveyAnswers->delete($answer)) {
             $this->Flash->success((string)__('The survey answer has been deleted.'));
-        } else {
-            $this->Flash->error((string)__('The survey answer could not be deleted. Please, try again.'));
         }
 
         return $this->redirect($redirect);

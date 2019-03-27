@@ -11,9 +11,11 @@
  */
 namespace Qobo\Survey\Controller;
 
+use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Qobo\Survey\Controller\AppController;
+use Webmozart\Assert\Assert;
 
 /**
  * @property \Qobo\Survey\Model\Table\SurveysTable $Surveys
@@ -62,24 +64,16 @@ class SurveyQuestionsController extends AppController
      * View method
      *
      * @param string $surveyId of the survey or either its slug
-     * @param string|null $id Survey Question id.
+     * @param string $id Survey Question id.
      * @return \Cake\Http\Response|void|null
      */
-    public function view(string $surveyId, ?string $id)
+    public function view(string $surveyId, string $id)
     {
-        $query = $this->SurveyQuestions->find();
-        $query->where(['SurveyQuestions.id' => $id]);
-        $query->contain([
-            'Surveys',
-            'SurveyAnswers' => [
-                'sort' => ['SurveyAnswers.order' => 'ASC'],
-            ]
-        ]);
-
-        $query->execute();
-        $surveyQuestion = $query->first();
+        $surveyQuestion = $this->SurveyQuestions->getEntity($id);
+        Assert::isInstanceOf($surveyQuestion, EntityInterface::class);
 
         $survey = $this->Surveys->getSurveyData($surveyId, false);
+        Assert::isInstanceOf($survey, EntityInterface::class);
 
         $this->set(compact('surveyQuestion', 'survey'));
     }
@@ -88,25 +82,19 @@ class SurveyQuestionsController extends AppController
      * View method
      *
      * @param string $surveyId of the survey or either its slug
-     * @param string|null $id Survey Question id.
+     * @param string $id Survey Question id.
      * @return \Cake\Http\Response|void|null
      */
-    public function preview(string $surveyId, ?string $id)
+    public function preview(string $surveyId, string $id)
     {
         $savedResults = [];
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        $surveyQuestion = $this->SurveyQuestions->get($id, [
-            'contain' => [
-                'Surveys',
-                'SurveyAnswers' => [
-                    'sort' => ['SurveyAnswers.order' => 'ASC'],
-                ]
-            ]
-        ]);
+        $surveyQuestion = $this->SurveyQuestions->getEntity($id);
+        Assert::isInstanceOf($surveyQuestion, EntityInterface::class);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $savedResults = $this->request->getData();
+            $savedResults = (array)$this->request->getData();
         }
 
         $this->set(compact('surveyQuestion', 'savedResults', 'survey'));
@@ -120,26 +108,23 @@ class SurveyQuestionsController extends AppController
      */
     public function add(string $surveyId)
     {
-        $surveyQuestion = $this->SurveyQuestions->newEntity();
-        /** @var \Cake\Datasource\EntityInterface $survey */
         $survey = $this->Surveys->getSurveyData($surveyId);
+        Assert::isInstanceOf($survey, EntityInterface::class);
+
+        $surveyQuestion = $this->SurveyQuestions->newEntity();
 
         $sections = $this->SurveySections->getSurveySectionsList($survey->get('id'));
 
         if ($this->request->is(['post', 'put', 'patch'])) {
-            /**
-             * @var array $data
-             */
-            $data = $this->request->getData();
+            $data = (array)$this->request->getData();
             $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, $data);
             $saved = $this->SurveyQuestions->save($surveyQuestion);
 
             if ($saved) {
                 $this->Flash->success((string)__('The survey question has been saved.'));
 
-                return $this->redirect(['controller' => 'SurveyAnswers', 'action' => 'add', $surveyId, $surveyQuestion->id]);
+                return $this->redirect(['controller' => 'SurveyAnswers', 'action' => 'add', $surveyId, $surveyQuestion->get('id')]);
             }
-            $this->Flash->error((string)__('The survey question could not be saved. Please, try again.'));
         }
 
         $this->set(compact('surveyQuestion', 'survey', 'sections'));
@@ -154,8 +139,9 @@ class SurveyQuestionsController extends AppController
      */
     public function edit(string $surveyId, ?string $id)
     {
-        /** @var \Cake\Datasource\EntityInterface $survey */
         $survey = $this->Surveys->getSurveyData($surveyId);
+        Assert::isInstanceOf($survey, EntityInterface::class);
+
         $surveyQuestion = $this->SurveyQuestions->get($id);
 
         $sections = $this->SurveySections->getSurveySectionsList($survey->get('id'));
@@ -163,21 +149,16 @@ class SurveyQuestionsController extends AppController
         $redirect = ['controller' => 'Surveys', 'action' => 'view', $surveyId];
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            /**
-             * @var array $data
-             */
-            $data = $this->request->getData();
+            $data = (array)$this->request->getData();
             $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, $data);
+
             if ($this->SurveyQuestions->save($surveyQuestion)) {
                 $this->Flash->success((string)__('The survey question has been saved.'));
 
-                if (! empty($survey)) {
-                    $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->get('slug'), $surveyQuestion->get('id')];
-                }
+                $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->get('slug'), $surveyQuestion->get('id')];
 
                 return $this->redirect($redirect);
             }
-            $this->Flash->error((string)__('The survey question could not be saved. Please, try again.'));
         }
 
         $this->set(compact('surveyQuestion', 'survey', 'sections'));
@@ -187,28 +168,30 @@ class SurveyQuestionsController extends AppController
      * Delete method
      *
      * @param string $surveyId of the survey or either its slug
-     * @param string|null $id Survey Question id.
+     * @param string $id Survey Question id.
+     *
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException
+     *
      * @return \Cake\Http\Response|void|null Redirects to index.
      */
-    public function delete(string $surveyId, ?string $id)
+    public function delete(string $surveyId, string $id)
     {
         $this->request->allowMethod(['post', 'delete']);
 
         $question = $this->SurveyQuestions->get($id);
-        $survey = $this->Surveys->getSurveyData($surveyId);
-
-        if (! empty($survey)) {
-            $surveyId = empty($survey->get('slug')) ? $survey->get('id') : $survey->get('slug');
-        }
-
-        $redirect = ['controller' => 'Surveys', 'action' => 'view', $surveyId];
 
         if ($this->SurveyQuestions->delete($question)) {
             $this->Flash->success((string)__('The survey question has been deleted.'));
+
+            $survey = $this->Surveys->getSurveyData($surveyId);
+            Assert::isInstanceOf($survey, EntityInterface::class);
+
+            $surveyId = empty($survey->get('slug')) ? $survey->get('id') : $survey->get('slug');
+            $redirect = ['controller' => 'Surveys', 'action' => 'view', $surveyId];
+
+            return $this->redirect($redirect);
         } else {
             $this->Flash->error((string)__('The survey question could not be deleted. Please, try again.'));
         }
-
-        return $this->redirect($redirect);
     }
 }
