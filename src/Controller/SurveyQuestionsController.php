@@ -36,7 +36,7 @@ class SurveyQuestionsController extends AppController
         /**
          * @var \Qobo\Survey\Model\Table\SurveysTable $table
          */
-        $table = TableRegistry::get('Qobo/Survey.Surveys');
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.Surveys');
         $this->Surveys = $table;
 
         /** @var \Qobo\Survey\Model\Table\SurveySectionsTable $table */
