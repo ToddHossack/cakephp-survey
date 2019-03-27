@@ -79,13 +79,14 @@ class SurveysFixture extends TestFixture
         [
             'id' => '00000000-0000-0000-0000-000000000003',
             'reference_id' => null,
-            'name' => 'Unordered Survey',
-            'slug' => 'unordered_survey',
+            'name' => 'Full Survey Sample',
+            'slug' => 'full_survey_sample',
             'version' => '1.0.0',
             'description' => 'Testing unsorted survey',
             'active' => 1,
             'created' => '2018-03-13 12:40:24',
             'modified' => '2018-03-13 12:40:24',
+            'publish_date' => null,
             'trashed' => null,
         ],
     ];

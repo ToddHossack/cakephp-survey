@@ -272,7 +272,8 @@ class SurveysTable extends Table
         if (!empty($request)) {
             $validated = $this->validatePublishDate((array)$request->getData());
             $response['status'] = $validated;
-            if(! $validated) {
+
+            if (!$validated) {
                 $response['errors'][] = __('Expiry date should be bigger than publish date');
             }
         }
@@ -291,7 +292,7 @@ class SurveysTable extends Table
         $validated = false;
 
         $publish = strtotime($data['Surveys']['publish_date']);
-        $expiry  = strtotime($data['Surveys']['expiry_date']);
+        $expiry = strtotime($data['Surveys']['expiry_date']);
 
         $validated = ($expiry > $publish) ? true : false;
 
