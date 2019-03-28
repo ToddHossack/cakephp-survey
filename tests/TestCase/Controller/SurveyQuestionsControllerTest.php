@@ -58,7 +58,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
     {
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
-        if (! $survey instanceof EntityInterface || is_null($survey)) {
+        if (! $survey instanceof EntityInterface) {
             $this->fail("Survey is not of EntityInterface type: " . __METHOD__);
 
             return;
@@ -86,7 +86,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        if (! $survey instanceof EntityInterface || is_null($survey)) {
+        if (! $survey instanceof EntityInterface) {
             $this->fail("Survey is not of EntityInterface type: " . __METHOD__);
 
             return;
@@ -119,7 +119,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        if (! $survey instanceof EntityInterface || is_null($survey)) {
+        if (! $survey instanceof EntityInterface) {
             $this->fail("Survey is not of EntityInterface type: " . __METHOD__);
 
             return;
@@ -199,7 +199,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $surveyId = '00000000-0000-0000-0000-000000000001';
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        if (! $survey instanceof EntityInterface || is_null($survey)) {
+        if (! $survey instanceof EntityInterface) {
             $this->fail("Survey is not of EntityInterface type: " . __METHOD__);
 
             return;

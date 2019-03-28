@@ -50,9 +50,9 @@ class SurveyQuestionsController extends AppController
      * Preloading numerous vars for question methods
      *
      * @param \Cake\Event\Event $event broadcasted.
-     * @return void
+     * @return \Cake\Http\Response|null
      */
-    public function beforeFilter(Event $event): void
+    public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
 
