@@ -96,5 +96,15 @@ class SurveyAnswersFixture extends TestFixture
             'order' => 43,
             'trashed' => null,
         ],
+        [
+            'id' => '00000000-0000-0000-0000-000000000006',
+            'survey_question_id' => '00000000-0000-0000-0000-000000000004',
+            'answer' => '',
+            'comment' => 'Put your YYYY-MM-DD date',
+            'created' => '2018-03-14 10:59:30',
+            'modified' => '2018-03-14 10:59:30',
+            'order' => 43,
+            'trashed' => null,
+        ],
     ];
 }
