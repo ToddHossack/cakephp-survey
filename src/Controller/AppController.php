@@ -46,7 +46,7 @@ class AppController extends BaseController
         /**
          * @var \Qobo\Survey\Model\Table\SurveysTable
          */
-        $table = TableRegistry::get('Qobo/Survey.' . $this->name);
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.' . $this->name);
         $direction = strtolower($direction);
 
         try {

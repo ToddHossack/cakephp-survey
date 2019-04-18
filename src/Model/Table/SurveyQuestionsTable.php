@@ -11,6 +11,7 @@
  */
 namespace Qobo\Survey\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -121,7 +122,7 @@ class SurveyQuestionsTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules) : RulesChecker
     {
         $rules->add($rules->existsIn(['survey_id'], 'Surveys'));
 
@@ -136,12 +137,42 @@ class SurveyQuestionsTable extends Table
     public function getQuestionTypes(): array
     {
         return [
-            'input' => 'Short Text or Number',
-            'date' => 'Date',
-            'select' => 'Dropdown',
-            'checkbox' => 'Multiple Checkboxes',
-            'textarea' => 'Paragraph',
-            'radio' => 'Radio Buttons',
+            'input' => __('Short Text or Number'),
+            'date' => __('Date'),
+            'select' => __('Dropdown'),
+            'checkbox' => __('Multiple Checkboxes'),
+            'textarea' => __('Paragraph'),
+            'radio' => __('Radio Buttons'),
         ];
+    }
+
+    /**
+     * Get Survey Question with/without answers/survey
+     *
+     * @param string $id of the question
+     * @param bool $withAnswers flag
+     *
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException
+     *
+     * @return \Cake\Datasource\EntityInterface $entity
+     */
+    public function getEntity(string $id, bool $withAnswers = true) : EntityInterface
+    {
+        $contain = [];
+
+        if ($withAnswers) {
+            $contain = [
+                'contain' => [
+                    'Surveys',
+                    'SurveyAnswers' => [
+                        'sort' => ['SurveyAnswers.order' => 'ASC'],
+                    ]
+                ]
+            ];
+        }
+
+        $entity = $this->get($id, $contain);
+
+        return $entity;
     }
 }

@@ -11,6 +11,7 @@
  */
 namespace Qobo\Survey\Model\Table;
 
+use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -195,7 +196,7 @@ class SurveyResultsTable extends Table
      *
      * @return \Cake\Datasource\ResultSetInterface|null $result with submits
      */
-    public function getSubmits(string $surveyId = null, array $options = []): ?\Cake\Datasource\ResultSetInterface
+    public function getSubmits(string $surveyId = null, array $options = []): ?ResultSetInterface
     {
         $result = null;
 

@@ -82,5 +82,17 @@ class SurveyQuestionsFixture extends TestFixture
             'order' => 34,
             'trashed' => null,
         ],
+        [
+            'id' => '00000000-0000-0000-0000-000000000004',
+            'survey_id' => '00000000-0000-0000-0000-000000000003',
+            'survey_section_id' => '00000000-0000-0000-0000-000000000003',
+            'question' => 'Your birthdate?',
+            'type' => 'date',
+            'active' => 1,
+            'created' => '2018-03-14 10:56:36',
+            'modified' => '2018-03-14 10:56:36',
+            'order' => 34,
+            'trashed' => null,
+        ],
     ];
 }

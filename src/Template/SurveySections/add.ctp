@@ -13,15 +13,12 @@ $checked = $surveySection->active ? $surveySection->active : true;
 
 echo $this->Html->css([
     'AdminLTE./plugins/iCheck/all',
-    'Qobo/Survey.multi-select.dist'
 ], [
     'block' => 'css'
 ]);
 echo $this->Html->script([
     'AdminLTE./plugins/iCheck/icheck.min',
     'Cms.icheck.init',
-    'Qobo/Survey.jquery.multi-select',
-    'Qobo/Survey.multiselect.init'
     ], ['block' => 'scriptBottom']);
 
 $options['title'] = $this->Html->link(
@@ -73,20 +70,21 @@ $options['title'] .= __('Create {0}', ['Survey Section']);
                 <div class="col-xs-12 col-md-6">
                     <?= $this->Form->control('order') ?>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-xs-12 col-md-6">
-                <?php if (!empty($questions)) : ?>
-                <label>Add Questions to current Section:</label>
-                <select multiple="multiple" class="my-select" name="section_questions[_ids][]">
-                  <?php foreach ($questions as $item) : ?>
-                      <option value="<?= $item->get('id')?>"><?= $item->get('question');?></option>
-                  <?php endforeach; ?>
-                </select>
-                <?php endif; ?>
+                    <?php
+                    $label = $this->Form->label('is_default');
+                    echo $this->Form->control('is_default', [
+                        'type' => 'checkbox',
+                        'class' => 'square',
+                        'label' => false,
+                        'templates' => [
+                            'inputContainer' => '<div class="{{required}}">' . $label . '<div class="clearfix"></div>{{content}}</div>'
+                        ]
+                    ]);
+                    ?>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
     <?= $this->Form->button(__('Save')) ?>

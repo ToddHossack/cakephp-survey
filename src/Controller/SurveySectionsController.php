@@ -4,6 +4,7 @@ namespace Qobo\Survey\Controller;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 use Qobo\Survey\Controller\AppController;
+use Webmozart\Assert\Assert;
 
 /**
  * SurveySections Controller
@@ -16,12 +17,16 @@ use Qobo\Survey\Controller\AppController;
  */
 class SurveySectionsController extends AppController
 {
+    protected $Surveys;
+
+    protected $SurveyQuestions;
+
     /**
      * Initialize hook method
      *
      * @return void
      */
-    public function initialize(): void
+    public function initialize() : void
     {
         parent::initialize();
 
@@ -43,8 +48,9 @@ class SurveySectionsController extends AppController
     public function add(string $surveyId)
     {
         $surveySection = $this->SurveySections->newEntity();
-        /** @var \Cake\Datasource\EntityInterface $survey */
+
         $survey = $this->Surveys->getSurveyData($surveyId);
+        Assert::isInstanceOf($survey, EntityInterface::class);
 
         $query = $this->SurveyQuestions->find()
             ->where([
@@ -53,31 +59,32 @@ class SurveySectionsController extends AppController
         $questions = $query->all();
 
         if ($this->request->is('post')) {
-            $data = $this->request->getData();
+            $data = (array)$this->request->getData();
 
-            $entity = $this->SurveySections->patchEntity($surveySection, (array)$data);
+            $entity = $this->SurveySections->patchEntity($surveySection, $data);
             $saved = $this->SurveySections->save($entity);
+            Assert::isInstanceOf($saved, EntityInterface::class);
 
-            if ($saved instanceof EntityInterface) {
+            if (!empty($data['section_questions'])) {
                 $items = [];
-                if (!empty($data['section_questions'])) {
-                    foreach ($data['section_questions']['_ids'] as $id) {
-                        $entity = $this->SurveyQuestions->get($id);
-                        $entity->set('survey_section_id', $saved->get('id'));
-                        $items[] = $entity;
-                    }
-                    /** @var \Cake\ORM\ResultSet&iterable<\Cake\Datasource\EntityInterface> $entities */
-                    $entities = $items;
-                    $this->SurveyQuestions->saveMany($entities);
+                foreach ($data['section_questions']['_ids'] as $id) {
+                    $entity = $this->SurveyQuestions->get($id);
+                    Assert::isInstanceOf($entity, EntityInterface::class);
+
+                    $entity->set('survey_section_id', $saved->get('id'));
+                    $items[] = $entity;
                 }
 
-                $this->Flash->success((string)__('The survey section has been saved.'));
-
-                return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $surveyId]);
+                /** @var \Cake\ORM\ResultSet&iterable<\Cake\Datasource\EntityInterface> $entities */
+                $entities = $items;
+                $this->SurveyQuestions->saveMany($entities);
             }
-            $this->Flash->error((string)__('The survey section could not be saved. Please, try again.'));
+
+            $this->Flash->success((string)__('The survey section has been saved.'));
+
+            return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $surveyId]);
         }
-        $surveys = $this->SurveySections->Surveys->find('list', ['limit' => 200]);
+
         $this->set(compact('surveySection', 'survey', 'questions'));
     }
 
@@ -92,8 +99,9 @@ class SurveySectionsController extends AppController
      */
     public function edit(string $surveyId, ?string $id)
     {
-        /** @var \Cake\Datasource\EntityInterface $survey */
         $survey = $this->Surveys->getSurveyData($surveyId);
+        Assert::isInstanceOf($survey, EntityInterface::class);
+
         $surveySection = $this->SurveySections->get($id, [
             'contain' => ['SurveyQuestions']
         ]);
@@ -105,37 +113,37 @@ class SurveySectionsController extends AppController
         $questions = $query->all();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $data = $this->request->getData();
+            $data = (array)$this->request->getData();
 
             foreach ($surveySection->get('survey_questions') as $item) {
                 $item->set('survey_section_id', null);
                 $this->SurveyQuestions->save($item);
             }
 
-            $entity = $this->SurveySections->patchEntity($surveySection, (array)$data);
+            $entity = $this->SurveySections->patchEntity($surveySection, $data);
             $saved = $this->SurveySections->save($entity);
+            Assert::isInstanceOf($saved, EntityInterface::class);
 
-            if ($saved instanceof EntityInterface) {
+            if (!empty($data['section_questions'])) {
                 $items = [];
-                if (!empty($data['section_questions'])) {
-                    foreach ($data['section_questions']['_ids'] as $id) {
-                        $entity = $this->SurveyQuestions->get($id);
-                        $entity->set('survey_section_id', $saved->get('id'));
-                        $items[] = $entity;
-                    }
-                    /** @var \Cake\ORM\ResultSet&iterable<\Cake\Datasource\EntityInterface> $entities */
-                    $entities = $items;
-                    $this->SurveyQuestions->saveMany($entities);
+                foreach ($data['section_questions']['_ids'] as $id) {
+                    $entity = $this->SurveyQuestions->get($id);
+                    Assert::isInstanceOf($entity, EntityInterface::class);
+
+                    $entity->set('survey_section_id', $saved->get('id'));
+                    $items[] = $entity;
                 }
 
-                $this->Flash->success((string)__('The survey section has been saved.'));
-
-                return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $surveyId]);
+                /** @var \Cake\ORM\ResultSet&iterable<\Cake\Datasource\EntityInterface> $entities */
+                $entities = $items;
+                $this->SurveyQuestions->saveMany($entities);
             }
 
-            $this->Flash->error((string)__('The survey section could not be saved. Please, try again.'));
+            $this->Flash->success((string)__('The survey section has been saved.'));
+
+            return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $surveyId]);
         }
-        $surveys = $this->SurveySections->Surveys->find('list', ['limit' => 200]);
+
         $this->set(compact('surveySection', 'survey', 'questions'));
     }
 

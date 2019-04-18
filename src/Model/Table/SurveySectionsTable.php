@@ -120,6 +120,7 @@ class SurveySectionsTable extends Table
         $entity->set('name', self::DEFAULT_SECTION_NAME);
         $entity->set('order', self::DEFAULT_SECTION_ORDER);
         $entity->set('active', self::DEFAULT_ACTIVE_FLAG);
+        $entity->set('is_default', true);
 
         $entity->set('survey_id', $surveyId);
 

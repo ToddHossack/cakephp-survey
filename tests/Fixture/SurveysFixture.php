@@ -60,6 +60,7 @@ class SurveysFixture extends TestFixture
             'active' => 1,
             'created' => '2018-03-13 12:40:24',
             'modified' => '2018-03-13 12:40:24',
+            'publish_date' => null,
             'trashed' => null,
         ],
         [
@@ -72,6 +73,20 @@ class SurveysFixture extends TestFixture
             'active' => 1,
             'created' => '2018-03-13 12:40:24',
             'modified' => '2018-03-13 12:40:24',
+            'publish_date' => '2019-02-03 09:00:00',
+            'trashed' => null,
+        ],
+        [
+            'id' => '00000000-0000-0000-0000-000000000003',
+            'reference_id' => null,
+            'name' => 'Full Survey Sample',
+            'slug' => 'full_survey_sample',
+            'version' => '1.0.0',
+            'description' => 'Testing unsorted survey',
+            'active' => 1,
+            'created' => '2018-03-13 12:40:24',
+            'modified' => '2018-03-13 12:40:24',
+            'publish_date' => null,
             'trashed' => null,
         ],
     ];

@@ -31,6 +31,7 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
         <tr>
             <th scope="col"><?= __('Order') ?></th>
             <th scope="col"><?= __('Name') ?></th>
+            <th scope="col"><?= __('Default') ?></th>
             <th scope="col"><?= __('Questions') ?></th>
             <th scope="col"><?= __('Active') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -42,6 +43,7 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
              <tr>
                 <td><?= h($item->get('order')) ?></td>
                 <td><?= h($item->get('name')) ?></td>
+                <td><?= h($item->get('is_default') ? __('Yes') : __('No')) ?></td>
                 <td><?= h(count($item->get('survey_questions'))) ?></td>
                 <td><?= h($item->get('active') ? __('Yes') : __('No')) ?></td>
                 <td class="actions">
