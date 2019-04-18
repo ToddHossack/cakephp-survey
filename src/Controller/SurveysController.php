@@ -118,6 +118,11 @@ class SurveysController extends AppController
         $survey = $this->Surveys->getSurveyData($id);
         Assert::isInstanceOf($survey, EntityInterface::class);
 
+        // Fix for existing copied surveys
+        if (empty($survey->get('publish_date'))) {
+            $survey->set('expiry_date', null);
+        }
+
         if ($this->request->is(['post', 'put', 'patch'])) {
             $validated = $this->Surveys->prepublishValidate($id, $this->request);
             if (false === $validated['status']) {
@@ -132,7 +137,7 @@ class SurveysController extends AppController
             if ($this->Surveys->save($survey)) {
                 $this->Flash->success((string)__('Survey was successfully saved.'));
 
-                $fullSurvey = $this->Surveys->getSurveyData($survey->id, true);
+                $fullSurvey = $this->Surveys->getSurveyData($survey->get('id'), true);
 
                 $event = new Event((string)EventName::PUBLISH_SURVEY(), $this, [
                     'data' => [
