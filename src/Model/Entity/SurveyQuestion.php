@@ -21,6 +21,7 @@ use Cake\ORM\Entity;
  * @property string $question
  * @property string $type
  * @property bool $active
+ * @property bool $is_required
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  * @property \Cake\I18n\Time $trashed
