@@ -58,6 +58,11 @@ $options['title'] .= __('Add {0}', ['Survey Question']);
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
+                    <?= $this->Form->control('is_required', ['checked' => true]); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
                     <?= $this->Form->control('survey_section_id', ['type' => 'select', 'options' => $sections]); ?>
                 </div>
             </div>

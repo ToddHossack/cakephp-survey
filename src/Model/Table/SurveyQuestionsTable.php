@@ -109,6 +109,10 @@ class SurveyQuestionsTable extends Table
             ->allowEmpty('active');
 
         $validator
+            ->boolean('is_required')
+            ->allowEmpty('is_required');
+
+        $validator
             ->dateTime('trashed')
             ->allowEmpty('trashed');
 

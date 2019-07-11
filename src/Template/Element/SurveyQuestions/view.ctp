@@ -34,6 +34,7 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
             <th scope="col"><?= __('Type') ?></th>
             <th scope="col"><?= __('Section') ?></th>
             <th scope="col"><?= __('Active') ?></th>
+            <th scope="col"><?= __('Required') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
@@ -46,6 +47,7 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
             <td><?= h($questionTypes[$surveyQuestion->type]) ?></td>
             <td><?= h($section->get('name')) ?> </td>
             <td><?= h($surveyQuestion->active ? __('Yes') : __('No')) ?></td>
+            <td><?= h($surveyQuestion->is_required ? __('Yes') : __('No')) ?></td>
             <td class="actions">
                 <div class="btn-group btn-group-xs">
                 <?php if (empty($survey->publish_date)) : ?>

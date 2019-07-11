@@ -90,6 +90,13 @@ $options['title'] .= '"' . $surveyQuestion->get('question') . '" question';
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Required') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= $surveyQuestion->is_required ? __('Yes') : __('No'); ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
+                <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Question') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
