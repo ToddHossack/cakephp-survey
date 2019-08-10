@@ -20,9 +20,6 @@ use RuntimeException;
 
 class AppController extends BaseController
 {
-    const DIRECTION_UP = 'up';
-    const DIRECTION_DOWN = 'down';
-
     /**
      * Initialization hook method.
      *
@@ -31,6 +28,7 @@ class AppController extends BaseController
     public function initialize()
     {
         parent::initialize();
+        $this->loadComponent('Qobo/Survey.Order');
     }
 
     /**
@@ -43,27 +41,6 @@ class AppController extends BaseController
      */
     public function move(string $id, string $direction)
     {
-        /**
-         * @var \Qobo\Survey\Model\Table\SurveysTable
-         */
-        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.' . $this->name);
-        $direction = strtolower($direction);
-
-        try {
-            $entity = $table->get($id);
-
-            if (self::DIRECTION_UP == $direction) {
-                $table->moveUp($entity);
-            }
-
-            if (self::DIRECTION_DOWN == $direction) {
-                $table->moveDown($entity);
-            }
-        } catch (Exception $e) {
-            Log::warning($e->getMessage());
-            throw new RuntimeException("Couldn't move entity record", 0, $e);
-        }
-
-        return $this->redirect($this->referer());
+        return $this->Order->move($id, $direction);
     }
 }
