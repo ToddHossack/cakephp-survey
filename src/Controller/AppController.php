@@ -18,6 +18,9 @@ use Cake\Utility\Inflector;
 use Exception;
 use RuntimeException;
 
+/**
+ * @property \Qobo\Survey\Controller\Component\OrderComponent $Order
+ */
 class AppController extends BaseController
 {
     /**
