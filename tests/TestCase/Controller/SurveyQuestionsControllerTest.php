@@ -293,4 +293,28 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $this->assertEquals($editedQuestion->question, $editData['question']);
         $this->assertEquals($editedQuestion->id, $questionId);
     }
+
+    public function testMoveQuestionDown(): void
+    {
+        $id = '00000000-0000-0000-0000-000000000005';
+        $question = $this->SurveyQuestions->get($id);
+
+        $this->post('/surveys/survey/' . $question->get('id') . '/questions/move/down');
+
+        $modified = $this->SurveyQuestions->get($id);
+
+        $this->assertEquals(($question->get('order') + 1), $modified->get('order'));
+    }
+
+    public function testMoveQuestionUp(): void
+    {
+        $id = '00000000-0000-0000-0000-000000000006';
+        $question = $this->SurveyQuestions->get($id);
+
+        $this->post('/surveys/survey/' . $question->get('id') . '/questions/move/up');
+
+        $modified = $this->SurveyQuestions->get($id);
+
+        $this->assertEquals(($question->get('order') - 1), $modified->get('order'));
+    }
 }
