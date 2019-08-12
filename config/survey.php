@@ -5,6 +5,9 @@ return [
         'Categories' => [
             ['name' => 'Default', 'value' => 'default'],
             ['name' => 'Marketing', 'value' => 'marketing'],
+        ],
+        'Options' => [
+            'submitViaPreview' => true,
         ]
     ],
 ];
