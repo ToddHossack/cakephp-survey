@@ -9,7 +9,7 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-
+use Cake\Core\Configure;
 use Cake\Utility\Text;
 
 $surveyId = empty($survey->get('slug')) ? $survey->get('id') : $survey->get('slug');
@@ -90,6 +90,8 @@ $count = 1;
 
 <?php endforeach; ?>
 </div>
-
+<?php if (Configure::read('Survey.Options.submitViaPreview')) : ?>
+    <?= $this->Form->submit(__('Submit')); ?>
+<?php endif; ?>
 <?= $this->Form->end();?>
 </section>
