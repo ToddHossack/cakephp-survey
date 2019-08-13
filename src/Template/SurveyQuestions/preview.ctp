@@ -10,8 +10,9 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 $options['title'] = __(
-    '{0} &raquo; Preview Question',
-    $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $survey->get('slug')])
+    '{0} &raquo; {1} &raquo; Preview Question',
+    $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $survey->get('slug')]),
+    $this->Html->link($surveyQuestion->get('question'), ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->get('id'), $surveyQuestion->get('id')])
 );
 ?>
 <section class="content-header">
@@ -72,4 +73,9 @@ $options['title'] = __(
         </div>
     </div>
     <?php endif; ?>
+<?= $this->Html->link(
+    __('Back'),
+    ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->get('id'), $surveyQuestion->get('id')],
+    ['class' => 'btn btn-success']
+)?>
 </section>
