@@ -165,11 +165,6 @@ $options['title'] = __(
                 </a>
             </li>
             <li role="presentation">
-                <a href="#manage-survey-questions" aria-controls="manage-content" role="tab" data-toggle="tab">
-                    <i class="fa fa-question-circle"></i> <i class="fa question-circle"></i> <?= __('All Questions'); ?>
-                </a>
-            </li>
-            <li role="presentation">
                 <a href="#manage-survey-results" aria-controls="manage-survey-results" role="tab" data-toggle="tab">
                     <i class="fa fa-check-circle"></i> <?= __('Overview'); ?>
                 </a>
@@ -181,9 +176,6 @@ $options['title'] = __(
             </li>
         </ul>
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane" id="manage-survey-questions">
-                <?= $this->element('Qobo/Survey.SurveyQuestions/view', ['survey' => $survey]); ?>
-            </div>
             <div role="tabpanel" class="tab-pane" id="manage-survey-sections">
                 <?= $this->element('Qobo/Survey.SurveySections/view', ['survey' => $survey]); ?>
             </div>
