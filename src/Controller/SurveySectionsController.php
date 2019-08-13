@@ -148,6 +148,26 @@ class SurveySectionsController extends AppController
     }
 
     /**
+     * @return \Cake\Http\Response|void|null Redirects to index.
+     */
+    public function view(string $surveyId, string $id)
+    {
+        $this->request->allowMethod(['get']);
+
+        $survey = $this->Surveys->getSurveyData($surveyId);
+        $questionTypes = $this->SurveyQuestions->getQuestionTypes();
+        $section = $this->SurveySections->find()
+            ->enableHydration(true)
+            ->where([
+                'id' => $id,
+            ])
+            ->contain(['SurveyQuestions'])
+            ->first();
+
+        $this->set(compact('section', 'survey', 'questionTypes'));
+    }
+
+    /**
      * Delete method
      *
      * @param string $surveyId of the survey
@@ -158,7 +178,9 @@ class SurveySectionsController extends AppController
     public function delete(string $surveyId, ?string $id)
     {
         $this->request->allowMethod(['post', 'delete']);
+
         $surveySection = $this->SurveySections->get($id);
+
         if ($this->SurveySections->delete($surveySection)) {
             $this->Flash->success((string)__('The survey section has been deleted.'));
         } else {
