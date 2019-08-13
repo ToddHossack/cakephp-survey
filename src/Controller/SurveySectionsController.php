@@ -156,13 +156,17 @@ class SurveySectionsController extends AppController
 
         $survey = $this->Surveys->getSurveyData($surveyId);
         $questionTypes = $this->SurveyQuestions->getQuestionTypes();
-        $section = $this->SurveySections->find()
+
+        /** @var \Cake\ORM\Query $query */
+        $query = $this->SurveySections->find()
             ->enableHydration(true)
             ->where([
                 'id' => $id,
             ])
-            ->contain(['SurveyQuestions'])
-            ->first();
+            ->contain(['SurveyQuestions']);
+
+        $section = $query->first();
+        Assert::isInstanceOf($section, EntityInterface::class);
 
         $this->set(compact('section', 'survey', 'questionTypes'));
     }
