@@ -34,8 +34,11 @@ echo $this->Html->script(
 
 $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
 
-$options['title'] = $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']);
-$options['title'] .= ' &raquo; ' . $survey->name;
+$options['title'] = __(
+    '{0} &raquo; {1}',
+    $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
+    $survey->get('name')
+);
 ?>
 <section class="content-header">
     <div class="row">

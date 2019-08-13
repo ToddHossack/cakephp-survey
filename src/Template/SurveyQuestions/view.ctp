@@ -10,13 +10,11 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 $surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
-$options['title'] = $this->Html->link(
-    $survey->name,
-    ['controller' => 'Surveys', 'action' => 'view', $surveyId]
+$options['title'] = __(
+    '{0} &raquo; "{1}" question',
+    $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId]),
+    $surveyQuestion->get('question')
 );
-$options['title'] .= " &raquo; ";
-$options['title'] .= '"' . $surveyQuestion->get('question') . '" question';
-
 ?>
 <section class="content-header">
     <div class="row">

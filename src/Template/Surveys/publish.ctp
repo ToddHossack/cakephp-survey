@@ -17,11 +17,18 @@ echo $this->Html->script([
     ], [
         'block' => 'scriptBottom'
     ]);
+
+$options['title'] = __(
+    '{0} &raquo; {1} &raquo; Publishing survey',
+    $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
+    $this->Html->link( $survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $survey->get('id')])
+);
+
 ?>
 <section class="content-header">
     <div class="row">
         <div class="col-xs-12 col-md-6">
-            <h4><?= __('Survey Publish date setting');?></h4>
+            <h4><?= $options['title'] ?></h4>
         </div>
     </div>
 </section>
@@ -70,9 +77,20 @@ echo $this->Html->script([
                     ]) ?>
                 </div>
             </div>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Html->link(__('Cancel'), ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'view', $survey->get('id')]) ?>
-            <?= $this->Form->end() ?>
-        </div>
-    </div>
+                </div>
+
+            </div>
+        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Html->link(
+            __('Cancel'),
+            [
+                'plugin' => 'Qobo/Survey',
+                'controller' => 'Surveys',
+                'action' => 'view',
+                $survey->get('id')
+            ],
+            [
+                'class' => 'btn btn-link    '
+            ]) ?>
+        <?= $this->Form->end() ?>
 </section>

@@ -12,17 +12,11 @@
 
 $surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
 
-$options['title'] = $this->Html->link(__('Surveys'), [
-    'controller' => 'Surveys',
-    'action' => 'index'
-]);
-$options['title'] .= " &raquo; ";
-$options['title'] .= $this->Html->link(
-    $survey->name,
-    ['controller' => 'Surveys', 'action' => 'view', $surveyId]
+$options['title'] = __(
+    '{0} &raquo; {1} &raquo; Add Question',
+    $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
+    $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId]),
 );
-$options['title'] .= " &raquo; ";
-$options['title'] .= __('Add {0}', ['Survey Question']);
 ?>
 <section class="content-header">
     <div class="row">

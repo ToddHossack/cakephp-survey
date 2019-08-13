@@ -28,15 +28,11 @@ if (!empty($surveySection->get('survey_questions'))) {
     }
 }
 
-$options['title'] = $this->Html->link(
-    $survey->get('name'),
-    [
-        'controller' => 'Surveys',
-        'action' => 'view',
-        $survey->get('slug')
-    ]);
-$options['title'] .= ' &raquo; ';
-$options['title'] .= __('Edit "{0}"', [$surveySection->get('name')]);
+$options['title'] = __(
+    '{0} &raquo; Edit {1}',
+    $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $survey->get('slug')]),
+    $surveySection->get('name')
+);
 ?>
 <section class="content-header">
     <div class="row">

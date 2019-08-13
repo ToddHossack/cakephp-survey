@@ -9,9 +9,10 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-$options['title'] = $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $survey->get('slug')]);
-$options['title'] .= ' &raquo; ';
-$options['title'] .= 'Preview Question';
+$option['title'] = __(
+    '{0} &raquo; Preview Question',
+    $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $survey->get('slug')])
+);
 ?>
 <section class="content-header">
     <div class="row">
