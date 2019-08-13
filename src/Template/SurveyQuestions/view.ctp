@@ -9,10 +9,12 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-$surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
+$surveyId = empty($survey->get('slug')) ? $survey->get('id') : $survey->get('slug');
+
 $options['title'] = __(
-    '{0} &raquo; "{1}" question',
+    '{0} &raquo; {1} &raquo; "{2}" question',
     $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId]),
+    $this->Html->link(__('Current Section'), ['controller' => 'SurveySections', 'action' => 'view', $survey->get('id'), $surveyQuestion->get('survey_section_id')]),
     $surveyQuestion->get('question')
 );
 ?>
@@ -26,19 +28,19 @@ $options['title'] = __(
             <div class="btn-group btn-group-sm" role="group">
             <?= $this->Html->link(
                 '<i class="fa fa-file"></i> ' . __('Preview'),
-                ['controller' => 'SurveyQuestions', 'action' => 'preview', $surveyId, $surveyQuestion->id],
+                ['controller' => 'SurveyQuestions', 'action' => 'preview', $surveyId, $surveyQuestion->get('id')],
                 ['class' => 'btn btn-default', 'title' => __('Preview'), 'escape' => false]
             )?>
-            <?php if (empty($survey->publish_date)) : ?>
+            <?php if (empty($survey->get('publish_date'))) : ?>
                 <?= $this->Html->link(
                     '<i class="fa fa-pencil"></i> ' . __('Edit'),
-                    ['controller' => 'SurveyQuestions', 'action' => 'edit', $surveyId, $surveyQuestion->id],
+                    ['controller' => 'SurveyQuestions', 'action' => 'edit', $surveyId, $surveyQuestion->get('id')],
                     ['class' => 'btn btn-default', 'title' => __('Edit'), 'escape' => false]
                 )?>
                 <?= $this->Form->postLink(
                     '<i class="fa fa-trash"></i> ' . __('Delete'),
-                    ['controller' => 'SurveyQuestions', 'action' => 'delete', $surveyId, $surveyQuestion->id],
-                    ['class' => 'btn btn-default', 'title' => __('Delete'), 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $surveyQuestion->id)]
+                    ['controller' => 'SurveyQuestions', 'action' => 'delete', $surveyId, $surveyQuestion->get('id')],
+                    ['class' => 'btn btn-default', 'title' => __('Delete'), 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $surveyQuestion->get('id'))]
                 )?>
             <?php endif; ?>
             </div>
@@ -63,62 +65,62 @@ $options['title'] = __(
                     <strong><?= __('ID') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= h($surveyQuestion->id) ?>
+                    <?= h($surveyQuestion->get('id')) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Survey') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= $this->Html->link($survey->name, ['controller' => 'Surveys', 'action' => 'view', $surveyId]) ?>
+                    <?= $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId]) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Type') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= $questionTypes[$surveyQuestion->type] ?>
+                    <?= $questionTypes[$surveyQuestion->get('type')] ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Active') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= $surveyQuestion->active ? __('Yes') : __('No'); ?>
+                    <?= $surveyQuestion->get('active') ? __('Yes') : __('No'); ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Required') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= $surveyQuestion->is_required ? __('Yes') : __('No'); ?>
+                    <?= $surveyQuestion->get('is_required') ? __('Yes') : __('No'); ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Question') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= $this->Text->autoParagraph(h($surveyQuestion->question)); ?>
+                    <?= $this->Text->autoParagraph(h($surveyQuestion->get('question'))); ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Created') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= h($surveyQuestion->created->i18nFormat('yyyy-MM-dd HH:mm')) ?>
+                    <?= h($surveyQuestion->get('created')->i18nFormat('yyyy-MM-dd HH:mm')) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Modified') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= h($surveyQuestion->modified->i18nFormat('yyyy-MM-dd HH:mm')) ?>
+                    <?= h($surveyQuestion->get('modified')->i18nFormat('yyyy-MM-dd HH:mm')) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
             </div>
         </div>
     </div>
-    <?php if (!empty($surveyQuestion->extras)) : ?>
+    <?php if (!empty($surveyQuestion->get('extras'))) : ?>
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title"><?= __('Details'); ?></h3>
@@ -129,7 +131,7 @@ $options['title'] = __(
             </div>
         </div>
         <div class="box-body">
-            <?= $surveyQuestion->extras ?>
+            <?= $surveyQuestion->get('extras') ?>
         </div>
     </div>
     <?php endif; ?>
