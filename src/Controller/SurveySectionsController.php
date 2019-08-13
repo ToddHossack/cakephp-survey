@@ -148,6 +148,8 @@ class SurveySectionsController extends AppController
     }
 
     /**
+     * @param string $surveyId slug or ID of the survey
+     * @param string $id of the section
      * @return \Cake\Http\Response|void|null Redirects to index.
      */
     public function view(string $surveyId, string $id)
