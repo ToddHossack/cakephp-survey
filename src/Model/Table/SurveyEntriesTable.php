@@ -41,16 +41,12 @@ class SurveyEntriesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Muffin/Trash.Trash');
 
         $this->belongsTo('Surveys', [
             'foreignKey' => 'survey_id',
             'joinType' => 'INNER',
             'className' => 'Qobo/Survey.Surveys'
-        ]);
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.Users'
         ]);
     }
 
