@@ -34,8 +34,11 @@ echo $this->Html->script(
 
 $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
 
-$options['title'] = $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']);
-$options['title'] .= ' &raquo; ' . $survey->name;
+$options['title'] = __(
+    '{0} &raquo; {1}',
+    $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
+    $survey->get('name')
+);
 ?>
 <section class="content-header">
     <div class="row">
@@ -107,27 +110,35 @@ $options['title'] .= ' &raquo; ' . $survey->name;
             </div>
             <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Publish Date') ?>:</strong>
-                </div>
-                <div class="col-xs-8 col-md-4">
-                    <?= empty($survey->publish_date) ? 'N/A' : $survey->publish_date->i18nFormat('yyyy-MM-dd HH:mm') ?>
-                </div>
-                <div class="clearfix visible-xs visible-sm"></div>
-                <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Slug') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
                     <?= h($survey->slug) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Publish Date') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= empty($survey->publish_date) ? 'N/A' : $survey->publish_date->i18nFormat('yyyy-MM-dd HH:mm') ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
             </div>
             <div class="row">
+                <div class="col-xs-4 col-md-2 text-right">
+                    <strong><?= __('Description') ?>:</strong>
+                </div>
+                <div class="col-xs-8 col-md-4">
+                    <?= $this->Text->autoParagraph(h($survey->description)); ?>
+                </div>
+                <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Active') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
                     <?= $survey->active ? __('Yes') : __('No'); ?>
                 </div>
+                <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
                     <strong><?= __('Expiry Date') ?>:</strong>
                 </div>
@@ -154,25 +165,17 @@ $options['title'] .= ' &raquo; ' . $survey->name;
                 </a>
             </li>
             <li role="presentation">
-                <a href="#manage-survey-questions" aria-controls="manage-content" role="tab" data-toggle="tab">
-                    <i class="fa fa-question-circle"></i> <i class="fa question-circle"></i> <?= __('Questions'); ?>
-                </a>
-            </li>
-            <li role="presentation">
                 <a href="#manage-survey-results" aria-controls="manage-survey-results" role="tab" data-toggle="tab">
                     <i class="fa fa-check-circle"></i> <?= __('Overview'); ?>
                 </a>
             </li>
             <li role="presentation">
                 <a href="#manage-survey-submits" aria-controls="manage-survey-submits" role="tab" data-toggle="tab">
-                    <i class="fa fa-chart-line"></i> <?= __('Results'); ?>
+                    <i class="fa fa-signal"></i> <?= __('Results'); ?>
                 </a>
             </li>
         </ul>
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane" id="manage-survey-questions">
-                <?= $this->element('Qobo/Survey.SurveyQuestions/view', ['survey' => $survey]); ?>
-            </div>
             <div role="tabpanel" class="tab-pane" id="manage-survey-sections">
                 <?= $this->element('Qobo/Survey.SurveySections/view', ['survey' => $survey]); ?>
             </div>

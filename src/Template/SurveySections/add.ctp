@@ -21,17 +21,11 @@ echo $this->Html->script([
     'Cms.icheck.init',
     ], ['block' => 'scriptBottom']);
 
-$options['title'] = $this->Html->link(
-    $survey->get('name'),
-    [
-        'controller' => 'Surveys',
-        'action' => 'view',
-        $survey->get('slug')
-    ]);
-$options['title'] .= ' &raquo; ';
-$options['title'] .= __('Create {0}', ['Survey Section']);
+$options['title'] = __(
+    '{0} &raquo; Create Survey Section',
+    $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $survey->get('slug')])
+);
 ?>
-
 <section class="content-header">
     <div class="row">
         <div class="col-xs-12 col-md-6">

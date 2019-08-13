@@ -1,15 +1,6 @@
 <?php
-/**
- * Copyright (c) Qobo Ltd. (https://www.qobo.biz)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
- * @license       https://opensource.org/licenses/mit-license.php MIT License
- */
-$surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
+$surveyId = !empty($survey->get('slug')) ? $survey->get('slug') : $survey->get('id');
+
 ?>
 <div class="row">
     <div class="col-xs-12 col-md-12">
@@ -26,26 +17,24 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
         </div>
     </div>
 </div>
+
 <table class="table table-hover table-condensed table-vertical-align table-datatable" width="100%">
     <thead>
         <tr>
             <th scope="col"><?= __('Order') ?></th>
             <th scope="col"><?= __('Question') ?></th>
-            <th scope="col"><?= __('Type') ?></th>
-            <th scope="col"><?= __('Section') ?></th>
+            <th scope="col"><?= __('Type') ?> </th>
             <th scope="col"><?= __('Active') ?></th>
             <th scope="col"><?= __('Required') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
     </thead>
     <tbody>
-    <?php foreach ($survey->get('survey_sections') as $section) : ?>
         <?php foreach ($section->get('survey_questions') as $surveyQuestion) : ?>
         <tr>
             <td><?= h($surveyQuestion->order) ?></td>
             <td><?= h($surveyQuestion->question) ?></td>
-            <td><?= h($questionTypes[$surveyQuestion->type]) ?></td>
-            <td><?= h($section->get('name')) ?> </td>
+            <td><?= h($questionTypes[$surveyQuestion->get('type')]) ?> </td>
             <td><?= h($surveyQuestion->active ? __('Yes') : __('No')) ?></td>
             <td><?= h($surveyQuestion->is_required ? __('Yes') : __('No')) ?></td>
             <td class="actions">
@@ -63,6 +52,5 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
             </td>
         </tr>
         <?php endforeach; ?>
-    <?php endforeach;?>
     </tbody>
 </table>
