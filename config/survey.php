@@ -8,6 +8,13 @@ return [
         ],
         'Options' => [
             'submitViaPreview' => true,
+            'entryTypes' => [
+                'received' => 'Received',
+                'in_review' => 'In Review',
+                'cancelled' => 'Cancelled',
+                'failed' => 'Failed',
+                'passed' => 'Passed'
+            ]
         ]
     ],
 ];
