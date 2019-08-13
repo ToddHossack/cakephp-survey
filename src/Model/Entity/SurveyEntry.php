@@ -34,17 +34,7 @@ class SurveyEntry extends Entity
      * @var array
      */
     protected $_accessible = [
-        'survey_id' => true,
-        'user_id' => true,
-        'status' => true,
-        'grade' => true,
-        'context' => true,
-        'comment' => true,
-        'submit_date' => true,
-        'created' => true,
-        'modified' => true,
-        'trashed' => true,
-        'survey' => true,
-        'user' => true
+        '*' => true,
+        'id' => false,
     ];
 }
