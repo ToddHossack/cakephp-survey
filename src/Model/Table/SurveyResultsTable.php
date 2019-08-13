@@ -69,10 +69,11 @@ class SurveyResultsTable extends Table
             'joinType' => 'INNER',
             'className' => 'Qobo/Survey.SurveyAnswers'
         ]);
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
+
+        $this->belongsTo('SurveyEntries', [
+            'foreignKey' => 'submit_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.Users'
+            'className' => 'Qobo/Survey.SurveyEntries',
         ]);
     }
 

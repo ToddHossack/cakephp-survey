@@ -24,10 +24,15 @@ class AddSurveyEntries extends AbstractMigration
             'null' => false,
         ])->addIndex(['survey_id']);
 
-        $table->addColumn('user_id', 'uuid', [
+        $table->addColumn('resource_id', 'uuid', [
             'default' => null,
-            'null' => false,
-        ])->addIndex(['user_id']);
+            'null' => true,
+        ]);
+
+        $table->addColumn('resource', 'string', [
+            'default' => null,
+            'null' => true,
+        ]);
 
         $table->addColumn('status', 'string', [
             'default' => null,
