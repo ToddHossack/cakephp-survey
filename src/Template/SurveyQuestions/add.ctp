@@ -15,7 +15,7 @@ $surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
 $options['title'] = __(
     '{0} &raquo; {1} &raquo; Add Question',
     $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
-    $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId]),
+    $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId])
 );
 ?>
 <section class="content-header">
