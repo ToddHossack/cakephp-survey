@@ -12,6 +12,7 @@ class SurveysShell extends Shell
 {
     public $tasks = [
         'Qobo/Survey.AddDefaultSections',
+        'Qobo/Survey.MoveSubmitsToEntries',
     ];
     /**
      * Manage the available sub-commands along with their arguments and help
@@ -30,6 +31,12 @@ class SurveysShell extends Shell
                 [
                     'help' => 'Add default sections to existing surveys',
                     'parser' => $this->AddDefaultSections->getOptionParser()
+                ]
+            )->addSubcommand(
+                'move_submits_to_entries',
+                [
+                    'help' => 'Pre-populating Survey Entry with all the submits that took place',
+                    'parser' => $this->MoveSubmitsToEntries->getOptionParser()
                 ]
             );
 

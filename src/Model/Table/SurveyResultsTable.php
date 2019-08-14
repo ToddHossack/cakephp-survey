@@ -59,11 +59,20 @@ class SurveyResultsTable extends Table
             'joinType' => 'INNER',
             'className' => 'Qobo/Survey.Surveys'
         ]);
+
+        //@FIXME: get rid off user s in survey_results
+        $this->belongsTo('Users', [
+            'foreignKey' => 'user_id',
+            'joinType' => 'INNER',
+            'className' => 'Qobo/Survey.Users'
+        ]);
+
         $this->belongsTo('SurveyQuestions', [
             'foreignKey' => 'survey_question_id',
             'joinType' => 'INNER',
             'className' => 'Qobo/Survey.SurveyQuestions'
         ]);
+
         $this->belongsTo('SurveyAnswers', [
             'foreignKey' => 'survey_answer_id',
             'joinType' => 'INNER',
