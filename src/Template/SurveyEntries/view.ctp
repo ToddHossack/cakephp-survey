@@ -13,8 +13,6 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
 
 $resourceUser = $surveyEntry->get('resource_user');
 
-// dd($surveyEntry);
-
 $options['title'] = __(
     '{0} &raquo; {1} &raquo; {2}',
     $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
@@ -50,8 +48,6 @@ $options['title'] = __(
     <?php $key = 0; ?>
      <?php foreach ($survey->get('survey_sections') as $section) : ?>
          <?php foreach ($section->get('survey_questions') as $question) : ?>
-         <div class="row">
-             <div class="col-md-6">
                  <div class="box box-info">
                      <div class="box-header with-border">
                          <h3 class="box-title <?= $question->get('is_required') ? 'required' : '' ?>">
@@ -62,19 +58,19 @@ $options['title'] = __(
                      <div class="box-body">
                          <?= $this->element('Qobo/Survey.Answers/' . $question->get('type'), ['entity' => $question, 'key' => $key, 'collapsed' => false, 'entry' => $surveyEntry]);?>
                      </div>
+                     <div class="box-footer">
+                         <div class="row">
+                             <div class="col-md-6">
+                                 <strong>Question Score: 1234</strong>
+                             </div>
+                             <div class="col-md-6">
+                                 <div class="pull-right">
+                                     <button class="btn btn-sm btn-warning"><i class="fa fa-exclamation-triangle"></i> <?= __('Review Grade') ?> </button>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
                  </div>
-             </div>
-             <div class="col-md-6">
-                <div class="box box-success">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><?= __('Question Grading') ?></h3>
-                    </div>
-                    <div class="box-body">
-                        1111
-                    </div>
-                </div>
-             </div>
-         </div> <!-- .row -->
          <?php $key++; ?>
          <?php endforeach; ?>
      <?php endforeach; ?>
