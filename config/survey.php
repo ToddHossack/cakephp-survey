@@ -8,10 +8,11 @@ return [
         ],
         'Options' => [
             'submitViaPreview' => true,
-            'entryTypes' => [
+            'statuses' => [
+                'sent' => 'Sent',
                 'received' => 'Received',
                 'in_review' => 'In Review',
-                'cancelled' => 'Cancelled',
+                'rejected' => 'Rejected',
                 'failed' => 'Failed',
                 'passed' => 'Passed'
             ]
