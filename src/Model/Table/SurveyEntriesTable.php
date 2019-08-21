@@ -51,6 +51,12 @@ class SurveyEntriesTable extends Table
             'joinType' => 'INNER',
             'className' => 'Qobo/Survey.Surveys'
         ]);
+
+        $this->hasMany('SurveyResults', [
+            'foreignKey' => 'submit_id',
+            'joinType' => 'INNER',
+            'className' => 'Qobo/Survey.SurveyResults',
+        ]);
     }
 
     /**
@@ -124,7 +130,7 @@ class SurveyEntriesTable extends Table
     public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) : void
     {
         if (is_null($entity->get('status'))) {
-            $entity->set('status', 'in_review');
+            $entity->set('status', 'received');
         }
 
         if (is_null($entity->get('gradde'))) {

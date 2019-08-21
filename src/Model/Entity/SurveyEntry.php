@@ -2,6 +2,8 @@
 namespace Qobo\Survey\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
+use Cake\ORM\Table;
 
 /**
  * SurveyEntry Entity
@@ -35,5 +37,33 @@ class SurveyEntry extends Entity
      */
     protected $_accessible = [
         '*' => true,
+        'id' => false,
     ];
+
+    /**
+     * Return array of the resource, that contains it's url and displayfield
+     *
+     * @return mixed[] $result
+     */
+    public function _getResourceUser() : array
+    {
+        $result = [];
+        $table = TableRegistry::getTableLocator()->get($this->get('resource'));
+
+        if ($table instanceof Table) {
+            $user = $table->get($this->get('resource_id'));
+        }
+
+        $result = [
+            'displayField' => $user->get($table->displayField()),
+            'url' => [
+                'plugin' => false,
+                'controller' => $this->get('resource'),
+                'action' => 'view',
+                $this->get('resource_id')
+            ]
+        ];
+
+        return $result;
+    }
 }
