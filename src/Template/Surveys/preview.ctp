@@ -27,65 +27,74 @@ $count = 1;
         <div class="col-xs-12 col-md-6">
             <h4><?= $options['title'] ?></h4>
         </div>
-        <div class="col-xs-12 col-md-6">
-            <div class="pull-right">
-            <div class="btn-group btn-group-sm" role="group">
-            </div>
-            </div>
-        </div>
     </div>
 </section>
 
 <section class="content">
-<?= $this->Form->create($survey); ?>
-<?= $this->Form->hidden('submit_id', ['value' => Text::uuid()]) ?>
-<?= $this->Form->hidden('submit_date', ['value' => date('Y-m-d H:i:s', time())]) ?>
-<div class="box-group" id="accordion">
-<?php foreach ($survey->get('survey_sections') as $k => $section) :?>
-<?php
-    if (! count($section->get('survey_questions'))) {
-        continue;
-    }
-?>
-<div class="panel box box-primary">
-    <div class="box-header with-border">
-        <h4 class="box-title">
-            <?= $this->Html->link(
-                $section->get('name'),
-                '#'. $section->get('id'),
-                [
-                    'data-toggle' => 'collapse',
-                    'data-parent' => '#accordion',
-                    'aria-expanded' => 'false',
-                ]
-            ) ?>
-        </h4>
-    </div>
-    <div id="<?= $section->get('id')?>" class="panel-collapse collapse <?= ($k == 0) ? 'in' : '' ?>" aria-expanded="true">
-        <div class="box-body">
-            <?php foreach ($section->get('survey_questions') as $k => $question) : ?>
-                <div class="box box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><?= $count ?>. <?= $question->get('question');?></h3>
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                                <i class="fa fa-minus"></i>
-                            </button>
+    <?php
+        echo $this->Form->create($survey, ['action' => 'submit']);
+        echo $this->Form->hidden('SurveyEntries.survey_id', ['value' => $survey->get('id')]);
+        echo $this->Form->hidden('SurveyEntries.submit_date', ['value' => date('Y-m-d H:i:s', time())]);
+
+        /** $user variable derives from AppController of application */
+        echo $this->Form->hidden('SurveyEntries.resource_id', ['value' => $user['id']]);
+        echo $this->Form->hidden('SurveyEntries.resource', ['value' => 'Users']);
+    ?>
+
+    <div class="nav-tabs-custom">
+
+        <ul class="nav nav-tabs">
+        <?php foreach ($survey->get('survey_sections') as $k => $section) : ?>
+           <?php
+               if (! count($section->get('survey_questions'))) {
+                   continue;
+               }
+           ?>
+           <li class="<?= $k == 0 ? 'active' : ''?>">
+               <?= $this->Html->link(
+                   $count . '. ' . $section->get('name'),
+                   '#'. $section->get('id'),
+                   [
+                       'data-toggle' => 'tab',
+                       'aria-expanded' => 'true'
+                   ]
+                ) ?>
+           </li>
+        <?php $count++; ?>
+        <?php endforeach; ?>
+        </ul>
+
+        <?php $qcount = 1; ?>
+        <div class="tab-content">
+            <?php foreach ($survey->get('survey_sections') as $k => $section) :?>
+            <?php
+                if (! count($section->get('survey_questions'))) {
+                    continue;
+                }
+            ?>
+            <div class="tab-pane <?= $k == 0 ? 'active' : '' ?>" id="<?= $section->get('id') ?>">
+                <?php foreach ($section->get('survey_questions') as $k => $question) : ?>
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title <?= $question->get('is_required') ? 'required' : '' ?>">
+                                <?= $qcount ?>. <?= $question->get('question');?>
+                                <label></label>
+                            </h3>
+                        </div>
+                        <div class="box-body">
+                            <?= $this->element('Qobo/Survey.Answers/' . $question->get('type'), ['entity' => $question, 'key' => $k, 'collapsed' => false]);?>
                         </div>
                     </div>
-                    <div class="box-body">
-                        <?= $this->element('Qobo/Survey.Answers/' . $question->type, ['entity' => $question, 'key' => $k, 'collapsed' => false]);?>
-                    </div>
-                </div>
+                <?php $qcount++; ?>
+                <?php endforeach; ?>
+            </div>
+
             <?php endforeach; ?>
         </div>
     </div>
-</div>
 
-<?php endforeach; ?>
-</div>
-<?php if (Configure::read('Survey.Options.submitViaPreview')) : ?>
-    <?= $this->Form->submit(__('Submit')); ?>
-<?php endif; ?>
-<?= $this->Form->end();?>
+    <?php if (Configure::read('Survey.Options.submitViaPreview')) : ?>
+        <?= $this->Form->submit(__('Submit')); ?>
+    <?php endif; ?>
+    <?= $this->Form->end();?>
 </section>
