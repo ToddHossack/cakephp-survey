@@ -43,8 +43,7 @@ class SurveyEntriesController extends AppController
         $surveyEntry = $this->SurveyEntries->get($id, [
             'contain' => ['SurveyResults'],
         ]);
-        $survey = $this->Surveys->getSurveyData($surveyEntry->get('survey_id'));
-
+        $survey = $this->Surveys->getSurveyData($surveyEntry->get('survey_id'), true);
         $this->set(compact('surveyEntry', 'survey'));
     }
 
