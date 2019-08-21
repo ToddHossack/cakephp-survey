@@ -32,9 +32,7 @@ $statuses = Configure::read('Survey.Options.statuses');
 <table class="table table-hover table-condensed table-vertical-align table-datatable" width="100%">
     <thead>
         <tr>
-            <th scope="col"><?= __('Survey ID') ?></th>
-            <th scope="col"><?= __('Resource') ?></th>
-            <th scope="col"><?= __('Resource ID') ?></th>
+            <th scope="col"><?= __('Origin') ?> </th>
             <th scope="col"><?= __('Status') ?></th>
             <th scope="col"><?= __('Grade') ?></th>
             <th scope="col"><?= __('Submit Date') ?></th>
@@ -43,19 +41,22 @@ $statuses = Configure::read('Survey.Options.statuses');
     </thead>
     <tbody>
         <?php foreach ($entries as $item) : ?>
+            <?php
+                $resourceUser = $item->get('resource_user');
+
+                if (!empty($resourceUser)) {
+                    $resourceUrl = $this->Html->link($resourceUser['displayField'], $resourceUser['url']);
+                }
+            ?>
              <tr>
-                <td><?= h($item->get('survey_id')) ?></td>
-                <td><?= h($item->get('resource')) ?></td>
-                <td><?= h($item->get('resource_id')) ?></td>
+                <td><?= $resourceUrl ?></td>
                 <td><?= in_array($item->get('status'), array_keys($statuses)) ? $statuses[$item->get('status')] : $item->get('status') ?></td>
                 <td><?= h($item->get('grade')) ?></td>
                 <td><?= h($item->get('submit_date')->i18nFormat('yyyy-MM-dd HH:mm:ss')) ?></td>
                 <td class="actions">
                     <div class="btn-group btn-group-xs">
-                    <?php if (empty($survey->get('pubish_date'))) : ?>
-                        <?= $this->Html->link('<i class="fa fa-eye"></i>', ['controller' => 'SurveyEntries', 'action' => 'view', $surveyId, $item->get('id')], ['escape' => false, 'class' => 'btn btn-default']) ?>
-                        <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['controller' => 'SurveyEntries', 'action' => 'edit', $surveyId, $item->get('id')], ['escape' => false, 'class' => 'btn btn-default']) ?>
-                    <?php endif;?>
+                        <?= $this->Html->link('<i class="fa fa-eye"></i>', ['controller' => 'SurveyEntries', 'action' => 'view', $item->get('id')], ['escape' => false, 'class' => 'btn btn-default']) ?>
+                        <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['controller' => 'SurveyEntries', 'action' => 'edit', $item->get('id')], ['escape' => false, 'class' => 'btn btn-default']) ?>
                     </div>
                 </td>
             </tr>
