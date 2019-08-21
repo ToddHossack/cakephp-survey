@@ -1,6 +1,9 @@
 <?php
 namespace Qobo\Survey\Model\Table;
 
+use ArrayObject;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -104,5 +107,28 @@ class SurveyEntriesTable extends Table
         $rules->add($rules->existsIn(['survey_id'], 'Surveys'));
 
         return $rules;
+    }
+
+    /**
+     * BeforeSave method
+     *
+     * Any time we receive a new submit of survey we should make sure that
+     * it has general status/grade.
+     *
+     * @param \Cake\Event\Event $event
+     * @param \Cake\Datasource\EntityInterface $entity
+     * @param \ArrayObject $options
+     *
+     * @return void
+     */
+    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) : void
+    {
+        if (is_null($entity->get('status'))) {
+            $entity->set('status', 'in_review');
+        }
+
+        if (is_null($entity->get('gradde'))) {
+            $entity->set('grade', 0);
+        }
     }
 }
