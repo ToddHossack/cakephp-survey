@@ -63,7 +63,7 @@ $count = 1;
         <?php $count++; ?>
         <?php endforeach; ?>
         </ul>
-
+        <?php $count = 0; ?>
         <?php $qcount = 1; ?>
         <div class="tab-content">
             <?php foreach ($survey->get('survey_sections') as $k => $section) :?>
@@ -82,10 +82,11 @@ $count = 1;
                             </h3>
                         </div>
                         <div class="box-body">
-                            <?= $this->element('Qobo/Survey.Answers/' . $question->get('type'), ['entity' => $question, 'key' => $k, 'collapsed' => false]);?>
+                            <?= $this->element('Qobo/Survey.Answers/' . $question->get('type'), ['entity' => $question, 'key' => $count, 'collapsed' => false]);?>
                         </div>
                     </div>
                 <?php $qcount++; ?>
+                <?php $count++; ?>
                 <?php endforeach; ?>
             </div>
 
