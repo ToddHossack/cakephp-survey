@@ -61,7 +61,7 @@ $options['title'] = __(
                      <div class="box-footer">
                          <div class="row">
                              <div class="col-md-6">
-                                 <strong>Question Score: 1234</strong>
+                                 <strong><?= __('Question Score: {0}', $this->Survey->getQuestionScore($question, $surveyEntry->get('id'))) ?></strong>
                              </div>
                              <div class="col-md-6">
                                  <div class="pull-right">
