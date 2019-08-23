@@ -98,6 +98,7 @@ class SurveysController extends AppController
     public function view(?string $id)
     {
         $questionTypes = $this->SurveyQuestions->getQuestionTypes();
+        /** @var \Qobo\Survey\Model\Entity\Survey $survey */
         $survey = $this->Surveys->getSurveyData($id, true);
 
         //@TODO: offload it to API based dataTables call
@@ -318,7 +319,7 @@ class SurveysController extends AppController
     public function submit()
     {
         $this->request->allowMethod(['post', 'put', 'patch']);
-
+        $questions = [];
         $response = [
             'data' => [],
             'errors' => [],
@@ -332,11 +333,18 @@ class SurveysController extends AppController
             $questions = $data['SurveyResults'];
         }
 
+        if (empty($questions)) {
+            $this->Flash->error((string)__('No questions submitted to survey'));
+
+            return $this->redirect($this->referer());
+        }
+
         $entry = $this->SurveyEntries->newEntity();
         $this->SurveyEntries->patchEntity($entry, $data);
 
         $entry = $this->SurveyEntries->save($entry);
         Assert::isInstanceOf($entry, SurveyEntry::class);
+
 
         $saved = [];
         foreach ($questions as $k => $item) {
