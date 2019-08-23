@@ -12,6 +12,7 @@
 use Cake\Core\Configure;
 use Cake\Utility\Text;
 
+$userId = $this->request->getSession()->read('Auth.User.id');
 $surveyId = empty($survey->get('slug')) ? $survey->get('id') : $survey->get('slug');
 
 $options['title'] = __(
@@ -32,12 +33,12 @@ $count = 1;
 
 <section class="content">
     <?php
-        echo $this->Form->create($survey, ['action' => 'submit']);
+        echo $this->Form->create($survey, ['url' => ['action' => 'submit']]);
         echo $this->Form->hidden('SurveyEntries.survey_id', ['value' => $survey->get('id')]);
         echo $this->Form->hidden('SurveyEntries.submit_date', ['value' => date('Y-m-d H:i:s', time())]);
 
         /** $user variable derives from AppController of application */
-        echo $this->Form->hidden('SurveyEntries.resource_id', ['value' => $user['id']]);
+        echo $this->Form->hidden('SurveyEntries.resource_id', ['value' => $userId]);
         echo $this->Form->hidden('SurveyEntries.resource', ['value' => 'Users']);
     ?>
 

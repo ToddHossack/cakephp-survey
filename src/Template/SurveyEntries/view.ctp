@@ -28,11 +28,6 @@ $options['title'] = __(
         <div class="col-xs-12 col-md-6">
             <div class="pull-right">
             <div class="btn-group btn-group-sm" role="group">
-                <?= $this->Html->link(
-                        '<i class="fa fa-pencil"></i> ' . __('Edit'),
-                        ['plugin' => 'Qobo/Survey', 'controller' => 'SurveyEntries', 'action' => 'edit', $surveyEntry->get('id')],
-                        ['class' => 'btn btn-default', 'escape' => false]
-                    ); ?>
                 <?= $this->Form->postLink(
                     '<i class="fa fa-trash"></i> ' . __('Delete'),
                     ['plugin' => 'Qobo/Survey', 'controller' => 'SurveyEntries', 'action' => 'delete', $surveyEntry->get('id')],
@@ -65,7 +60,18 @@ $options['title'] = __(
                              </div>
                              <div class="col-md-6">
                                  <div class="pull-right">
-                                     <button class="btn btn-sm btn-warning"><i class="fa fa-exclamation-triangle"></i> <?= __('Review Grade') ?> </button>
+                                     <?= $this->Html->link(
+                                         (string)__('Review Grade'),
+                                         [
+                                             'controller' => 'SurveyEntries',
+                                             'action' => 'review',
+                                             $surveyEntry->get('id'),
+                                             $question->get('id')
+                                         ],
+                                         [
+                                             'class' => 'btn btn-sm btn-warning'
+                                         ]
+                                     ) ?>
                                  </div>
                              </div>
                          </div>

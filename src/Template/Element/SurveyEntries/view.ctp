@@ -56,7 +56,6 @@ $statuses = Configure::read('Survey.Options.statuses');
                 <td class="actions">
                     <div class="btn-group btn-group-xs">
                         <?= $this->Html->link('<i class="fa fa-eye"></i>', ['controller' => 'SurveyEntries', 'action' => 'view', $item->get('id')], ['escape' => false, 'class' => 'btn btn-default']) ?>
-                        <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['controller' => 'SurveyEntries', 'action' => 'edit', $item->get('id')], ['escape' => false, 'class' => 'btn btn-default']) ?>
                     </div>
                 </td>
             </tr>
