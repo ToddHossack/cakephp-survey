@@ -345,7 +345,6 @@ class SurveysController extends AppController
         $entry = $this->SurveyEntries->save($entry);
         Assert::isInstanceOf($entry, SurveyEntry::class);
 
-
         $saved = [];
         foreach ($questions as $k => $item) {
             if (!is_array($item['survey_answer_id'])) {
