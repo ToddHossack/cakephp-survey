@@ -14,6 +14,7 @@ class SurveysControllerTest extends IntegrationTestCase
         'plugin.qobo/survey.survey_results',
         'plugin.qobo/survey.survey_questions',
         'plugin.qobo/survey.survey_answers',
+        'plugin.qobo/survey.survey_entries',
         'plugin.qobo/survey.survey_sections',
         'plugin.qobo/survey.surveys',
         'plugin.qobo/survey.users',
