@@ -7,12 +7,15 @@ use Cake\Console\Shell;
  * Surveys shell command.
  *
  * @property \Qobo\Survey\Shell\Task\AddDefaultSectionsTask $AddDefaultSections
+ * @property \Qobo\Survey\Shell\Task\MoveSubmitsToEntriesTask $MoveSubmitsToEntries
+ * @property \Qobo\Survey\Shell\Task\MigrateScoresToSurveyResultsTask $MigrateScoresToSurveyResults
  */
 class SurveysShell extends Shell
 {
     public $tasks = [
         'Qobo/Survey.AddDefaultSections',
         'Qobo/Survey.MoveSubmitsToEntries',
+        'Qobo/Survey.MigrateScoresToSurveyResults'
     ];
     /**
      * Manage the available sub-commands along with their arguments and help
@@ -37,6 +40,12 @@ class SurveysShell extends Shell
                 [
                     'help' => 'Pre-populating Survey Entry with all the submits that took place',
                     'parser' => $this->MoveSubmitsToEntries->getOptionParser()
+                ]
+            )->addSubcommand(
+                'migrate_scores_to_survey_results',
+                [
+                    'help' => 'Migrate score values to survey_results records',
+                    'parser' => $this->MigrateScoresToSurveyResults->getOptionParser()
                 ]
             );
 

@@ -16,6 +16,9 @@ use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Qobo\Survey\Controller\AppController;
 use Qobo\Survey\Event\EventName;
+use Qobo\Survey\Model\Entity\SurveyEntry;
+use Qobo\Survey\Model\Table\SurveyQuestionsTable;
+use Qobo\Survey\Model\Table\SurveyResultsTable;
 use Webmozart\Assert\Assert;
 
 /**
@@ -23,11 +26,16 @@ use Webmozart\Assert\Assert;
  *
  * @property \Qobo\Survey\Model\Table\SurveysTable $Surveys
  * @property \Qobo\Survey\Model\Table\SurveyAnswersTable $SurveyAnswers
+ * @property \Qobo\Survey\Model\Table\SurveyEntriesTable $SurveyEntries
+ * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions
+ * @property \Qobo\Survey\Model\Table\SurveyResultsTable $SurveyResults
  *
  * @method \Qobo\Survey\Model\Entity\Survey[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class SurveysController extends AppController
 {
+    protected $SurveyEntries;
+
     protected $SurveyQuestions;
 
     protected $SurveyResults;
@@ -48,6 +56,10 @@ class SurveysController extends AppController
         /** @var \Qobo\Survey\Model\Table\SurveyResultsTable $SurveyResults */
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
         $this->SurveyResults = $table;
+
+        /** @var \Qobo\Survey\Model\Table\SurveyEntriesTable $SurveyEntries */
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntries');
+        $this->SurveyEntries = $table;
     }
 
     /**
@@ -86,25 +98,18 @@ class SurveysController extends AppController
     public function view(?string $id)
     {
         $questionTypes = $this->SurveyQuestions->getQuestionTypes();
+        /** @var \Qobo\Survey\Model\Entity\Survey $survey */
         $survey = $this->Surveys->getSurveyData($id, true);
 
-        $event = new Event((string)EventName::VIEW_SURVEY_RESULTS(), $this, [
-            'user' => $this->Auth->user(),
-            'survey' => $survey,
-            'data' => [],
-        ]);
+        //@TODO: offload it to API based dataTables call
+        $query = $this->SurveyEntries->find()
+            ->where([
+                'survey_id' => $survey->get('id')
+            ])
+            ->order(['submit_date' => 'DESC']);
+        $entries = $query->all();
 
-        $this->getEventManager()->dispatch($event);
-
-        if (!empty($event->result)) {
-            $submits = $event->result;
-        } else {
-            if (! empty($survey)) {
-                $submits = $this->SurveyResults->getSubmits($survey->get('id'));
-            }
-        }
-
-        $this->set(compact('survey', 'questionTypes', 'submits'));
+        $this->set(compact('survey', 'questionTypes', 'submits', 'entries'));
     }
 
     /**
@@ -168,43 +173,6 @@ class SurveysController extends AppController
         $survey = $this->Surveys->getSurveyData($id, true);
         Assert::isInstanceOf($survey, EntityInterface::class);
 
-        if ($this->request->is(['post', 'put', 'patch'])) {
-            $requestData = (array)$this->request->getData();
-
-            if (empty($requestData['SurveyResults'])) {
-                $this->Flash->error((string)__('Please submit your survey answers'));
-
-                return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);
-            }
-
-            foreach ($requestData['SurveyResults'] as $k => $item) {
-                $results = $this->SurveyResults->getResults($item, [
-                    'user' => $this->Auth->user(),
-                    'survey' => $survey,
-                    'data' => $requestData
-                ]);
-
-                $data = array_merge($data, $results);
-            }
-            foreach ($data as $k => $surveyResult) {
-                $saved[] = $this->SurveyResults->saveData($surveyResult);
-            }
-
-            $failed = array_filter($saved, function ($item) {
-                if (!$item['status']) {
-                    return $item;
-                }
-            });
-
-            if (empty($failed)) {
-                $this->Flash->success((string)__('Saved questionnaire results'));
-
-                return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $id]);
-            } else {
-                $this->Flash->success((string)__('Some errors took place during result savings'));
-            }
-        }
-
         $this->set(compact('survey'));
     }
 
@@ -237,6 +205,7 @@ class SurveysController extends AppController
             return $this->redirect(['action' => 'view', $entity->get('id')]);
         }
     }
+
     /**
      * Add method
      *
@@ -340,5 +309,86 @@ class SurveysController extends AppController
         }
 
         $this->set(compact('survey', 'surveyResults'));
+    }
+
+    /**
+     * Submit action.
+     *
+     * @return \Cake\Http\Response|void|null
+     */
+    public function submit()
+    {
+        $this->request->allowMethod(['post', 'put', 'patch']);
+        $questions = [];
+        $response = [
+            'data' => [],
+            'errors' => [],
+            'status' => false,
+        ];
+
+        $data = $this->request->getData();
+        Assert::isArray($data);
+
+        if (!empty($data['SurveyResults'])) {
+            $questions = $data['SurveyResults'];
+        }
+
+        if (empty($questions)) {
+            $this->Flash->error((string)__('No questions submitted to survey'));
+
+            return $this->redirect($this->referer());
+        }
+
+        $entry = $this->SurveyEntries->newEntity();
+        $this->SurveyEntries->patchEntity($entry, $data);
+
+        $entry = $this->SurveyEntries->save($entry);
+        Assert::isInstanceOf($entry, SurveyEntry::class);
+
+        $saved = [];
+        foreach ($questions as $k => $item) {
+            if (!is_array($item['survey_answer_id'])) {
+                $entity = $this->SurveyResults->newEntity();
+
+                $entity->set('submit_id', $entry->get('id'));
+                $entity->set('submit_date', $entry->get('submit_date'));
+                $entity->set('survey_id', $entry->get('survey_id'));
+                $entity->set('survey_question_id', $item['survey_question_id']);
+                $entity->set('result', (!empty($item['result']) ? $item['result'] : null));
+                $entity->set('survey_answer_id', $item['survey_answer_id']);
+                $result = $this->SurveyResults->save($entity);
+                if ($result) {
+                    $saved[] = $result;
+                }
+            } else {
+                foreach ($item['survey_answer_id'] as $answer) {
+                    $entity = $this->SurveyResults->newEntity();
+                    $entity->set('submit_id', $entry->get('id'));
+                    $entity->set('submit_date', $entry->get('submit_date'));
+                    $entity->set('survey_id', $entry->get('survey_id'));
+                    $entity->set('survey_question_id', $item['survey_question_id']);
+                    $entity->set('result', (!empty($item['result']) ? $item['result'] : null));
+                    $entity->set('survey_answer_id', $answer);
+                    $result = $this->SurveyResults->save($entity);
+
+                    if ($result) {
+                        $saved[] = $result;
+                    }
+                }
+            }
+        }
+
+        if (!empty($saved)) {
+            $response['data'] = $saved;
+            $response['status'] = true;
+        }
+
+        $this->set(compact('response'));
+        $this->set('_serialize', 'response');
+
+        //@FIXME: remove this redirect after refactoring
+        if (!$this->request->is('ajax')) {
+            return $this->redirect($this->referer());
+        }
     }
 }
