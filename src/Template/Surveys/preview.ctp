@@ -33,7 +33,7 @@ $count = 1;
 
 <section class="content">
     <?php
-        echo $this->Form->create($survey, ['url' => ['action' => 'preview']]);
+        echo $this->Form->create($survey, ['url' => ['action' => 'submit']]);
         echo $this->Form->hidden('SurveyEntries.survey_id', ['value' => $survey->get('id')]);
         echo $this->Form->hidden('SurveyEntries.submit_date', ['value' => date('Y-m-d H:i:s', time())]);
 
