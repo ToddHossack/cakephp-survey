@@ -66,10 +66,9 @@ class MigrateScoresToSurveyResultsTask extends Shell
         }
 
         $entries = $this->SurveyEntries->find()
-            ->where(['id' => 'e2032854-4870-49b5-af94-5375afb0e208'])
             ->contain(['SurveyResults']);
 
-        foreach ($entries->all() as $entry) {
+        foreach ($entries as $entry) {
             $tree = $this->getSurveyResultsTree($entry);
 
             if (empty($tree)) {
