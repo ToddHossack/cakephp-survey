@@ -34,11 +34,11 @@ class SurveyEntriesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Survey Entry id.
-     * @return \Cake\Http\Response|void
+     * @param string $id Survey Entry id.
+     * @return \Cake\Http\Response|void|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view(string $id)
     {
         $surveyEntry = $this->SurveyEntries->get($id, [
             'contain' => ['SurveyResults'],
@@ -50,23 +50,23 @@ class SurveyEntriesController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id Survey Entry id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @param string $id Survey Entry id.
+     * @return \Cake\Http\Response|void|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit(string $id)
     {
         $surveyEntry = $this->SurveyEntries->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $surveyEntry = $this->SurveyEntries->patchEntity($surveyEntry, $this->request->getData());
+            $surveyEntry = $this->SurveyEntries->patchEntity($surveyEntry, (array)$this->request->getData());
             if ($this->SurveyEntries->save($surveyEntry)) {
-                $this->Flash->success(__('The survey entry has been saved.'));
+                $this->Flash->success((string)__('The survey entry has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The survey entry could not be saved. Please, try again.'));
+            $this->Flash->error((string)__('The survey entry could not be saved. Please, try again.'));
         }
         $surveys = $this->SurveyEntries->Surveys->find('list', ['limit' => 200]);
         $this->set(compact('surveyEntry', 'surveys'));
@@ -75,18 +75,18 @@ class SurveyEntriesController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id Survey Entry id.
-     * @return \Cake\Http\Response|null Redirects to index.
+     * @param string $id Survey Entry id.
+     * @return \Cake\Http\Response|void|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete(string $id)
     {
         $this->request->allowMethod(['post', 'delete']);
         $surveyEntry = $this->SurveyEntries->get($id);
         if ($this->SurveyEntries->delete($surveyEntry)) {
-            $this->Flash->success(__('The survey entry has been deleted.'));
+            $this->Flash->success((string)__('The survey entry has been deleted.'));
         } else {
-            $this->Flash->error(__('The survey entry could not be deleted. Please, try again.'));
+            $this->Flash->error((string)__('The survey entry could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
