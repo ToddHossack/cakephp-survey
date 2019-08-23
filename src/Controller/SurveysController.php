@@ -15,10 +15,10 @@ use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 use Qobo\Survey\Controller\AppController;
+use Qobo\Survey\Event\EventName;
 use Qobo\Survey\Model\Entity\SurveyEntry;
 use Qobo\Survey\Model\Table\SurveyQuestionsTable;
 use Qobo\Survey\Model\Table\SurveyResultsTable;
-use Qobo\Survey\Event\EventName;
 use Webmozart\Assert\Assert;
 
 /**
@@ -374,7 +374,6 @@ class SurveysController extends AppController
         if (!empty($saved)) {
             $response['data'] = $saved;
             $response['status'] = true;
-
         }
 
         $this->set(compact('response'));
