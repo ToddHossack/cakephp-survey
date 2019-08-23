@@ -7,6 +7,8 @@ use Cake\Console\Shell;
  * Surveys shell command.
  *
  * @property \Qobo\Survey\Shell\Task\AddDefaultSectionsTask $AddDefaultSections
+ * @property \Qobo\Survey\Shell\Task\MoveSubmitsToEntriesTask $MoveSubmitsToEntries
+ * @property \Qobo\Survey\Shell\Task\MigrateScoresToSurveyResultsTask $MigrateScoresToSurveyResults
  */
 class SurveysShell extends Shell
 {

@@ -64,8 +64,6 @@ class MoveSubmitsToEntriesTask extends Shell
 
                 if ($saved) {
                     $count++;
-                } else {
-                    $this->out(print_r($entry->getErrors(), 1));
                 }
             }
         }

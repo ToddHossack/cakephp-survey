@@ -38,7 +38,9 @@ class SurveyEntriesTableTest extends TestCase
     {
         parent::setUp();
         $config = TableRegistry::getTableLocator()->exists('SurveyEntries') ? [] : ['className' => SurveyEntriesTable::class];
-        $this->SurveyEntries = TableRegistry::getTableLocator()->get('SurveyEntries', $config);
+        /** @var \Qobo\Survey\Model\Table\SurveyEntriesTable $table */
+        $table = TableRegistry::getTableLocator()->get('SurveyEntries', $config);
+        $this->SurveyEntries = $table;
     }
 
     /**
@@ -58,7 +60,7 @@ class SurveyEntriesTableTest extends TestCase
      *
      * @return void
      */
-    public function testInitialize()
+    public function testInitialize() : void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
@@ -68,7 +70,7 @@ class SurveyEntriesTableTest extends TestCase
      *
      * @return void
      */
-    public function testValidationDefault()
+    public function testValidationDefault() : void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
@@ -78,7 +80,7 @@ class SurveyEntriesTableTest extends TestCase
      *
      * @return void
      */
-    public function testBuildRules()
+    public function testBuildRules() : void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
