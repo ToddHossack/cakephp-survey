@@ -44,4 +44,52 @@ class SurveyQuestion extends Entity
         '*' => true,
         'id' => false,
     ];
+
+    /**
+     * Get Score of the question based on Survey Entry id
+     *
+     * @param string $id of the survey entries instance
+     *
+     * @return int|float $result;
+     */
+    public function getScorePerEntry(string $id)
+    {
+        $result = 0;
+
+        // `scores` assigned to answers.
+        if (empty($this->get('survey_answers'))) {
+            return $result;
+        }
+
+        $map = [];
+
+        foreach ($this->get('survey_answers') as $answer) {
+            $map[$answer->get('id')] = [
+                'score' => $answer->get('score'),
+                'quantity' => 0
+            ];
+        }
+
+        foreach ($this->get('survey_answers') as $answer) {
+            if (empty($answer->get('survey_results'))) {
+                continue;
+            }
+
+            foreach ($answer->get('survey_results') as $item) {
+                if ($item->get('submit_id') !== $id) {
+                    continue;
+                }
+
+                if ($item->get('survey_answer_id') == $answer->get('id')) {
+                    $map[$item->get('survey_answer_id')]['quantity'] += 1;
+                }
+            }
+        }
+
+        foreach ($map as $answerID => $info) {
+            $result += ($info['score'] * $info['quantity']);
+        }
+
+        return $result;
+    }
 }
