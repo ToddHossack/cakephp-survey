@@ -12,10 +12,13 @@
 namespace Qobo\Survey\Model\Table;
 
 use Cake\Datasource\ResultSetInterface;
+use Cake\Log\Log;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
+use Qobo\Survey\Model\Entity\SurveyEntry;
 
 /**
  * SurveyResults Model
@@ -170,35 +173,6 @@ class SurveyResultsTable extends Table
     }
 
     /**
-     * Saving Survey Results
-     *
-     * @param mixed[] $data containing results info
-     * @return mixed[] $result containing save status
-     */
-    public function saveData(array $data = []): array
-    {
-        $result = [
-            'status' => false,
-            'entity' => null,
-        ];
-        $entity = $this->newEntity();
-        foreach ($data as $field => $value) {
-            $entity->set($field, $value);
-        }
-
-        $saved = $this->save($entity);
-
-        if ($saved) {
-            $result['status'] = true;
-            $result['entity'] = $saved;
-        } else {
-            $result['entity'] = $entity;
-        }
-
-        return $result;
-    }
-
-    /**
      * Get Survey Results group by submit_id
      *
      * @param string $surveyId with primary key
@@ -256,6 +230,54 @@ class SurveyResultsTable extends Table
 
         foreach ($query->all() as $item) {
             $result += (int)$item->get('survey_answer')->get('score');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Save Results Entity
+     *
+     * @param \Qobo\Survey\Model\Entity\SurveyEntry $entry instance
+     * @param mixed[] $data with post data
+     *
+     * @return \Qobo\Survey\Model\Entity\SurveyResults|bool $result
+     */
+    public function saveResultsEntity(SurveyEntry $entry, array $data)
+    {
+        $result = false;
+        $score = 0;
+        if (empty($data)) {
+            return $result;
+        }
+
+        $answersTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyAnswers');
+
+        $answerEntity = $answersTable->find()
+            ->enableHydration(true)
+            ->where([
+                'id' => $data['survey_answer_id']
+            ])
+            ->first();
+
+        if ($answerEntity) {
+            $score = $answerEntity->get('score');
+        }
+
+        $entity = $this->newEntity();
+
+        $entity->set('submit_id', $entry->get('id'));
+        $entity->set('submit_date', $entry->get('submit_date'));
+        $entity->set('survey_id', $entry->get('survey_id'));
+        $entity->set('survey_question_id', $data['survey_question_id']);
+        $entity->set('result', (!empty($data['result']) ? $data['result'] : null));
+        $entity->set('survey_answer_id', $data['survey_answer_id']);
+        $entity->set('score', $score);
+
+        $result = $this->save($entity);
+
+        if (!$result) {
+            Log::error($entity->getErrors());
         }
 
         return $result;

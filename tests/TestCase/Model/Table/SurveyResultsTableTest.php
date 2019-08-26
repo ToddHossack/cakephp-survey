@@ -124,28 +124,6 @@ class SurveyResultsTableTest extends TestCase
         ];
     }
 
-    public function testSaveData(): void
-    {
-        /**
-         * @var \Cake\Datasource\EntityInterface
-         */
-        $survey = $this->Surveys->getSurveyData('survey_-_1', true);
-
-        $this->assertInstanceOf(EntityInterface::class, $survey);
-
-        $data = [
-            'user_id' => '00000000-0000-0000-0000-000000000001',
-            'survey_id' => $survey->get('id'),
-            'survey_question_id' => $survey->get('survey_sections')[0]->get('survey_questions')[0]->get('id'),
-            'survey_answer_id' => $survey->get('survey_sections')[0]->get('survey_questions')[0]->get('survey_answers')[0]->get('id'),
-            'result' => 'w00t',
-        ];
-
-        $result = $this->SurveyResults->saveData($data);
-        $this->assertEquals($result['status'], true);
-        $this->assertEquals($result['entity']->result, $data['result']);
-    }
-
     public function testSaveDataErrors(): void
     {
         /**
