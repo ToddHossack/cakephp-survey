@@ -11,6 +11,7 @@
  */
 namespace Qobo\Survey\Model\Table;
 
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -140,14 +141,7 @@ class SurveyQuestionsTable extends Table
      */
     public function getQuestionTypes(): array
     {
-        return [
-            'input' => __('Short Text or Number'),
-            'date' => __('Date'),
-            'select' => __('Dropdown'),
-            'checkbox' => __('Multiple Checkboxes'),
-            'textarea' => __('Paragraph'),
-            'radio' => __('Radio Buttons'),
-        ];
+        return Configure::read('Survey.Options.questions');
     }
 
     /**

@@ -15,7 +15,15 @@ return [
                 'rejected' => 'Rejected',
                 'failed' => 'Failed',
                 'passed' => 'Passed'
-            ]
+            ],
+            'questions' => [
+                'input' => 'Short Text or Number',
+                'date' => 'Date',
+                'select' => 'Dropdown',
+                'checkbox' => 'Multiple Checkboxes',
+                'textarea' => 'Paragraph',
+                'radio' => 'Radio Buttons',
+            ],
         ]
     ],
 ];
