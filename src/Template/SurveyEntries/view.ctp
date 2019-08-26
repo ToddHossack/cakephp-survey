@@ -51,7 +51,15 @@ $options['title'] = __(
                          </h3>
                      </div>
                      <div class="box-body">
-                         <?= $this->element('Qobo/Survey.Answers/' . $question->get('type'), ['entity' => $question, 'key' => $key, 'collapsed' => false, 'entry' => $surveyEntry]);?>
+                         <?= $this->element(
+                             'Qobo/Survey.Answers/' . $question->get('type'),
+                             [
+                                 'entity' => $question,
+                                 'key' => $key,
+                                 'collapsed' => false,
+                                 'loadResults' => true,
+                                 'disabled' => true,
+                             ])?>
                      </div>
                      <div class="box-footer">
                          <div class="row">
