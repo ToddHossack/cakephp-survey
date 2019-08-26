@@ -55,24 +55,9 @@ $options['title'] = __(
             </div>
         </div>
         <div class="box-body">
-            <?= $this->element('Qobo/Survey.Answers/' . $surveyQuestion->type, ['entity' => $surveyQuestion, 'collapsed' => true]);?>
+            <?= $this->element('Qobo/Survey.Answers/' . $surveyQuestion->get('type'), ['entity' => $surveyQuestion, 'collapsed' => true]);?>
         </div>
     </div>
-    <?php if (!empty($savedResults)) : ?>
-    <div class="box box->primary">
-        <div class="box-header with-border">
-            <h3 class="box-title"><?= __('Post Data Preview');?></h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="box-body">
-            <?php pr($savedResults); ?>
-        </div>
-    </div>
-    <?php endif; ?>
 <?= $this->Html->link(
     __('Back'),
     ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->get('id'), $surveyQuestion->get('id')],

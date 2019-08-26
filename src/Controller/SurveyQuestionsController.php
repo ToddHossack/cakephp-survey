@@ -33,9 +33,8 @@ class SurveyQuestionsController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-        /**
-         * @var \Qobo\Survey\Model\Table\SurveysTable $table
-         */
+
+        /** @var \Qobo\Survey\Model\Table\SurveysTable $table */
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.Surveys');
         $this->Surveys = $table;
 
@@ -89,13 +88,12 @@ class SurveyQuestionsController extends AppController
     {
         $this->request->allowMethod(['get']);
 
-        $savedResults = [];
         $survey = $this->Surveys->getSurveyData($surveyId);
 
         $surveyQuestion = $this->SurveyQuestions->getEntity($id);
         Assert::isInstanceOf($surveyQuestion, EntityInterface::class);
 
-        $this->set(compact('surveyQuestion', 'savedResults', 'survey'));
+        $this->set(compact('surveyQuestion', 'survey'));
     }
 
     /**
@@ -141,7 +139,6 @@ class SurveyQuestionsController extends AppController
         $surveyQuestion = $this->SurveyQuestions->get($id);
 
         $sections = $this->SurveySections->getSurveySectionsList($survey->get('id'));
-        $redirect = ['controller' => 'Surveys', 'action' => 'view', $surveyId];
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, (array)$this->request->getData());
@@ -149,14 +146,7 @@ class SurveyQuestionsController extends AppController
             if ($this->SurveyQuestions->save($surveyQuestion)) {
                 $this->Flash->success((string)__('The survey question has been saved.'));
 
-                $redirect = [
-                    'controller' => 'SurveyQuestions',
-                    'action' => 'view',
-                    $survey->get('slug'),
-                    $surveyQuestion->get('id')
-                ];
-
-                return $this->redirect($redirect);
+                return $this->redirect($this->referer());
             }
         }
 
