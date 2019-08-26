@@ -94,13 +94,31 @@ class SurveyEntriesController extends AppController
     public function delete(string $id)
     {
         $this->request->allowMethod(['post', 'delete']);
+
         $surveyEntry = $this->SurveyEntries->get($id);
+        $survey = $this->Surveys->get($surveyEntry->get('survey_id'));
+
         if ($this->SurveyEntries->delete($surveyEntry)) {
             $this->Flash->success((string)__('The survey entry has been deleted.'));
         } else {
             $this->Flash->error((string)__('The survey entry could not be deleted. Please, try again.'));
         }
 
-        return $this->redirect(['action' => 'index']);
+        $query = $this->SurveyResults->find()
+            ->where([
+                'submit_id' => $id,
+            ]);
+
+        if (!empty($query->count())) {
+            foreach ($query as $submit) {
+                $this->SurveyResults->delete($submit);
+            }
+        }
+
+        return $this->redirect([
+            'controller' => 'Surveys',
+            'action' => 'view',
+            $survey->get('id')
+        ]);
     }
 }
