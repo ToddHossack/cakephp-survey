@@ -56,16 +56,17 @@ class SurveyEntriesController extends AppController
      */
     public function edit(string $id)
     {
-        $surveyEntry = $this->SurveyEntries->get($id, [
-            'contain' => []
-        ]);
+        $surveyEntry = $this->SurveyEntries->get($id);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $surveyEntry = $this->SurveyEntries->patchEntity($surveyEntry, (array)$this->request->getData());
+
             if ($this->SurveyEntries->save($surveyEntry)) {
                 $this->Flash->success((string)__('The survey entry has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
+
             $this->Flash->error((string)__('The survey entry could not be saved. Please, try again.'));
         }
         $surveys = $this->SurveyEntries->Surveys->find('list', ['limit' => 200]);
@@ -74,12 +75,10 @@ class SurveyEntriesController extends AppController
 
     public function review(string $id)
     {
+        $this->request->allowMethod(['get']);
+
         $surveyEntry = $this->SurveyEntries->get($id);
         $survey = $this->Surveys->getSurveyData($surveyEntry->get('survey_id'));
-
-        if ($this->request->is(['put', 'post', 'patch'])) {
-            dd('submitting review');
-        }
 
         $this->set(compact('survey', 'surveyEntry'));
     }
