@@ -71,8 +71,8 @@ $options['title'] = __(
                                      <?= $this->Html->link(
                                          (string)__('Review Grade'),
                                          [
-                                             'controller' => 'SurveyEntries',
-                                             'action' => 'review',
+                                             'controller' => 'SurveyResults',
+                                             'action' => 'edit',
                                              $surveyEntry->get('id'),
                                              $question->get('id')
                                          ],

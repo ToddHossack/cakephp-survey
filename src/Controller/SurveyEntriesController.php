@@ -73,16 +73,6 @@ class SurveyEntriesController extends AppController
         $this->set(compact('surveyEntry', 'surveys'));
     }
 
-    public function review(string $id)
-    {
-        $this->request->allowMethod(['get']);
-
-        $surveyEntry = $this->SurveyEntries->get($id);
-        $survey = $this->Surveys->getSurveyData($surveyEntry->get('survey_id'));
-
-        $this->set(compact('survey', 'surveyEntry'));
-    }
-
     /**
      * Delete method
      *
