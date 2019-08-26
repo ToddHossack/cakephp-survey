@@ -81,9 +81,9 @@ class SurveyQuestion extends Entity
      *
      * @param string $id of the survey_entries record
      *
-     * @return mixed[] $result of records
+     * @return \Cake\Datasource\ResultSetInterface|mixed[] $result of records
      */
-    public function getResultsPerEntry(string $id) : array
+    public function getResultsPerEntry(string $id)
     {
         $result = [];
         $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
