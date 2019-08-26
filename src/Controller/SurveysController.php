@@ -40,6 +40,7 @@ class SurveysController extends AppController
 
     protected $SurveyResults;
 
+    protected $SurveyAnswers;
     /**
      * @{inheritDoc}
      *
@@ -60,17 +61,9 @@ class SurveysController extends AppController
         /** @var \Qobo\Survey\Model\Table\SurveyEntriesTable $SurveyEntries */
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntries');
         $this->SurveyEntries = $table;
-    }
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void|null
-     */
-    public function index()
-    {
-        $surveys = $this->paginate($this->Surveys);
-        $this->set(compact('surveys'));
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyAnswers');
+        $this->SurveyAnswers = $table;
     }
 
     /**
@@ -90,18 +83,28 @@ class SurveysController extends AppController
     }
 
     /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|void|null
+     */
+    public function index()
+    {
+        $surveys = $this->paginate($this->Surveys);
+        $this->set(compact('surveys'));
+    }
+
+    /**
      * View method
      *
      * @param string|null $id Survey id.
      * @return \Cake\Http\Response|void|null
      */
-    public function view(?string $id)
+    public function view(string $id)
     {
         $questionTypes = $this->SurveyQuestions->getQuestionTypes();
         /** @var \Qobo\Survey\Model\Entity\Survey $survey */
         $survey = $this->Surveys->getSurveyData($id, true);
 
-        //@TODO: offload it to API based dataTables call
         $query = $this->SurveyEntries->find()
             ->where([
                 'survey_id' => $survey->get('id')
@@ -320,11 +323,6 @@ class SurveysController extends AppController
     {
         $this->request->allowMethod(['post', 'put', 'patch']);
         $questions = [];
-        $response = [
-            'data' => [],
-            'errors' => [],
-            'status' => false,
-        ];
 
         $data = $this->request->getData();
         Assert::isArray($data);
@@ -345,50 +343,18 @@ class SurveysController extends AppController
         $entry = $this->SurveyEntries->save($entry);
         Assert::isInstanceOf($entry, SurveyEntry::class);
 
-        $saved = [];
         foreach ($questions as $k => $item) {
             if (!is_array($item['survey_answer_id'])) {
-                $entity = $this->SurveyResults->newEntity();
-
-                $entity->set('submit_id', $entry->get('id'));
-                $entity->set('submit_date', $entry->get('submit_date'));
-                $entity->set('survey_id', $entry->get('survey_id'));
-                $entity->set('survey_question_id', $item['survey_question_id']);
-                $entity->set('result', (!empty($item['result']) ? $item['result'] : null));
-                $entity->set('survey_answer_id', $item['survey_answer_id']);
-                $result = $this->SurveyResults->save($entity);
-                if ($result) {
-                    $saved[] = $result;
-                }
+                $this->SurveyResults->saveResultsEntity($entry, $item);
             } else {
                 foreach ($item['survey_answer_id'] as $answer) {
-                    $entity = $this->SurveyResults->newEntity();
-                    $entity->set('submit_id', $entry->get('id'));
-                    $entity->set('submit_date', $entry->get('submit_date'));
-                    $entity->set('survey_id', $entry->get('survey_id'));
-                    $entity->set('survey_question_id', $item['survey_question_id']);
-                    $entity->set('result', (!empty($item['result']) ? $item['result'] : null));
-                    $entity->set('survey_answer_id', $answer);
-                    $result = $this->SurveyResults->save($entity);
-
-                    if ($result) {
-                        $saved[] = $result;
-                    }
+                    $tmp = $item;
+                    $tmp['survey_answer_id'] = $answer;
+                    $this->SurveyResults->saveResultsEntity($entry, $item);
                 }
             }
         }
 
-        if (!empty($saved)) {
-            $response['data'] = $saved;
-            $response['status'] = true;
-        }
-
-        $this->set(compact('response'));
-        $this->set('_serialize', 'response');
-
-        //@FIXME: remove this redirect after refactoring
-        if (!$this->request->is('ajax')) {
-            return $this->redirect($this->referer());
-        }
+        return $this->redirect($this->referer());
     }
 }
