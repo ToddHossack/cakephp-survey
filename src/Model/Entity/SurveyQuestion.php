@@ -12,6 +12,7 @@
 namespace Qobo\Survey\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
 
 /**
  * SurveyQuestion Entity
@@ -56,38 +57,20 @@ class SurveyQuestion extends Entity
     {
         $result = 0;
 
-        // `scores` assigned to answers.
-        if (empty($this->get('survey_answers'))) {
+        $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+
+        $query = $resultsTable->find()
+            ->where([
+                'submit_id' => $id,
+                'survey_question_id' => $this->get('id'),
+            ]);
+
+        if (empty($query->count())) {
             return $result;
         }
 
-        $map = [];
-
-        foreach ($this->get('survey_answers') as $answer) {
-            $map[$answer->get('id')] = [
-                'score' => $answer->get('score'),
-                'quantity' => 0
-            ];
-        }
-
-        foreach ($this->get('survey_answers') as $answer) {
-            if (empty($answer->get('survey_results'))) {
-                continue;
-            }
-
-            foreach ($answer->get('survey_results') as $item) {
-                if ($item->get('submit_id') !== $id) {
-                    continue;
-                }
-
-                if ($item->get('survey_answer_id') == $answer->get('id')) {
-                    $map[$item->get('survey_answer_id')]['quantity'] += 1;
-                }
-            }
-        }
-
-        foreach ($map as $answerID => $info) {
-            $result += ($info['score'] * $info['quantity']);
+        foreach ($query as $submit) {
+            $result += $submit->get('score');
         }
 
         return $result;
