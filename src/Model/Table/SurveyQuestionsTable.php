@@ -143,34 +143,4 @@ class SurveyQuestionsTable extends Table
     {
         return Configure::read('Survey.Options.questions');
     }
-
-    /**
-     * Get Survey Question with/without answers/survey
-     *
-     * @param string $id of the question
-     * @param bool $withAnswers flag
-     *
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException
-     *
-     * @return \Cake\Datasource\EntityInterface $entity
-     */
-    public function getEntity(string $id, bool $withAnswers = true) : EntityInterface
-    {
-        $contain = [];
-
-        if ($withAnswers) {
-            $contain = [
-                'contain' => [
-                    'Surveys',
-                    'SurveyAnswers' => [
-                        'sort' => ['SurveyAnswers.order' => 'ASC'],
-                    ]
-                ]
-            ];
-        }
-
-        $entity = $this->get($id, $contain);
-
-        return $entity;
-    }
 }
