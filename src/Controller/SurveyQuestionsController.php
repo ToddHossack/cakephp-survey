@@ -68,7 +68,14 @@ class SurveyQuestionsController extends AppController
      */
     public function view(string $surveyId, string $id)
     {
-        $surveyQuestion = $this->SurveyQuestions->getEntity($id);
+        $surveyQuestion = $this->SurveyQuestions->get($id, [
+            'contain' => [
+                'Surveys',
+                'SurveyAnswers' => [
+                    'sort' => ['SurveyAnswers.order' => 'ASC'],
+                ]
+            ]
+        ]);
         Assert::isInstanceOf($surveyQuestion, EntityInterface::class);
 
         $survey = $this->Surveys->getSurveyData($surveyId, false);
@@ -90,7 +97,15 @@ class SurveyQuestionsController extends AppController
 
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        $surveyQuestion = $this->SurveyQuestions->getEntity($id);
+        $surveyQuestion = $this->SurveyQuestions->get($id, [
+            'contain' => [
+                'Surveys',
+                'SurveyAnswers' => [
+                    'sort' => ['SurveyAnswers.order' => 'ASC'],
+                ]
+            ]
+        ]);
+
         Assert::isInstanceOf($surveyQuestion, EntityInterface::class);
 
         $this->set(compact('surveyQuestion', 'survey'));
