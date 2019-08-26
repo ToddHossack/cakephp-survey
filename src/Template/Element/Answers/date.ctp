@@ -28,7 +28,6 @@ $options = [
     'class' => 'form-control',
     'data-provide' => 'datetimepicker',
     'data-format' => 'YYYY-MM-DD',
-    'data-default-value' => date('Y-m-d', time()),
     'required' => true,
     'templates' => [
         'input' => '<div class="input-group">

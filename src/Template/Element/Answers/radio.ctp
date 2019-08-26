@@ -12,10 +12,10 @@
 $options = [];
 $extraAttributes = [];
 
-foreach ($entity->survey_answers as $item) {
+foreach ($entity->get('survey_answers') as $item) {
     $options[] = [
-        'value' => $item->id,
-        'text' => $item->answer,
+        'value' => $item->get('id'),
+        'text' => $item->get('answer'),
     ];
 }
 
