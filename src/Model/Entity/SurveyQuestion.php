@@ -81,7 +81,7 @@ class SurveyQuestion extends Entity
      *
      * @param string $id of the survey_entries record
      *
-     * @param mixed[] $result of records
+     * @return mixed[] $result of records
      */
     public function getResultsPerEntry(string $id) : array
     {
