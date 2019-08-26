@@ -2,8 +2,8 @@
 namespace Qobo\Survey\Model\Entity;
 
 use Cake\ORM\Entity;
-use Cake\ORM\TableRegistry;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 
 /**
  * SurveyEntry Entity
