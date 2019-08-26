@@ -25,6 +25,7 @@ $options['title'] .= __('Create {0}', ['Question Option']);
 </section>
 <section class="content">
     <?= $this->Form->create($surveyAnswer) ?>
+    <?= $this->Form->hidden('SurveyAnswers.survey_question_id', ['value' => $this->request->getParam('pass.1')]) ?>
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title"><?= __('Details');?></h3>
