@@ -8,6 +8,7 @@ use Qobo\Survey\Controller\AppController;
  * SurveyEntries Controller
  *
  * @property \Qobo\Survey\Model\Table\SurveyEntriesTable $SurveyEntries
+ * @property \Qobo\Survey\Model\Table\SurveyResultsTable $SurveyResults
  * @property \Qobo\Survey\Model\Table\SurveysTable $Surveys
  *
  * @method \Qobo\Survey\Model\Entity\SurveyEntry[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
@@ -16,6 +17,7 @@ class SurveyEntriesController extends AppController
 {
     public $Surveys;
 
+    public $SurveyResults;
     /**
      * Initialize survey answers controller
      * pre-load Surveys table object
@@ -28,6 +30,9 @@ class SurveyEntriesController extends AppController
 
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.Surveys');
         $this->Surveys = $table;
+
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+        $this->SurveyResults = $table;
     }
 
 
@@ -56,17 +61,16 @@ class SurveyEntriesController extends AppController
      */
     public function edit(string $id)
     {
-        $surveyEntry = $this->SurveyEntries->get($id);
-
+        $surveyEntry = $this->SurveyEntries->get($id, [
+            'contain' => []
+        ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $surveyEntry = $this->SurveyEntries->patchEntity($surveyEntry, (array)$this->request->getData());
-
             if ($this->SurveyEntries->save($surveyEntry)) {
                 $this->Flash->success((string)__('The survey entry has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-
             $this->Flash->error((string)__('The survey entry could not be saved. Please, try again.'));
         }
         $surveys = $this->SurveyEntries->Surveys->find('list', ['limit' => 200]);
