@@ -75,4 +75,31 @@ class SurveyQuestion extends Entity
 
         return $result;
     }
+
+    /**
+     * Retrieve related submits based on the question instance and SurveyEntries `id`
+     *
+     * @param string $id of the survey_entries record
+     *
+     * @param mixed[] $result of records
+     */
+    public function getResultsPerEntry(string $id) : array
+    {
+        $result = [];
+        $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+
+        $query = $resultsTable->find()
+            ->where([
+                'submit_id' => $id,
+                'survey_question_id' => $this->get('id'),
+            ]);
+
+        if (empty($query->count())) {
+            return $result;
+        }
+
+        $result = $query->all();
+
+        return $result;
+    }
 }
