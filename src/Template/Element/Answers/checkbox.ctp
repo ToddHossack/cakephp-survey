@@ -10,8 +10,23 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 $options = [];
+$extraAttributes = ['multiple' => 'checkbox'];
+
 foreach ($entity->survey_answers as $item) {
     $options[$item->id] = $item->answer;
+}
+
+if (!empty($loadResults)) {
+    $submits = $entity->getResultsPerEntry($surveyEntry->get('id'));
+    $extraAttributes['value'] = [];
+
+    foreach ($submits as $item) {
+        array_push($extraAttributes['value'], $item->get('survey_answer_id'));
+    }
+}
+
+if (!empty($disabled)) {
+    $extraAttributes['disabled'] = true;
 }
 
 $key = (isset($key) ? $key . '.' : '');
@@ -21,6 +36,6 @@ echo $this->element('Qobo/Survey.SurveyQuestions/view_extras', ['entity' => $ent
 <div class="row">
     <div class="col-xs-12 col-md-6">
         <?= $this->Form->hidden('SurveyResults.' . $key . 'survey_question_id', ['value' => $entity->id]);?>
-        <?= $this->Form->select('SurveyResults.' . $key . 'survey_answer_id', $options, ['multiple' => 'checkbox']); ?>
+        <?= $this->Form->select('SurveyResults.' . $key . 'survey_answer_id', $options, $extraAttributes); ?>
     </div>
 </div>
