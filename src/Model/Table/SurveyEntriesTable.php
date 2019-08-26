@@ -121,9 +121,9 @@ class SurveyEntriesTable extends Table
      * Any time we receive a new submit of survey we should make sure that
      * it has general status/grade.
      *
-     * @param \Cake\Event\Event $event
-     * @param \Cake\Datasource\EntityInterface $entity
-     * @param \ArrayObject $options
+     * @param \Cake\Event\Event $event received
+     * @param \Cake\Datasource\EntityInterface $entity of the entry
+     * @param \ArrayObject $options configs
      *
      * @return void
      */
