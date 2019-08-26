@@ -17,6 +17,12 @@ class SurveyResultsController extends AppController
 
     protected $SurveyEntries;
 
+    /**
+     * Initialize survey answers controller
+     * pre-load Surveys table object
+     *
+     * @return void
+     */
     public function initialize()
     {
         parent::initialize();
