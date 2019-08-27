@@ -13,7 +13,12 @@ $options = [];
 $extraAttributes = ['multiple' => 'checkbox'];
 
 foreach ($entity->survey_answers as $item) {
-    $options[$item->id] = $item->answer;
+    $text = $item->get('answer');
+
+    if (!empty($showAnswerScore)) {
+        $text .= __(' (Weight: {0})', $item->get('score'));
+    }
+    $options[$item->get('id')] = $text;
 }
 
 if (!empty($loadResults)) {

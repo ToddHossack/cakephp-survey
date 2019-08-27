@@ -16,7 +16,12 @@ $id = md5($answer);
 $options = [
     'type' => 'text',
     'placeholder' => $answer->get('comment'),
+    'label' => __('Your answer:')
 ];
+
+if (!empty($showAnswerScore)) {
+    $options['label'] .= __(' (Weight: {0})', $answer->get('score'));
+}
 
 if (!empty($loadResults)) {
     $submits = $entity->getResultsPerEntry($surveyEntry->get('id'));

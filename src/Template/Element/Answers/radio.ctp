@@ -13,9 +13,14 @@ $options = [];
 $extraAttributes = [];
 
 foreach ($entity->get('survey_answers') as $item) {
+    $text = $item->get('answer');
+
+    if (!empty($showAnswerScore)) {
+        $text .= __(' (Weight: {0})', $item->get('score'));
+    }
     $options[] = [
         'value' => $item->get('id'),
-        'text' => $item->get('answer'),
+        'text' => $text,
     ];
 }
 
