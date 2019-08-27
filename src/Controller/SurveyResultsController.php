@@ -34,6 +34,14 @@ class SurveyResultsController extends AppController
         $this->SurveyEntries = $table;
     }
 
+    /**
+     * Edit submitted survey question with its survey results
+     *
+     * @param string $entryId of the survey
+     * @param string $questionId of the survey
+     *
+     * @return \Cake\Http\Response|void|null
+     */
     public function edit(string $entryId, string $questionId)
     {
         $surveyEntry = $this->SurveyEntries->get($entryId);
@@ -46,7 +54,7 @@ class SurveyResultsController extends AppController
      * Delete method
      *
      * @param string $id Survey Result id.
-     * @return \Cake\Http\Response|null Redirects to index.
+     * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete(string $id)
