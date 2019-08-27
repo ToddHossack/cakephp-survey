@@ -45,7 +45,7 @@ class SurveyEntry extends Entity
      *
      * @return mixed[] $result
      */
-    public function _getResourceUser() : array
+    protected function _getResourceUser() : array
     {
         $result = [];
         $table = TableRegistry::getTableLocator()->get($this->get('resource'));
