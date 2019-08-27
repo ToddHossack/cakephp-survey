@@ -5,6 +5,9 @@ use Cake\View\View;
 
 class AppView extends View
 {
+    /**
+     * @{inheritDoc}
+     */
     public function initialize()
     {
         parent::initialize();
