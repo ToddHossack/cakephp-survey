@@ -344,13 +344,17 @@ class SurveysController extends AppController
         Assert::isInstanceOf($entry, SurveyEntry::class);
 
         foreach ($questions as $k => $item) {
+            if (empty($item['survey_answer_id'])) {
+                continue;
+            }
+
             if (!is_array($item['survey_answer_id'])) {
                 $this->SurveyResults->saveResultsEntity($entry, $item);
             } else {
                 foreach ($item['survey_answer_id'] as $answer) {
                     $tmp = $item;
                     $tmp['survey_answer_id'] = $answer;
-                    $this->SurveyResults->saveResultsEntity($entry, $item);
+                    $this->SurveyResults->saveResultsEntity($entry, $tmp);
                 }
             }
         }
