@@ -40,6 +40,30 @@ $options['title'] = __(
 </section>
 
 <section class="content">
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title"><?= __('Edit Entry Details') ?></h3>
+        </div>
+        <?= $this->Form->create() ?>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <?= $this->Form->control(
+                        'SurveyEntries.status',
+                        [
+                            'type' => 'select',
+                            'options' => $entryStatuses,
+                            'value' => $surveyEntry->get('status'),
+                            'label' => __('Submit Status'),
+                            'empty' => __('Choose status'),
+                        ]
+                    ) ?>
+                </div>
+            </div>
+        </div>
+        <?= $this->Form->submit(__('Update')) ?>
+        <?= $this->Form->end() ?>
+    </div>
     <?php $key = 0; ?>
      <?php foreach ($survey->get('survey_sections') as $section) : ?>
          <?php foreach ($section->get('survey_questions') as $question) : ?>

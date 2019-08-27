@@ -2,6 +2,7 @@
 namespace Qobo\Survey\Model\Table;
 
 use ArrayObject;
+use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\ORM\Query;
@@ -136,5 +137,15 @@ class SurveyEntriesTable extends Table
         if (is_null($entity->get('gradde'))) {
             $entity->set('grade', 0);
         }
+    }
+
+    /**
+     * Retrieve survey entry statuses
+     *
+     * @return mixed[] result of configs for `Survey.Options.statuses`
+     */
+    public function getStatuses() : array
+    {
+        return Configure::read('Survey.Options.statuses');
     }
 }
