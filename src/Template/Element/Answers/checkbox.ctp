@@ -23,10 +23,12 @@ foreach ($entity->survey_answers as $item) {
 
 if (!empty($loadResults)) {
     $submits = $entity->getResultsPerEntry($surveyEntry->get('id'));
-    $extraAttributes['value'] = [];
 
-    foreach ($submits as $item) {
-        array_push($extraAttributes['value'], $item->get('survey_answer_id'));
+    if (!empty($submits)) {
+        $extraAttributes['value'] = [];
+        foreach ($submits as $item) {
+            array_push($extraAttributes['value'], $item->get('survey_answer_id'));
+        }
     }
 }
 

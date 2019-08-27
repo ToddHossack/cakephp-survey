@@ -11,6 +11,7 @@
  */
 namespace Qobo\Survey\Model\Table;
 
+use Cake\Datasource\EntityInterface;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Log\Log;
 use Cake\ORM\Query;
@@ -19,6 +20,7 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Qobo\Survey\Model\Entity\SurveyEntry;
+use Webmozart\Assert\Assert;
 
 /**
  * SurveyResults Model
@@ -241,7 +243,7 @@ class SurveyResultsTable extends Table
      * @param \Qobo\Survey\Model\Entity\SurveyEntry $entry instance
      * @param mixed[] $data with post data
      *
-     * @return \Qobo\Survey\Model\Entity\SurveyResults|bool $result
+     * @return \Qobo\Survey\Model\Entity\SurveyResult|bool $result
      */
     public function saveResultsEntity(SurveyEntry $entry, array $data)
     {
@@ -260,9 +262,8 @@ class SurveyResultsTable extends Table
             ])
             ->first();
 
-        if ($answerEntity) {
-            $score = $answerEntity->get('score');
-        }
+        Assert::isInstanceOf($answerEntity, EntityInterface::class);
+        $score = $answerEntity->get('score');
 
         $entity = $this->newEntity();
 
@@ -277,7 +278,7 @@ class SurveyResultsTable extends Table
         $result = $this->save($entity);
 
         if (!$result) {
-            Log::error($entity->getErrors());
+            Log::error(print_r($entity->getErrors(), true));
         }
 
         return $result;

@@ -11,6 +11,7 @@
  */
 namespace Qobo\Survey\Model\Entity;
 
+use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 
@@ -81,11 +82,11 @@ class SurveyQuestion extends Entity
      *
      * @param string $id of the survey_entries record
      *
-     * @return \Cake\Datasource\ResultSetInterface|mixed[] $result of records
+     * @return null|\Cake\Datasource\ResultSetInterface $result of records
      */
-    public function getResultsPerEntry(string $id)
+    public function getResultsPerEntry(string $id) : ?ResultSetInterface
     {
-        $result = [];
+        $result = null;
         $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
 
         $query = $resultsTable->find()

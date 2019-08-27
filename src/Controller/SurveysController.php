@@ -96,7 +96,7 @@ class SurveysController extends AppController
     /**
      * View method
      *
-     * @param string|null $id Survey id.
+     * @param string $id Survey id.
      * @return \Cake\Http\Response|void|null
      */
     public function view(string $id)
