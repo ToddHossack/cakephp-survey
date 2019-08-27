@@ -35,7 +35,6 @@ class SurveyEntriesController extends AppController
         $this->SurveyResults = $table;
     }
 
-
     /**
      * View method
      *
@@ -61,9 +60,8 @@ class SurveyEntriesController extends AppController
      */
     public function edit(string $id)
     {
-        $surveyEntry = $this->SurveyEntries->get($id, [
-            'contain' => []
-        ]);
+        $surveyEntry = $this->SurveyEntries->get($id);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $surveyEntry = $this->SurveyEntries->patchEntity($surveyEntry, (array)$this->request->getData());
             if ($this->SurveyEntries->save($surveyEntry)) {
@@ -73,7 +71,8 @@ class SurveyEntriesController extends AppController
             }
             $this->Flash->error((string)__('The survey entry could not be saved. Please, try again.'));
         }
-        $surveys = $this->SurveyEntries->Surveys->find('list', ['limit' => 200]);
+        $surveys = $this->SurveyEntries->Surveys->find('list');
+
         $this->set(compact('surveyEntry', 'surveys'));
     }
 
