@@ -135,6 +135,10 @@ class SurveyQuestion extends Entity
         $uniqueStatus = array_unique($statuses);
         $result = array_shift($uniqueStatus);
 
+        if (is_null($result)) {
+            $result = 'pass';
+        }
+
         return $result;
     }
 }
