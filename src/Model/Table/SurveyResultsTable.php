@@ -210,19 +210,19 @@ class SurveyResultsTable extends Table
     /**
      * Retrieve total Survey Score per submit
      *
-     * @param string $submitId of the survey result
+     * @param string $entryId of the survey entries instance
      * @param string $surveyId of the record
      *
      * @return int $result of the score.
      */
-    public function getTotalScorePerSubmit(string $submitId, string $surveyId): int
+    public function getTotalScorePerSubmit(string $entryId, string $surveyId): int
     {
         $result = 0;
         $query = $this->find()
             ->enableHydration(true)
             ->where([
                 'survey_id' => $surveyId,
-                'submit_id' => $submitId,
+                'submit_id' => $entryId,
             ]);
         $query->contain(['SurveyAnswers']);
 
