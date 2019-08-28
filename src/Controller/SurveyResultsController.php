@@ -72,6 +72,8 @@ class SurveyResultsController extends AppController
                 if ('failed' == $item['status']) {
                     $entity->set('score', 0);
                     $entity->set('comment', $item['comment']);
+                } else {
+                    $entity->set('score', $item['score']);
                 }
 
                 $saved = $this->SurveyResults->save($entity);

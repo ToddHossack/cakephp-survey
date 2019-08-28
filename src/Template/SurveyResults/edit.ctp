@@ -75,6 +75,7 @@ $status = [
                         </div>
                         <div class="col-md-4 col-xs-12">
                             <?= $this->Form->hidden('SurveyResults.' . $key . '.id', ['value' => $entity->get('id')]) ?>
+                            <?= $this->Form->hidden('SurveyResults.' . $key . '.score', ['value' => $answer->get('score')]) ?>
                             <?= $this->Form->control(
                                 'SurveyResults.' . $key . '.status',
                                 [
