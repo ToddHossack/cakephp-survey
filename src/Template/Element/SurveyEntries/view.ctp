@@ -34,7 +34,7 @@ $statuses = Configure::read('Survey.Options.statuses');
         <tr>
             <th scope="col"><?= __('Origin') ?> </th>
             <th scope="col"><?= __('Status') ?></th>
-            <th scope="col"><?= __('Grade') ?></th>
+            <th scope="col"><?= __('Score') ?></th>
             <th scope="col"><?= __('Submit Date') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
         </tr>
@@ -51,7 +51,7 @@ $statuses = Configure::read('Survey.Options.statuses');
              <tr>
                 <td><?= $resourceUrl ?></td>
                 <td><?= in_array($item->get('status'), array_keys($statuses)) ? $statuses[$item->get('status')] : $item->get('status') ?></td>
-                <td><?= h($item->get('grade')) ?></td>
+                <td><?= h($item->get('score')) ?></td>
                 <td><?= h($item->get('submit_date')->i18nFormat('yyyy-MM-dd HH:mm:ss')) ?></td>
                 <td class="actions">
                     <div class="btn-group btn-group-xs">

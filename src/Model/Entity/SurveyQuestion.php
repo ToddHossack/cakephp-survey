@@ -103,4 +103,38 @@ class SurveyQuestion extends Entity
 
         return $result;
     }
+
+    /**
+     * Retrieve unique status of Submitted survey_results per question/entry
+     *
+     * @param string $entryId of survey_entries instance
+     *
+     * @return string $result containing unique status of the submits.
+     */
+    public function getSubmitStatus(string $entryId) : string
+    {
+        $result = 'pass';
+
+        $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+
+        $query = $resultsTable->find()
+            ->where([
+                'submit_id' => $entryId,
+                'survey_question_id' => $this->get('id'),
+            ]);
+
+        if (empty($query->count())) {
+            return $result;
+        }
+
+        $statuses = [];
+        foreach ($query as $entity) {
+            $statuses[] = $entity->get('status');
+        }
+
+        $uniqueStatus = array_unique($statuses);
+        $result = array_shift($uniqueStatus);
+
+        return $result;
+    }
 }

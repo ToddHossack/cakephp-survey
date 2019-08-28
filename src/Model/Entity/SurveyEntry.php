@@ -66,4 +66,31 @@ class SurveyEntry extends Entity
 
         return $result;
     }
+
+    /**
+     * Calculate Total Score of the Survey Entry
+     *
+     * Calculating only `pass` status survey_results record.
+     *
+     * @return int|float $result of the score.
+     */
+    public function getTotalScore()
+    {
+        $result = 0;
+
+        $results = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+
+        $query = $results->find()
+            ->where([
+                'submit_id' => $this->get('id')
+            ]);
+
+        foreach ($query as $entity) {
+            if ($entity->get('status') !== 'fail') {
+                $result += $entity->get('score');
+            }
+        }
+
+        return $result;
+    }
 }
