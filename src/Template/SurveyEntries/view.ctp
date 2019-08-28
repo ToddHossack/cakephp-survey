@@ -40,76 +40,81 @@ $options['title'] = __(
 </section>
 
 <section class="content">
-    <div class="box box-info">
-        <div class="box-header with-border">
-            <h3 class="box-title"><?= __('Edit Entry Details') ?></h3>
-        </div>
-        <?= $this->Form->create() ?>
-        <div class="box-body">
-            <div class="row">
-                <div class="col-md-4 col-xs-12">
-                    <?= $this->Form->control(
-                        'SurveyEntries.status',
-                        [
-                            'type' => 'select',
-                            'options' => $entryStatuses,
-                            'value' => $surveyEntry->get('status'),
-                            'label' => __('Submit Status'),
-                            'empty' => __('Choose status'),
-                        ]
-                    ) ?>
-                </div>
-            </div>
-        </div>
-        <?= $this->Form->submit(__('Update')) ?>
-        <?= $this->Form->end() ?>
-    </div>
+    <?= $this->Form->create() ?>
+    <?= $this->Form->hidden('SurveyEntries.id', ['value' => $surveyEntry->get('id')]) ?>
     <?php $key = 0; ?>
      <?php foreach ($survey->get('survey_sections') as $section) : ?>
          <?php foreach ($section->get('survey_questions') as $question) : ?>
-                 <div class="box box-info">
+                 <div class="box no-border">
                      <div class="box-header with-border">
                          <h3 class="box-title <?= $question->get('is_required') ? 'required' : '' ?>">
                              <?= $question->get('question');?>
                              <label></label>
+                              <?= __('(Score: {0})', $this->Survey->getQuestionScore($question, $surveyEntry->get('id'))) ?>
                          </h3>
                      </div>
                      <div class="box-body">
-                         <?= $this->element(
-                             'Qobo/Survey.Answers/' . $question->get('type'),
-                             [
-                                 'entity' => $question,
-                                 'key' => $key,
-                                 'collapsed' => false,
-                                 'loadResults' => true,
-                                 'disabled' => true,
-                             ])?>
-                     </div>
-                     <div class="box-footer">
                          <div class="row">
-                             <div class="col-md-6">
-                                 <strong><?= __('Question Score: {0}', $this->Survey->getQuestionScore($question, $surveyEntry->get('id'))) ?></strong>
-                             </div>
-                             <div class="col-md-6">
-                                 <div class="pull-right">
-                                     <?= $this->Html->link(
-                                         (string)__('Review Grade'),
-                                         [
-                                             'controller' => 'SurveyResults',
-                                             'action' => 'edit',
-                                             $surveyEntry->get('id'),
-                                             $question->get('id')
-                                         ],
-                                         [
-                                             'class' => 'btn btn-sm btn-warning'
-                                         ]
-                                     ) ?>
-                                 </div>
+                             <div class="col-xs-12 col-md-6">
+                                 <?= $this->element(
+                                     'Qobo/Survey.Answers/' . $question->get('type'),
+                                     [
+                                         'entity' => $question,
+                                         'key' => $key,
+                                         'collapsed' => false,
+                                         'loadResults' => true,
+                                         'disabled' => true,
+                                         'showAnswerScore' => true,
+                                     ])?>
                              </div>
                          </div>
+                     </div>
+                     <div class="box-footer">
+                         <?= $this->Form->hidden('SurveyResults.' . $key . '.survey_question_id', ['value' => $question->get('id')]) ?>
+                         <?= $this->Form->radio(
+                             'SurveyResults.' . $key . '.status',
+                             [
+                                 ['value' => 'pass', 'text' => __('Pass')],
+                                 ['value' => 'fail', 'text' => __('Fail')]
+                             ],
+                             [
+                                 'value' => $question->getSubmitStatus($surveyEntry->get('id'))
+                             ]
+                         ) ?>
                      </div>
                  </div>
          <?php $key++; ?>
          <?php endforeach; ?>
      <?php endforeach; ?>
+
+     <div class="box box-info">
+         <div class="box-header with-border">
+             <h3 class="box-title"><?= __('Edit Entry Details') ?></h3>
+         </div>
+         <div class="box-body">
+             <div class="row">
+                 <div class="col-md-6 col-xs-12">
+                     <h4><?= __('Total Score: {0}', $surveyEntry->getTotalScore()) ?></h4>
+                 </div>
+             </div>
+             <div class="row">
+                 <div class="col-md-4 col-xs-12">
+                     <?= $this->Form->control(
+                         'SurveyEntries.status',
+                         [
+                             'type' => 'select',
+                             'options' => $entryStatuses,
+                             'value' => $surveyEntry->get('status'),
+                             'label' => __('Submit Status'),
+                             'empty' => __('Choose status'),
+                         ]
+                     ) ?>
+                 </div>
+             </div>
+         </div>
+         <div class="box-footer">
+             <?= $this->Form->button(__('Save')) ?>
+         </div>
+     </div>
+     <?= $this->Form->end() ?>
 </section>

@@ -39,7 +39,7 @@ class AddSurveyEntries extends AbstractMigration
             'null' => true,
         ])->addIndex(['status']);
 
-        $table->addColumn('grade', 'integer', [
+        $table->addColumn('score', 'integer', [
             'default' => null,
             'null' => true,
         ]);

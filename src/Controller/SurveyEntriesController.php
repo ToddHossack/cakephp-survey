@@ -1,6 +1,7 @@
 <?php
 namespace Qobo\Survey\Controller;
 
+use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use Qobo\Survey\Controller\AppController;
 
@@ -18,6 +19,9 @@ class SurveyEntriesController extends AppController
     public $Surveys;
 
     public $SurveyResults;
+
+    public $SurveyAnswers;
+
     /**
      * Initialize survey answers controller
      * pre-load Surveys table object
@@ -33,6 +37,9 @@ class SurveyEntriesController extends AppController
 
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
         $this->SurveyResults = $table;
+
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyAnswers');
+        $this->SurveyAnswers = $table;
     }
 
     /**
@@ -44,11 +51,58 @@ class SurveyEntriesController extends AppController
      */
     public function view(string $id)
     {
+        $entryStatuses = $this->SurveyEntries->getStatuses();
         $surveyEntry = $this->SurveyEntries->get($id, [
             'contain' => ['SurveyResults'],
         ]);
         $survey = $this->Surveys->getSurveyData($surveyEntry->get('survey_id'), true);
-        $entryStatuses = $this->SurveyEntries->getStatuses();
+
+        if ($this->request->is(['post', 'put', 'patch'])) {
+            $data = (array)$this->request->getData();
+            if (!empty($data['SurveyResults'])) {
+                foreach ($data['SurveyResults'] as $item) {
+                    $query = $this->SurveyResults->find()
+                        ->where([
+                            'submit_id' => $surveyEntry->get('id'),
+                            'survey_question_id' => $item['survey_question_id']
+                        ]);
+
+                    if (empty($query->count())) {
+                        continue;
+                    }
+
+                    foreach ($query as $entity) {
+                        if ($item['status'] == 'fail') {
+                            $entity->set('score', 0);
+                        } else {
+                            $answer = $this->SurveyAnswers->get($entity->get('survey_answer_id'));
+                            $entity->set('score', $answer->get('score'));
+                        }
+
+                        $entity->set('status', $item['status']);
+                        $this->SurveyResults->save($entity);
+                    }
+                }
+            }
+
+            $data['SurveyEntries']['score'] = $surveyEntry->getTotalScore();
+            $this->SurveyEntries->patchEntity($surveyEntry, $data['SurveyEntries']);
+
+            $saved = $this->SurveyEntries->save($surveyEntry);
+            if ($saved) {
+                $this->Flash->success((string)__('Successfully updated survey results'));
+            } else {
+                $this->Flash->error((string)__("Couldn't save updated survey results"));
+
+                Log::error($surveyEntry->getErrors());
+            }
+
+            return $this->redirect([
+                'controller' => 'Surveys',
+                'action' => 'view',
+                $survey->get('slug')
+            ]);
+        }
 
         $this->set(compact('surveyEntry', 'survey', 'entryStatuses'));
     }
