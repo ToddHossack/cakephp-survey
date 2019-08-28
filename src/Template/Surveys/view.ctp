@@ -146,24 +146,12 @@ $options['title'] = __(
                     <?= empty($survey->expiry_date) ? 'N/A' : $survey->expiry_date->i18nFormat('yyyy-MM-dd HH:mm') ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
-                <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Description') ?>:</strong>
-                </div>
-                <div class="col-xs-8 col-md-4">
-                    <?= $this->Text->autoParagraph(h($survey->description)); ?>
-                </div>
-                <div class="clearfix visible-xs visible-sm"></div>
             </div>
         </div>
     </div>
 
     <div class="nav-tabs-custom">
         <ul id="relatedTabs" class="nav nav-tabs" role="tablist">
-            <li role="presentation">
-                <a href="#manage-survey-results" aria-controls="manage-survey-results" role="tab" data-toggle="tab">
-                    <i class="fa fa-check-circle"></i> <?= __('Overview') ?>
-                </a>
-            </li>
             <li role="presentation">
                 <a href="#manage-survey-sections" aria-controls="manage-content" role="tab" data-toggle="tab">
                     <i class="fa fa-list-ul"></i> <i class="fa question-circle"></i> <?= __('Sections'); ?>
@@ -176,9 +164,6 @@ $options['title'] = __(
             </li>
         </ul>
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane" id="manage-survey-results">
-                <?= $this->element('Qobo/Survey.SurveyResults/view', ['survey' => $survey]) ?>
-            </div>
             <div role="tabpanel" class="tab-pane" id="manage-survey-sections">
                 <?= $this->element('Qobo/Survey.SurveySections/view', ['survey' => $survey]) ?>
             </div>
