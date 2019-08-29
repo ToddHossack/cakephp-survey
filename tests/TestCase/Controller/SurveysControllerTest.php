@@ -8,6 +8,7 @@ use Qobo\Survey\Controller\SurveysController;
 use Qobo\Survey\Model\Table\SurveyEntriesTable;
 use Qobo\Survey\Model\Table\SurveyResultsTable;
 use Qobo\Survey\Model\Table\SurveysTable;
+use Webmozart\Assert\Assert;
 
 class SurveysControllerTest extends IntegrationTestCase
 {
@@ -61,7 +62,7 @@ class SurveysControllerTest extends IntegrationTestCase
         $this->SurveyResults = $table;
 
         /**
-         * @var \Qobo\Survey\Model\Table\SurveyEntries $table
+         * @var \Qobo\Survey\Model\Table\SurveyEntriesTable $table
          */
         $table = TableRegistry::get('Qobo/Survey.SurveyEntries', ['className' => SurveyEntriesTable::class]);
         $this->SurveyEntries = $table;
@@ -362,6 +363,8 @@ class SurveysControllerTest extends IntegrationTestCase
                 'survey_id' => $surveyId,
                 'survey_question_id' => '00000000-0000-0000-0000-000000000007'
             ])->first();
+
+        Assert::isInstanceOf($saved, \Qobo\Survey\Model\Entity\SurveyResult::class);
 
         $this->assertEquals('00000000-0000-0000-0000-000000000010', $saved->get('survey_answer_id'));
         $this->assertEquals('10', $saved->get('score'));
