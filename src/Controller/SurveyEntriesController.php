@@ -94,7 +94,7 @@ class SurveyEntriesController extends AppController
             } else {
                 $this->Flash->error((string)__("Couldn't save updated survey results"));
 
-                Log::error((string)json_encode($entity->getErrors(), JSON_PRETTY_PRINT));
+                Log::error((string)json_encode($surveyEntry->getErrors(), JSON_PRETTY_PRINT));
             }
 
             return $this->redirect([
