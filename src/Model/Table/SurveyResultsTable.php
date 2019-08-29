@@ -144,6 +144,8 @@ class SurveyResultsTable extends Table
      */
     public function getResults(array $data = [], array $options = []): array
     {
+        deprecationWarning((string)__('This method will be deprecated in following major version release'));
+
         $result = [];
 
         if (empty($data)) {
@@ -184,6 +186,8 @@ class SurveyResultsTable extends Table
      */
     public function getSubmits(string $surveyId = null, array $options = []): ?ResultSetInterface
     {
+        deprecationWarning((string)__('This method will be deprecated in following major version release'));
+
         $result = null;
 
         $options['contains'] = empty($options['contains']) ? ['Users', 'SurveyAnswers'] : $options['contains'];
@@ -217,6 +221,8 @@ class SurveyResultsTable extends Table
      */
     public function getTotalScorePerSubmit(string $entryId, string $surveyId): int
     {
+        deprecationWarning((string)__('getTotalScorePerSubmit() method is deprecated'));
+
         $result = 0;
         $query = $this->find()
             ->enableHydration(true)
