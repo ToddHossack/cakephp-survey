@@ -404,6 +404,6 @@ class SurveysControllerTest extends IntegrationTestCase
                 'survey_question_id' => '00000000-0000-0000-0000-000000000007'
             ]);
 
-        $this->assertEquals(2, $saved->count());
+        $this->assertEquals(3, $saved->count());
     }
 }

@@ -103,6 +103,7 @@ class SurveyAnswersFixture extends TestFixture
             'comment' => 'Put your YYYY-MM-DD date',
             'created' => '2018-03-14 10:59:30',
             'modified' => '2018-03-14 10:59:30',
+            'score' => 13,
             'order' => 43,
             'trashed' => null,
         ],

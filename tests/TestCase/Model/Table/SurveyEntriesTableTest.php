@@ -25,6 +25,7 @@ class SurveyEntriesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'plugin.qobo/survey.survey_results',
         'plugin.qobo/survey.survey_entries',
         'plugin.qobo/survey.surveys',
         'plugin.qobo/survey.users'
@@ -65,5 +66,14 @@ class SurveyEntriesTableTest extends TestCase
     {
         $this->assertTrue(is_array(Configure::read('Survey.Options.statuses')));
         $this->assertEquals(Configure::read('Survey.Options.statuses'), $this->SurveyEntries->getStatuses());
+    }
+
+    public function testGetTotalScoreFromEntity() : void
+    {
+        $entryId = '00000000-0000-0000-0000-000000000003';
+        $entity = $this->SurveyEntries->get($entryId);
+
+        $score = $entity->getTotalScore();
+        $this->assertEquals(10, $score);
     }
 }
