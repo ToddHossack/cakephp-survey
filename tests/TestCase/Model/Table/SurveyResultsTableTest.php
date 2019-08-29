@@ -80,6 +80,8 @@ class SurveyResultsTableTest extends TestCase
      */
     public function testGetResults(array $data, int $expected): void
     {
+        $this->markTestSkipped((string)__('Skipping this unit test, as method is deprecated'));
+
         $user = ['id' => '123'];
         $survey = (object)[
             'id' => '111',

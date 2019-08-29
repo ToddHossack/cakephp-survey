@@ -9,6 +9,7 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+use Cake\I18n\Time;
 use Cake\Core\Configure;
 use Cake\Utility\Text;
 
@@ -35,7 +36,7 @@ $count = 1;
     <?php
         echo $this->Form->create($survey, ['url' => ['action' => 'submit']]);
         echo $this->Form->hidden('SurveyEntries.survey_id', ['value' => $survey->get('id')]);
-        echo $this->Form->hidden('SurveyEntries.submit_date', ['value' => date('Y-m-d H:i:s', time())]);
+        echo $this->Form->hidden('SurveyEntries.submit_date', ['value' => Time::now()]);
 
         /** $user variable derives from AppController of application */
         echo $this->Form->hidden('SurveyEntries.resource_id', ['value' => $userId]);

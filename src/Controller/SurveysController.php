@@ -293,6 +293,7 @@ class SurveysController extends AppController
      */
     public function viewSubmit(string $surveyId, string $submitId)
     {
+        deprecationWarning((string)__('This method is currently depracted'));
         $surveyResults = [];
 
         $survey = $this->Surveys->getSurveyData($surveyId);
@@ -324,7 +325,7 @@ class SurveysController extends AppController
         $this->request->allowMethod(['post', 'put', 'patch']);
         $questions = [];
 
-        $data = $this->request->getData();
+        $data = (array)$this->request->getData();
         Assert::isArray($data);
 
         if (!empty($data['SurveyResults'])) {
@@ -349,7 +350,7 @@ class SurveysController extends AppController
             }
 
             if (!is_array($item['survey_answer_id'])) {
-                $this->SurveyResults->saveResultsEntity($entry, $item);
+                $result = $this->SurveyResults->saveResultsEntity($entry, $item);
             } else {
                 foreach ($item['survey_answer_id'] as $answer) {
                     $tmp = $item;
@@ -357,8 +358,10 @@ class SurveysController extends AppController
                     $this->SurveyResults->saveResultsEntity($entry, $tmp);
                 }
             }
+
+            $this->Flash->success((string)__('Successfully submitted survey'));
         }
 
-        return $this->redirect($this->referer());
+        return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $data['SurveyEntries']['survey_id']]);
     }
 }

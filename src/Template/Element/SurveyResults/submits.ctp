@@ -1,6 +1,8 @@
 <?php
 use Cake\ORM\TableRegistry;
 
+deprecationWarning((string)__('This view element is deprecated'));
+
 /** @var \Qobo\Survey\Model\Table\SurveyResultsTable $table */
 $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
 

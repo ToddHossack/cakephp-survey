@@ -89,5 +89,18 @@ class SurveysFixture extends TestFixture
             'publish_date' => null,
             'trashed' => null,
         ],
+        [
+            'id' => '00000000-0000-0000-0000-000000000004',
+            'reference_id' => null,
+            'name' => 'Full Survey with SurveyResults and SurveyEntry',
+            'slug' => 'full_survey_sample_with_entries',
+            'version' => '1.0.0',
+            'description' => 'Testing Survey Submit with Survey entries',
+            'active' => 1,
+            'created' => '2019-08-29 12:40:24',
+            'modified' => '2019-08-29 12:40:24',
+            'publish_date' => null,
+            'trashed' => null,
+        ]
     ];
 }
