@@ -41,7 +41,7 @@ class SurveyEntriesTableTest extends TestCase
         parent::setUp();
 
         /** @var \Qobo\Survey\Model\Table\SurveyEntriesTable $table */
-        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntries',  ['className' => SurveyEntriesTable::class]);
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntries', ['className' => SurveyEntriesTable::class]);
         $this->SurveyEntries = $table;
     }
 
