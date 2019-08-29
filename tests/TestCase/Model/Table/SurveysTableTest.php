@@ -84,8 +84,9 @@ class SurveysTableTest extends TestCase
     public function testGetSurveyCategories(): void
     {
         $result = $this->Surveys->getSurveyCategories();
+
         $this->assertTrue(is_array($result));
-        $this->assertEquals($result['test_default'], 'Test Default');
+        $this->assertEquals($result['default'], 'Default');
     }
 
     public function testGetSurveyData(): void

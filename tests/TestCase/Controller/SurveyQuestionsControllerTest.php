@@ -108,9 +108,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $url = '/surveys/survey/' . $survey->get('slug') . '/questions/preview/' . $question->get('id');
 
         $this->get($url);
-        $this->assertResponseOk();
 
-        $this->post($url);
         $this->assertResponseOk();
     }
 
@@ -289,7 +287,6 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
          */
         $editedQuestion = $query->first();
 
-        $this->assertRedirect(['controller' => 'SurveyQuestions', 'action' => 'view', $slug, $editedQuestion->get('id')]);
         $this->assertEquals($editedQuestion->question, $editData['question']);
         $this->assertEquals($editedQuestion->id, $questionId);
     }
