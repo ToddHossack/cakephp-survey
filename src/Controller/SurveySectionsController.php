@@ -91,7 +91,7 @@ class SurveySectionsController extends AppController
             return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $surveyId]);
         }
 
-        $this->set(compact('surveySection', 'survey', 'questions'));
+        $this->set(compact('surveySection', 'survey'));
     }
 
     /**
