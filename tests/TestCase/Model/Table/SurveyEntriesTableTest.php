@@ -1,6 +1,7 @@
 <?php
 namespace Qobo\Survey\Test\TestCase\Model\Table;
 
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Qobo\Survey\Model\Table\SurveyEntriesTable;
@@ -37,9 +38,9 @@ class SurveyEntriesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('SurveyEntries') ? [] : ['className' => SurveyEntriesTable::class];
+
         /** @var \Qobo\Survey\Model\Table\SurveyEntriesTable $table */
-        $table = TableRegistry::getTableLocator()->get('SurveyEntries', $config);
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntries',  ['className' => SurveyEntriesTable::class]);
         $this->SurveyEntries = $table;
     }
 
@@ -56,32 +57,13 @@ class SurveyEntriesTableTest extends TestCase
     }
 
     /**
-     * Test initialize method
+     * Make sure that Survey has status values
      *
      * @return void
      */
-    public function testInitialize() : void
+    public function testGetStatuses() : void
     {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault() : void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules() : void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertTrue(is_array(Configure::read('Survey.Options.statuses')));
+        $this->assertEquals(Configure::read('Survey.Options.statuses'), $this->SurveyEntries->getStatuses());
     }
 }
