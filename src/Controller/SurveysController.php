@@ -41,6 +41,7 @@ class SurveysController extends AppController
     protected $SurveyResults;
 
     protected $SurveyAnswers;
+
     /**
      * @{inheritDoc}
      *

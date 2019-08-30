@@ -41,6 +41,7 @@ class SurveyAnswersController extends AppController
         $table = TableRegistry::get('Qobo/Survey.Surveys');
         $this->Surveys = $table;
     }
+
     /**
      * View method
      *
