@@ -61,13 +61,10 @@ class SurveyEntriesController extends AppController
             $data = (array)$this->request->getData();
             if (!empty($data['SurveyResults'])) {
                 foreach ($data['SurveyResults'] as $item) {
-                    $query = $this->SurveyResults->find()
-                        ->where([
-                            'submit_id' => $surveyEntry->get('id'),
-                            'survey_question_id' => $item['survey_question_id']
-                        ]);
 
-                    if (empty($query->count())) {
+                    $query = $this->SurveyResults->getQuestionResultsByEntryId($surveyEntry->get('id'), $item['survey_question_id']);
+
+                    if (!$query) {
                         continue;
                     }
 

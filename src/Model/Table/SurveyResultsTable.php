@@ -289,4 +289,28 @@ class SurveyResultsTable extends Table
 
         return $result;
     }
+
+    /**
+     * Return submitted question results based on entry and question ids
+     *
+     * @param string $entryId of the survey_entries record
+     * @param string $questionId key
+     *
+     * @return \Cake\ORM\Query|null $result of the query
+     */
+    public function getQuestionResultsByEntryId(string $entryId, string $questionId) : ?Query
+    {
+        $result = null;
+        $query = $this->find()
+            ->where([
+                'submit_id' => $entryId,
+                'survey_question_id' => $questionId
+            ]);
+
+        if (!empty($query->count())) {
+            $result = $query;
+        }
+
+        return $result;
+    }
 }

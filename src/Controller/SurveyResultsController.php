@@ -2,7 +2,9 @@
 namespace Qobo\Survey\Controller;
 
 use Cake\ORM\TableRegistry;
+use Cake\ORM\Query;
 use Qobo\Survey\Controller\AppController;
+use Webmozart\Assert\Assert;
 
 /**
  * SurveyResults Controller
@@ -55,12 +57,10 @@ class SurveyResultsController extends AppController
 
         $question = $this->SurveyQuestions->get($questionId, ['contain' => ['SurveyAnswers']]);
 
-        $submits = $this->SurveyResults->find()
-            ->where([
-                'submit_id' => $entryId,
-                'survey_question_id' => $questionId
-            ])
-            ->all();
+        $query = $this->SurveyResults->getQuestionResultsByEntryId($entryId, $questionId);
+        Assert::isInstanceOf($query, Query::class);
+
+        $submits = $query->all();
 
         if ($this->request->is(['post', 'put', 'patch'])) {
             $data = (array)$this->request->getData();
@@ -90,43 +90,6 @@ class SurveyResultsController extends AppController
         }
 
         $this->set(compact('survey', 'surveyEntry', 'question', 'submits'));
-    }
-
-    /**
-     * Mass failing of submitted results for specific quesiton in the entry
-     *
-     * @param string $entryId of the survey_entries instance
-     * @param string $questionId of the question we're about to filter answers to.
-     *
-     * @return \Cake\Http\Response|void|null
-     */
-    public function fail(string $entryId, string $questionId)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-
-        $submits = $this->SurveyResults->find()
-            ->where([
-                'submit_id' => $entryId,
-                'survey_question_id' => $questionId
-            ]);
-
-        if (empty($submits->count())) {
-            $this->Flash->error((string)__('Cannot find submitted answers for this question'));
-
-            return $this->redirect($this->referer());
-        }
-
-        foreach ($submits as $item) {
-            $item->set('status', 'failed');
-            $item->set('score', 0);
-            $item->set('comment', 'Mass reset of the score for the submitted result');
-
-            $this->SurveyResults->save($item);
-        }
-
-        $this->Flash->success((string)__('Successfully set question results in "failed" status'));
-
-        return $this->redirect($this->referer());
     }
 
     /**
