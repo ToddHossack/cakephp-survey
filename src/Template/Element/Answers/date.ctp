@@ -22,30 +22,44 @@ $answer = $entity->survey_answers[0];
 $key = (isset($key) ? $key . '.' : '');
 $id = md5($answer);
 
+$options = [
+    'label' => !empty($answer->get('comment')) ? $answer->get('comment') : $entity->get('question'),
+    'type' => 'text',
+    'class' => 'form-control',
+    'data-provide' => 'datetimepicker',
+    'data-format' => 'YYYY-MM-DD',
+    'required' => true,
+    'templates' => [
+        'input' => '<div class="input-group">
+            <div class="input-group-addon">
+                <i class="fa fa-calendar"></i>
+            </div>
+            <input type="{{type}}" name="{{name}}"{{attrs}}/>
+        </div>'
+    ]
+];
+
+if (!empty($loadResults)) {
+    $submits = $entity->getResultsPerEntry($surveyEntry->get('id'));
+
+    if (!empty($submits)) {
+        foreach ($submits as $item) {
+            $options['value'] = $item->get('result');
+        }
+    }
+}
+
+if (!empty($disabled)) {
+    $options['disabled'] = true;
+}
+
 echo $this->element('Qobo/Survey.SurveyQuestions/view_extras', ['entity' => $entity, 'id' => $id, 'collapsed' => $collapsed]);
 
 ?>
 <div class="row">
     <div class="col-xs-12 col-md-6">
-        <?= $this->Form->hidden('SurveyResults.' . $key . 'survey_question_id', ['value' => $entity->id]);?>
-        <?= $this->Form->hidden('SurveyResults.' . $key . 'survey_answer_id', ['value' => $answer->id]);?>
-        <?= $this->Form->control('SurveyResults.' . $key . 'result', [
-            'label' => !empty($answer->get('comment')) ? $answer->get('comment') : $entity->get('question'),
-            'type' => 'text',
-            'class' => 'form-control',
-            'data-provide' => 'datetimepicker',
-            'data-format' => 'YYYY-MM-DD',
-            'data-default-value' => date('Y-m-d', time()),
-            'required' => true,
-            'templates' => [
-                'input' => '<div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                    </div>
-                    <input type="{{type}}" name="{{name}}"{{attrs}}/>
-                </div>'
-            ]
-        ]) ?>
-
+        <?= $this->Form->hidden('SurveyResults.' . $key . 'survey_question_id', ['value' => $entity->get('id')]);?>
+        <?= $this->Form->hidden('SurveyResults.' . $key . 'survey_answer_id', ['value' => $answer->get('id')]);?>
+        <?= $this->Form->control('SurveyResults.' . $key . 'result', $options) ?>
     </div>
 </div>

@@ -80,6 +80,8 @@ class SurveyResultsTableTest extends TestCase
      */
     public function testGetResults(array $data, int $expected): void
     {
+        $this->markTestSkipped((string)__('Skipping this unit test, as method is deprecated'));
+
         $user = ['id' => '123'];
         $survey = (object)[
             'id' => '111',
@@ -122,46 +124,5 @@ class SurveyResultsTableTest extends TestCase
                  2
             ]
         ];
-    }
-
-    public function testSaveData(): void
-    {
-        /**
-         * @var \Cake\Datasource\EntityInterface
-         */
-        $survey = $this->Surveys->getSurveyData('survey_-_1', true);
-
-        $this->assertInstanceOf(EntityInterface::class, $survey);
-
-        $data = [
-            'user_id' => '00000000-0000-0000-0000-000000000001',
-            'survey_id' => $survey->get('id'),
-            'survey_question_id' => $survey->get('survey_sections')[0]->get('survey_questions')[0]->get('id'),
-            'survey_answer_id' => $survey->get('survey_sections')[0]->get('survey_questions')[0]->get('survey_answers')[0]->get('id'),
-            'result' => 'w00t',
-        ];
-
-        $result = $this->SurveyResults->saveData($data);
-        $this->assertEquals($result['status'], true);
-        $this->assertEquals($result['entity']->result, $data['result']);
-    }
-
-    public function testSaveDataErrors(): void
-    {
-        /**
-         * @var \Cake\Datasource\EntityInterface
-         */
-        $survey = $this->Surveys->getSurveyData('survey_-_1', true);
-        $data = [
-            'user_id' => '00000000-0000-0000-0000-000000000001',
-            'survey_id' => $survey->id,
-            'survey_answer_id' => null,
-            'survey_question_id' => $survey->get('survey_sections')[0]->get('survey_questions')[0]->get('id'),
-            'result' => 'w00t',
-        ];
-
-        $result = $this->SurveyResults->saveData($data);
-        $this->assertEquals($result['status'], false);
-        $this->assertNotEmpty($result['entity']->getErrors());
     }
 }

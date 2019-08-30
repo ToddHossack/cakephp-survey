@@ -146,13 +146,6 @@ $options['title'] = __(
                     <?= empty($survey->expiry_date) ? 'N/A' : $survey->expiry_date->i18nFormat('yyyy-MM-dd HH:mm') ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
-                <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Description') ?>:</strong>
-                </div>
-                <div class="col-xs-8 col-md-4">
-                    <?= $this->Text->autoParagraph(h($survey->description)); ?>
-                </div>
-                <div class="clearfix visible-xs visible-sm"></div>
             </div>
         </div>
     </div>
@@ -165,27 +158,17 @@ $options['title'] = __(
                 </a>
             </li>
             <li role="presentation">
-                <a href="#manage-survey-results" aria-controls="manage-survey-results" role="tab" data-toggle="tab">
-                    <i class="fa fa-check-circle"></i> <?= __('Overview'); ?>
-                </a>
-            </li>
-            <li role="presentation">
-                <a href="#manage-survey-submits" aria-controls="manage-survey-submits" role="tab" data-toggle="tab">
-                    <i class="fa fa-signal"></i> <?= __('Results'); ?>
+                <a href="#manage-survey-entries" aria-controls="manager-survey-entries" role="tab" data-toggle="tab">
+                    <i class="fa fa-signal"></i> <?= __('Entries') ?>
                 </a>
             </li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane" id="manage-survey-sections">
-                <?= $this->element('Qobo/Survey.SurveySections/view', ['survey' => $survey]); ?>
+                <?= $this->element('Qobo/Survey.SurveySections/view', ['survey' => $survey]) ?>
             </div>
-            <div role="tabpanel" class="tab-pane" id="manage-survey-results">
-                <?= $this->element('Qobo/Survey.SurveyResults/view', ['survey' => $survey]); ?>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="manage-survey-submits">
-                <?php if (!empty($submits)) : ?>
-                    <?= $this->element('Qobo/Survey.SurveyResults/submits', ['submits' => $submits]); ?>
-                <?php endif; ?>
+            <div role="tabpanel" class="tab-pane" id="manage-survey-entries">
+                <?= $this->element('Qobo/Survey.SurveyEntries/view', ['survey' => $survey]) ?>
             </div>
         </div>
     </div>

@@ -41,16 +41,17 @@ class SurveyAnswersController extends AppController
         $table = TableRegistry::get('Qobo/Survey.Surveys');
         $this->Surveys = $table;
     }
+
     /**
      * View method
      *
      * @param string $surveyId it's either slug or survey id.
-     * @param string|null $questionId id of an instance
-     * @param string|null $id Survey Answer id.
+     * @param string $questionId id of an instance
+     * @param string $id Survey Answer id.
      *
      * @return \Cake\Http\Response|void|null
      */
-    public function view(string $surveyId, ?string $questionId, ?string $id)
+    public function view(string $surveyId, string $questionId, string $id)
     {
         $survey = $this->Surveys->getSurveyData($surveyId, false);
         $questionTypes = $this->SurveyAnswers->SurveyQuestions->getQuestionTypes();
@@ -74,17 +75,16 @@ class SurveyAnswersController extends AppController
      */
     public function add(string $surveyId, string $questionId)
     {
-        $surveyAnswer = $this->SurveyAnswers->newEntity();
         $survey = $this->Surveys->getSurveyData($surveyId);
         Assert::isInstanceOf($survey, EntityInterface::class);
+
+        $surveyAnswer = $this->SurveyAnswers->newEntity();
 
         $question = $this->SurveyAnswers->SurveyQuestions->get($questionId);
         $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $questionId];
 
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $data = (array)$this->request->getData();
-            $data['survey_question_id'] = $questionId;
-            $surveyAnswer = $this->SurveyAnswers->patchEntity($surveyAnswer, $data);
+            $surveyAnswer = $this->SurveyAnswers->patchEntity($surveyAnswer, (array)$this->request->getData());
 
             if ($this->SurveyAnswers->save($surveyAnswer)) {
                 $this->Flash->success((string)__('The survey answer has been saved.'));
@@ -109,18 +109,17 @@ class SurveyAnswersController extends AppController
      */
     public function edit(string $surveyId, string $questionId, string $id)
     {
-        $surveyAnswer = $this->SurveyAnswers->get($id);
         $survey = $this->Surveys->getSurveyData($surveyId);
         Assert::isInstanceOf($survey, EntityInterface::class);
+
+        $surveyAnswer = $this->SurveyAnswers->get($id);
 
         $question = $this->SurveyAnswers->SurveyQuestions->get($questionId);
         $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $questionId];
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $data = (array)$this->request->getData();
-            $data['survey_question_id'] = $questionId;
+            $surveyAnswer = $this->SurveyAnswers->patchEntity($surveyAnswer, (array)$this->request->getData());
 
-            $surveyAnswer = $this->SurveyAnswers->patchEntity($surveyAnswer, $data);
             if ($this->SurveyAnswers->save($surveyAnswer)) {
                 $this->Flash->success((string)__('The survey answer has been saved.'));
 

@@ -73,7 +73,16 @@ class SurveySectionsFixture extends TestFixture
                 'modified' => '2019-01-14 16:51:57',
                 'trashed' => null
             ],
-
+            [
+                'id' => '00000000-0000-0000-0000-000000000004',
+                'survey_id' => '00000000-0000-0000-0000-000000000004',
+                'name' => 'Default Section for 4th Survey',
+                'active' => 1,
+                'order' => 1,
+                'created' => '2019-08-29 08:00:00',
+                'modified' => '2019-08-29 08:00:00',
+                'trashed' => null
+            ],
         ];
         parent::init();
     }

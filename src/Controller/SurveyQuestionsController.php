@@ -33,9 +33,8 @@ class SurveyQuestionsController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-        /**
-         * @var \Qobo\Survey\Model\Table\SurveysTable $table
-         */
+
+        /** @var \Qobo\Survey\Model\Table\SurveysTable $table */
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.Surveys');
         $this->Surveys = $table;
 
@@ -69,7 +68,14 @@ class SurveyQuestionsController extends AppController
      */
     public function view(string $surveyId, string $id)
     {
-        $surveyQuestion = $this->SurveyQuestions->getEntity($id);
+        $surveyQuestion = $this->SurveyQuestions->get($id, [
+            'contain' => [
+                'Surveys',
+                'SurveyAnswers' => [
+                    'sort' => ['SurveyAnswers.order' => 'ASC'],
+                ]
+            ]
+        ]);
         Assert::isInstanceOf($surveyQuestion, EntityInterface::class);
 
         $survey = $this->Surveys->getSurveyData($surveyId, false);
@@ -87,17 +93,22 @@ class SurveyQuestionsController extends AppController
      */
     public function preview(string $surveyId, string $id)
     {
-        $savedResults = [];
+        $this->request->allowMethod(['get']);
+
         $survey = $this->Surveys->getSurveyData($surveyId);
 
-        $surveyQuestion = $this->SurveyQuestions->getEntity($id);
+        $surveyQuestion = $this->SurveyQuestions->get($id, [
+            'contain' => [
+                'Surveys',
+                'SurveyAnswers' => [
+                    'sort' => ['SurveyAnswers.order' => 'ASC'],
+                ]
+            ]
+        ]);
+
         Assert::isInstanceOf($surveyQuestion, EntityInterface::class);
 
-        if ($this->request->is(['post', 'put', 'patch'])) {
-            $savedResults = (array)$this->request->getData();
-        }
-
-        $this->set(compact('surveyQuestion', 'savedResults', 'survey'));
+        $this->set(compact('surveyQuestion', 'survey'));
     }
 
     /**
@@ -116,11 +127,9 @@ class SurveyQuestionsController extends AppController
         $sections = $this->SurveySections->getSurveySectionsList($survey->get('id'));
 
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $data = (array)$this->request->getData();
-            $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, $data);
-            $saved = $this->SurveyQuestions->save($surveyQuestion);
+            $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, (array)$this->request->getData());
 
-            if ($saved) {
+            if ($this->SurveyQuestions->save($surveyQuestion)) {
                 $this->Flash->success((string)__('The survey question has been saved.'));
 
                 return $this->redirect(['controller' => 'SurveyAnswers', 'action' => 'add', $surveyId, $surveyQuestion->get('id')]);
@@ -134,10 +143,10 @@ class SurveyQuestionsController extends AppController
      * Edit method
      *
      * @param string $surveyId of the survey or either its slug
-     * @param string|null $id Survey Question id.
+     * @param string $id Survey Question id.
      * @return \Cake\Http\Response|void|null Redirects on successful edit, renders view otherwise.
      */
-    public function edit(string $surveyId, ?string $id)
+    public function edit(string $surveyId, string $id)
     {
         $survey = $this->Surveys->getSurveyData($surveyId);
         Assert::isInstanceOf($survey, EntityInterface::class);
@@ -146,18 +155,13 @@ class SurveyQuestionsController extends AppController
 
         $sections = $this->SurveySections->getSurveySectionsList($survey->get('id'));
 
-        $redirect = ['controller' => 'Surveys', 'action' => 'view', $surveyId];
-
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $data = (array)$this->request->getData();
-            $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, $data);
+            $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, (array)$this->request->getData());
 
             if ($this->SurveyQuestions->save($surveyQuestion)) {
                 $this->Flash->success((string)__('The survey question has been saved.'));
 
-                $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->get('slug'), $surveyQuestion->get('id')];
-
-                return $this->redirect($redirect);
+                return $this->redirect($this->referer());
             }
         }
 
@@ -187,7 +191,11 @@ class SurveyQuestionsController extends AppController
             Assert::isInstanceOf($survey, EntityInterface::class);
 
             $surveyId = empty($survey->get('slug')) ? $survey->get('id') : $survey->get('slug');
-            $redirect = ['controller' => 'Surveys', 'action' => 'view', $surveyId];
+            $redirect = [
+                'controller' => 'Surveys',
+                'action' => 'view',
+                $surveyId
+            ];
 
             return $this->redirect($redirect);
         } else {

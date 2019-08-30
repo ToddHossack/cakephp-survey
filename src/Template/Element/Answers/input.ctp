@@ -13,12 +13,35 @@ $answer = $entity->survey_answers[0];
 $key = (isset($key) ? $key . '.' : '');
 $id = md5($answer);
 
+$options = [
+    'type' => 'text',
+    'placeholder' => $answer->get('comment'),
+    'label' => __('Your answer:')
+];
+
+if (!empty($showAnswerScore)) {
+    $options['label'] .= __(' (Weight: {0})', $answer->get('score'));
+}
+
+if (!empty($loadResults)) {
+    $submits = $entity->getResultsPerEntry($surveyEntry->get('id'));
+    if (!empty($submits)) {
+        foreach ($submits as $item) {
+            $options['value'] = $item->get('result');
+        }
+    }
+}
+
+if (!empty($disabled)) {
+    $options['readonly'] = true;
+}
+
 echo $this->element('Qobo/Survey.SurveyQuestions/view_extras', ['entity' => $entity, 'id' => $id, 'collapsed' => $collapsed]);
 ?>
 <div class="row">
     <div class="col-xs-12 col-md-6">
-        <?= $this->Form->hidden('SurveyResults.' . $key . 'survey_question_id', ['value' => $entity->id]);?>
-        <?= $this->Form->hidden('SurveyResults.' . $key . 'survey_answer_id', ['value' => $answer->id]);?>
-        <?= $this->Form->input('SurveyResults.' . $key . 'result', ['type' => 'text', 'placeholder' => $answer->comment]); ?>
+        <?= $this->Form->hidden('SurveyResults.' . $key . 'survey_question_id', ['value' => $entity->get('id')]);?>
+        <?= $this->Form->hidden('SurveyResults.' . $key . 'survey_answer_id', ['value' => $answer->get('id')]);?>
+        <?= $this->Form->control('SurveyResults.' . $key . 'result', $options); ?>
     </div>
 </div>

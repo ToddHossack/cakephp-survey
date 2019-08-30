@@ -11,7 +11,9 @@
  */
 namespace Qobo\Survey\Model\Entity;
 
+use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
 
 /**
  * SurveyQuestion Entity
@@ -44,4 +46,99 @@ class SurveyQuestion extends Entity
         '*' => true,
         'id' => false,
     ];
+
+    /**
+     * Get Score of the question based on Survey Entry id
+     *
+     * @param string $id of the survey entries instance
+     *
+     * @return int|float $result;
+     */
+    public function getScorePerEntry(string $id)
+    {
+        $result = 0;
+
+        $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+
+        $query = $resultsTable->find()
+            ->where([
+                'submit_id' => $id,
+                'survey_question_id' => $this->get('id'),
+            ]);
+
+        if (empty($query->count())) {
+            return $result;
+        }
+
+        foreach ($query as $submit) {
+            $result += $submit->get('score');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Retrieve related submits based on the question instance and SurveyEntries `id`
+     *
+     * @param string $id of the survey_entries record
+     *
+     * @return null|\Cake\Datasource\ResultSetInterface $result of records
+     */
+    public function getResultsPerEntry(string $id) : ?ResultSetInterface
+    {
+        $result = null;
+        $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+
+        $query = $resultsTable->find()
+            ->where([
+                'submit_id' => $id,
+                'survey_question_id' => $this->get('id'),
+            ]);
+
+        if (empty($query->count())) {
+            return $result;
+        }
+
+        $result = $query->all();
+
+        return $result;
+    }
+
+    /**
+     * Retrieve unique status of Submitted survey_results per question/entry
+     *
+     * @param string $entryId of survey_entries instance
+     *
+     * @return string $result containing unique status of the submits.
+     */
+    public function getSubmitStatus(string $entryId) : string
+    {
+        $result = 'pass';
+
+        $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+
+        $query = $resultsTable->find()
+            ->where([
+                'submit_id' => $entryId,
+                'survey_question_id' => $this->get('id'),
+            ]);
+
+        if (empty($query->count())) {
+            return $result;
+        }
+
+        $statuses = [];
+        foreach ($query as $entity) {
+            $statuses[] = $entity->get('status');
+        }
+
+        $uniqueStatus = array_unique($statuses);
+        $result = array_shift($uniqueStatus);
+
+        if (is_null($result)) {
+            $result = 'pass';
+        }
+
+        return $result;
+    }
 }
