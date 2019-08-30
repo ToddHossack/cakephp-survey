@@ -1,8 +1,8 @@
 <?php
 namespace Qobo\Survey\Controller;
 
-use Cake\ORM\TableRegistry;
 use Cake\ORM\Query;
+use Cake\ORM\TableRegistry;
 use Qobo\Survey\Controller\AppController;
 use Webmozart\Assert\Assert;
 
