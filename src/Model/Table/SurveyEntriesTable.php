@@ -53,10 +53,10 @@ class SurveyEntriesTable extends Table
             'className' => 'Qobo/Survey.Surveys'
         ]);
 
-        $this->hasMany('SurveyResults', [
-            'foreignKey' => 'submit_id',
+        $this->hasMany('SurveyEntryQuestions', [
+            'foreignKey' => 'survey_entry_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.SurveyResults',
+            'className' => 'Qobo/Survey.SurveyEntryQuestions'
         ]);
     }
 

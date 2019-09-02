@@ -9,7 +9,7 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-$surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
+$surveyId = !empty($survey->get('slug')) ? $survey->get('slug') : $survey->get('id');
 
 $resourceUser = $surveyEntry->get('resource_user');
 
@@ -42,79 +42,24 @@ $options['title'] = __(
 <section class="content">
     <?= $this->Form->create() ?>
     <?= $this->Form->hidden('SurveyEntries.id', ['value' => $surveyEntry->get('id')]) ?>
-    <?php $key = 0; ?>
-     <?php foreach ($survey->get('survey_sections') as $section) : ?>
-         <?php foreach ($section->get('survey_questions') as $question) : ?>
-                 <div class="box no-border">
-                     <div class="box-header with-border">
-                         <h3 class="box-title <?= $question->get('is_required') ? 'required' : '' ?>">
-                             <?= $question->get('question');?>
-                             <label></label>
-                              <?= __('(Score: {0})', $this->Survey->getQuestionScore($question, $surveyEntry->get('id'))) ?>
-                         </h3>
-                     </div>
-                     <div class="box-body">
-                         <div class="row">
-                             <div class="col-xs-12 col-md-6">
-                                 <?= $this->element(
-                                     'Qobo/Survey.Answers/' . $question->get('type'),
-                                     [
-                                         'entity' => $question,
-                                         'key' => $key,
-                                         'collapsed' => false,
-                                         'loadResults' => true,
-                                         'disabled' => true,
-                                         'showAnswerScore' => true,
-                                     ])?>
-                             </div>
-                         </div>
-                     </div>
-                     <div class="box-footer">
-                         <?= $this->Form->hidden('SurveyResults.' . $key . '.survey_question_id', ['value' => $question->get('id')]) ?>
-                         <?= $this->Form->radio(
-                             'SurveyResults.' . $key . '.status',
-                             [
-                                 ['value' => 'pass', 'text' => __('Pass')],
-                                 ['value' => 'fail', 'text' => __('Fail')]
-                             ],
-                             [
-                                 'value' => $question->getSubmitStatus($surveyEntry->get('id'))
-                             ]
-                         ) ?>
-                     </div>
-                 </div>
-         <?php $key++; ?>
-         <?php endforeach; ?>
-     <?php endforeach; ?>
+    <?= $this->Form->hidden('SurveyEntries.survey_id', ['value' => $survey->get('id')]) ?>
+    <?php $count = 0; ?>
+    <?php foreach ($survey->get('survey_sections') as $section) : ?>
+        <?php foreach ($section->get('survey_questions') as $question) : ?>
+                <?php
+                    echo $this->element(
+                        'Qobo/Survey.SurveyEntryQuestions/' . $question->get('type'),
+                        [
+                            'question' => $question,
+                            'entryId' => $surveyEntry->get('id'),
+                            'key' => $count,
+                        ]
+                    );
+                ?>
+            <?php $count++; ?>
+        <?php endforeach;?>
+    <?php endforeach;?>
 
-     <div class="box box-info">
-         <div class="box-header with-border">
-             <h3 class="box-title"><?= __('Edit Entry Details') ?></h3>
-         </div>
-         <div class="box-body">
-             <div class="row">
-                 <div class="col-md-6 col-xs-12">
-                     <h4><?= __('Total Score: {0}', $surveyEntry->getTotalScore()) ?></h4>
-                 </div>
-             </div>
-             <div class="row">
-                 <div class="col-md-4 col-xs-12">
-                     <?= $this->Form->control(
-                         'SurveyEntries.status',
-                         [
-                             'type' => 'select',
-                             'options' => $entryStatuses,
-                             'value' => $surveyEntry->get('status'),
-                             'label' => __('Submit Status'),
-                             'empty' => __('Choose status'),
-                         ]
-                     ) ?>
-                 </div>
-             </div>
-         </div>
-         <div class="box-footer">
-             <?= $this->Form->button(__('Save')) ?>
-         </div>
-     </div>
+
      <?= $this->Form->end() ?>
 </section>
