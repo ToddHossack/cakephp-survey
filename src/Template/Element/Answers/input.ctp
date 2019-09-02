@@ -19,23 +19,6 @@ $options = [
     'label' => __('Your answer:')
 ];
 
-if (!empty($showAnswerScore)) {
-    $options['label'] .= __(' (Weight: {0})', $answer->get('score'));
-}
-
-if (!empty($loadResults)) {
-    $submits = $entity->getResultsPerEntry($surveyEntry->get('id'));
-    if (!empty($submits)) {
-        foreach ($submits as $item) {
-            $options['value'] = $item->get('result');
-        }
-    }
-}
-
-if (!empty($disabled)) {
-    $options['readonly'] = true;
-}
-
 echo $this->element('Qobo/Survey.SurveyQuestions/view_extras', ['entity' => $entity, 'id' => $id, 'collapsed' => $collapsed]);
 ?>
 <div class="row">
