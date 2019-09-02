@@ -10,8 +10,8 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 $defaultOptions = [
-    'escape' => false,
     'disabled' => true,
+    'escape' => false,
 ];
 
 $options = [
@@ -28,16 +28,9 @@ foreach ($question->get('survey_answers') as $item) {
     $options['options'][$item->get('id')] = $item->get('answer') . $this->Survey->renderAnswerScore($item);
 }
 
-
-if ($questionEntry && !empty($questionEntry->get('survey_results'))) {
-
-    foreach ($options['options'] as $optionId => $optionName) {
-        foreach ($questionEntry->get('survey_results') as $submit) {
-            if ($optionId == $submit->get('survey_answer_id')) {
-                $options['value'] = $submit->get('survey_answer_id');
-            }
-        }
-    }
+if ($questionEntry) {
+    $values = $questionEntry->getSurveyResultValues(['resultField' => 'survey_answer_id']);
+    $options['value'] = array_shift($values);
 }
 
 $key = (isset($key) ? $key . '.' : '');

@@ -14,6 +14,7 @@ namespace Qobo\Survey\Model\Entity;
 use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
+use Qobo\Survey\Model\Entity\SurveyEntryQuestion;
 
 /**
  * SurveyQuestion Entity
@@ -78,28 +79,37 @@ class SurveyQuestion extends Entity
     }
 
     /**
+     * FIXME: remove obsolete method
+     */
+    public function getResultsPerEntry(string $id) : ?ResultSetInterface
+    {
+        return $this->getQuestionEntryResultsPerEntry($id);
+    }
+
+    /**
      * Retrieve related submits based on the question instance and SurveyEntries `id`
      *
      * @param string $id of the survey_entries record
      *
-     * @return null|\Cake\Datasource\ResultSetInterface $result of records
+     * @return null|\Qobo\Survey\Model\Entity\SurveyEntryQuestion $result of entry with related submits
      */
-    public function getResultsPerEntry(string $id) : ?ResultSetInterface
+    public function getQuestionEntryResultsPerEntry(string $id): ?SurveyEntryQuestion
     {
         $result = null;
-        $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+        $questionEntryTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntryQuestions');
 
-        $query = $resultsTable->find()
+        $query = $questionEntryTable->find()
             ->where([
-                'submit_id' => $id,
-                'survey_question_id' => $this->get('id'),
-            ]);
+                'survey_entry_id' => $id,
+                'survey_question_id' => $this->get('id')
+            ])
+            ->contain(['SurveyResults']);
 
         if (empty($query->count())) {
             return $result;
         }
 
-        $result = $query->all();
+        $result = $query->first();
 
         return $result;
     }

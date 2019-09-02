@@ -34,4 +34,29 @@ class SurveyEntryQuestion extends Entity
         '*' => true,
         'id' => false,
     ];
+
+    /**
+     * Retrieve Survey Result values from `survey_Results` records attached
+     * via associations/contain statement.
+     *
+     * @param mixed[] $options containing resultField for return.
+     *
+     * @return mixed[] $result with values if any.
+     */
+    public function getSurveyResultValues(array $options = []) : array
+    {
+        $result = [];
+
+        $resultField = empty($options['resultField']) ? 'survey_answer_id' : $options['resultField'];
+
+        if (empty($this->get('survey_results'))) {
+            return $result;
+        }
+
+        foreach ($this->get('survey_results') as $submit) {
+            $result[] = $submit->get($resultField);
+        }
+
+        return $result;
+    }
 }

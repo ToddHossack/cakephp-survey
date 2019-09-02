@@ -46,10 +46,9 @@ $options += $defaultOptions;
 
 $questionEntry = $question->getQuestionEntryResultsPerEntry($entryId);
 
-if ($questionEntry && !empty($questionEntry->get('survey_results'))) {
-    foreach ($questionEntry->get('survey_results') as $submit) {
-        $options['value'] = $submit->get('result');
-    }
+if ($questionEntry) {
+    $values = $questionEntry->getSurveyResultValues(['resultField' => 'result']);
+    $options['value'] = array_shift($values);
 }
 
 $key = (isset($key) ? $key . '.' : '');

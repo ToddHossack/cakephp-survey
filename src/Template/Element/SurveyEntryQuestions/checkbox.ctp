@@ -9,7 +9,6 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-
 $defaultOptions = [
     'escape' => false,
     'disabled' => true,
@@ -28,10 +27,8 @@ foreach ($question->get('survey_answers') as $item) {
     $options[$item->get('id')] = $item->get('answer') . $this->Survey->renderAnswerScore($item);
 }
 
-if ($questionEntry && !empty($questionEntry->get('survey_results'))) {
-    foreach ($questionEntry->get('survey_results') as $submit) {
-        array_push($extraAttributes['value'], $submit->get('survey_answer_id'));
-    }
+if ($questionEntry) {
+    $extraAttributes['value'] = $questionEntry->getSurveyResultValues(['resultField' => 'survey_answer_id']);
 }
 
 $key = (isset($key) ? $key . '.' : '');

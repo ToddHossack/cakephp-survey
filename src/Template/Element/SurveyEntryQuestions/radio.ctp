@@ -24,13 +24,11 @@ foreach ($question->get('survey_answers') as $item) {
 }
 
 $questionEntry = $question->getQuestionEntryResultsPerEntry($entryId);
-
-if ($questionEntry && !empty($questionEntry->get('survey_results'))) {
+if ($questionEntry) {
+    $values = $questionEntry->getSurveyResultValues(['resultField' => 'survey_answer_id']);
     foreach ($options as $k => $item) {
-        foreach ($questionEntry->get('survey_results') as $submit) {
-            if ($item['value'] == $submit->get('survey_answer_id')) {
-                $options[$k]['checked'] = true;
-            }
+        if (in_array($item['value'], $values)) {
+            $options[$k]['checked'] = true;
         }
     }
 }
