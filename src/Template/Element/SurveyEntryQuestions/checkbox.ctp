@@ -23,9 +23,7 @@ $extraAttributes = [
 $extraAttributes += $defaultOptions;
 $questionEntry = $question->getQuestionEntryResultsPerEntry($entryId);
 
-foreach ($question->get('survey_answers') as $item) {
-    $options[$item->get('id')] = $item->get('answer') . $this->Survey->renderAnswerScore($item);
-}
+$options = $question->getAnswerOptions(['withScore' => true]);
 
 if ($questionEntry) {
     $extraAttributes['value'] = $questionEntry->getSurveyResultValues(['resultField' => 'survey_answer_id']);

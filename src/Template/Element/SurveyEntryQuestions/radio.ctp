@@ -14,16 +14,9 @@ $defaultOptions = [
     'disabled' => true,
 ];
 
-$options = [];
-
-foreach ($question->get('survey_answers') as $item) {
-    $options[] = [
-        'value' => $item->get('id'),
-        'text' => $item->get('answer') . $this->Survey->renderAnswerScore($item),
-    ];
-}
-
+$options = $question->getAnswerOptions(['withScore' => true, 'isRadio' => true]);
 $questionEntry = $question->getQuestionEntryResultsPerEntry($entryId);
+
 if ($questionEntry) {
     $values = $questionEntry->getSurveyResultValues(['resultField' => 'survey_answer_id']);
     foreach ($options as $k => $item) {

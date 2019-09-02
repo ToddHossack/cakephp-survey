@@ -22,11 +22,9 @@ $options = [
 ];
 
 $options += $defaultOptions;
-$questionEntry = $question->getQuestionEntryResultsPerEntry($entryId);
 
-foreach ($question->get('survey_answers') as $item) {
-    $options['options'][$item->get('id')] = $item->get('answer') . $this->Survey->renderAnswerScore($item);
-}
+$options['options'] = $question->getAnswerOptions(['withScore' => true]);
+$questionEntry = $question->getQuestionEntryResultsPerEntry($entryId);
 
 if ($questionEntry) {
     $values = $questionEntry->getSurveyResultValues(['resultField' => 'survey_answer_id']);

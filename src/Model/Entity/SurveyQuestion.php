@@ -49,36 +49,6 @@ class SurveyQuestion extends Entity
     ];
 
     /**
-     * Get Score of the question based on Survey Entry id
-     *
-     * @param string $id of the survey entries instance
-     *
-     * @return int|float $result;
-     */
-    public function getScorePerEntry(string $id)
-    {
-        $result = 0;
-
-        $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
-
-        $query = $resultsTable->find()
-            ->where([
-                'submit_id' => $id,
-                'survey_question_id' => $this->get('id'),
-            ]);
-
-        if (empty($query->count())) {
-            return $result;
-        }
-
-        foreach ($query as $submit) {
-            $result += $submit->get('score');
-        }
-
-        return $result;
-    }
-
-    /**
      * Retrieve related submits based on the question instance and SurveyEntries `id`
      *
      * @param string $id of the survey_entries record
@@ -102,6 +72,47 @@ class SurveyQuestion extends Entity
         }
 
         $result = $query->first();
+
+        return $result;
+    }
+
+    /**
+     * Retrieve the list of id/value of survey answers for element rendering
+     *
+     * @param mixed[] $options with various flags
+     *
+     * @return mixed[] $result array with options.
+     */
+    public function getAnswerOptions(array $options = []) : array
+    {
+        $result = [];
+
+        if (empty($this->get('survey_answers'))) {
+            return $result;
+        }
+
+        $withScore = empty($options['withScore']) ? false : true;
+
+        foreach ($this->get('survey_answers') as $entity) {
+            $answer = $entity->get('answer');
+
+            if ($withScore) {
+                $answer .= (string)__(' [Score: {0}]', $entity->get('score'));
+            }
+
+            $result[$entity->get('id')] = $answer;
+        }
+
+        // radio checkboxes have different array structure for Form helper.
+        if (!empty($options['isRadio']) && !empty($result)) {
+            $tmp = [];
+
+            foreach ($result as $id => $text) {
+                array_push($tmp, ['value' => $id, 'text' => $text]);
+            }
+
+            $result = $tmp;
+        }
 
         return $result;
     }
