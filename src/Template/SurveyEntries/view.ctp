@@ -59,7 +59,6 @@ $options['title'] = __(
             <?php $count++; ?>
         <?php endforeach;?>
     <?php endforeach;?>
-
-
-     <?= $this->Form->end() ?>
+    <?= $this->Form->button(__('Save'), ['class' => 'btn btn-success']) ?>
+    <?= $this->Form->end() ?>
 </section>

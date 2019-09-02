@@ -29,7 +29,6 @@ if ($questionEntry) {
     $extraAttributes['value'] = $questionEntry->getSurveyResultValues(['resultField' => 'survey_answer_id']);
 }
 
-$key = (isset($key) ? $key . '.' : '');
 $id = md5(serialize($options));
 ?>
 <div class="box no-border">

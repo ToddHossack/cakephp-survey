@@ -26,7 +26,6 @@ if ($questionEntry) {
     }
 }
 
-$key = (isset($key) ? $key . '.' : '');
 $id = md5(serialize($options));
 ?>
 <div class="box no-border">
