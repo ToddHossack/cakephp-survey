@@ -26,6 +26,11 @@ class MoveSurveyResultsToEntryQuestionsTask extends Shell
         return $parser;
     }
 
+    /**
+     * Initialize helper Table properties for `main()` use
+     *
+     * @return void
+     */
     public function initTables() : void
     {
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
