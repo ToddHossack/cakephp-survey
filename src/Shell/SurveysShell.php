@@ -15,7 +15,8 @@ class SurveysShell extends Shell
     public $tasks = [
         'Qobo/Survey.AddDefaultSections',
         'Qobo/Survey.MoveSubmitsToEntries',
-        'Qobo/Survey.MigrateScoresToSurveyResults'
+        'Qobo/Survey.MigrateScoresToSurveyResults',
+        'Qobo/Survey.MoveSurveyResultsToEntryQuestions',
     ];
     /**
      * Manage the available sub-commands along with their arguments and help
@@ -46,6 +47,12 @@ class SurveysShell extends Shell
                 [
                     'help' => 'Migrate score values to survey_results records',
                     'parser' => $this->MigrateScoresToSurveyResults->getOptionParser()
+                ]
+            )->addSubcommand(
+                'move_survey_results_to_entry_questions',
+                [
+                    'help' => 'Assign survey_entry_question_id fields for survey_results',
+                    'parser' => $this->MoveSurveyResultsToEntryQuestions->getOptionParser(),
                 ]
             );
 
