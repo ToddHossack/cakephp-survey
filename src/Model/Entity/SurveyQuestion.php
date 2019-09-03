@@ -15,6 +15,7 @@ use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Qobo\Survey\Model\Entity\SurveyEntryQuestion;
+use Webmozart\Assert\Assert;
 
 /**
  * SurveyQuestion Entity
@@ -60,6 +61,7 @@ class SurveyQuestion extends Entity
         $result = null;
         $questionEntryTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntryQuestions');
 
+        /** @var \Cake\ORM\Query $query */
         $query = $questionEntryTable->find()
             ->where([
                 'survey_entry_id' => $id,
@@ -72,7 +74,7 @@ class SurveyQuestion extends Entity
         }
 
         $result = $query->first();
-
+        Assert::isInstanceOf($result, SurveyEntryQuestion::class);
         return $result;
     }
 

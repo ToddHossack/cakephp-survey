@@ -93,7 +93,7 @@ class MoveSurveyResultsToEntryQuestionsTask extends Shell
                 if ($result) {
                     $count++;
                 } else {
-                    $this->warning((string)__("Couldn't save entity for {0} : {1}", $resultEntity->get('submit_id'), $resultEntity->get('survey_question_id')));
+                    $this->out((string)__("Couldn't save entity for {0} : {1}", $resultEntity->get('submit_id'), $resultEntity->get('survey_question_id')));
                 }
             }
         }
