@@ -5,10 +5,10 @@
         'SurveyEntryQuestions.' . $key . '.status',
         [
             ['value' => 'pass', 'text' => __('Pass')],
-            ['value' => 'fail', 'text' => __('Fail')]
+            ['value' => 'fail', 'text' => __('Fail')],
         ],
         [
-            'value' => $questionEntry->get('status')
+            'value' => ($questionEntry->isEmpty('status')) ? 'pass' : $questionEntry->get('status')
         ]
     ) ?>
     <hr/>
