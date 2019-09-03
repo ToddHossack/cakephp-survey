@@ -125,7 +125,6 @@ class SurveyResultsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn(['survey_id'], 'Surveys'));
         $rules->add($rules->existsIn(['survey_question_id'], 'SurveyQuestions'));
         $rules->add($rules->existsIn(['survey_answer_id'], 'SurveyAnswers'));
 
@@ -276,11 +275,13 @@ class SurveyResultsTable extends Table
         $entity = $this->newEntity();
 
         $entity->set('survey_entry_question_id', $questionEntry->get('id'));
+        $entity->set('survey_question_id', $questionEntry->get('survey_question_id'));
         $entity->set('result', (!empty($data['result']) ? $data['result'] : null));
         $entity->set('survey_answer_id', $data['survey_answer_id']);
         $entity->set('score', $score);
 
         $result = $this->save($entity);
+
         if (!$result) {
             Log::error(print_r($entity->getErrors(), true));
         }

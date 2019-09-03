@@ -44,14 +44,14 @@ class SurveyEntryQuestionsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => '6b3aad57-dd3e-4138-a560-9774de2db347',
-                'survey_entry_id' => '60a5a30a-570d-40e5-9cb8-76eb3785bc9a',
-                'survey_question_id' => 'a72362b4-cd36-4689-bbb1-2e1de6b53e52',
-                'status' => 'Lorem ipsum dolor sit amet',
+                'id' => '00000000-0000-0000-0000-000000000001',
+                'survey_entry_id' => '00000000-0000-0000-0000-000000000003',
+                'survey_question_id' => '00000000-0000-0000-0000-000000000007',
+                'status' => 'passed',
                 'score' => 1,
                 'created' => '2019-08-30 12:26:13',
                 'modified' => '2019-08-30 12:26:13',
-                'trashed' => '2019-08-30 12:26:13'
+                'trashed' => null
             ],
         ];
         parent::init();

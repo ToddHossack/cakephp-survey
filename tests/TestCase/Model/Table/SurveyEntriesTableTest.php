@@ -74,6 +74,6 @@ class SurveyEntriesTableTest extends TestCase
         $entity = $this->SurveyEntries->get($entryId);
 
         $score = $entity->getTotalScore();
-        $this->assertEquals(10, $score);
+        $this->assertEquals(0, $score);
     }
 }
