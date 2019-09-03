@@ -20,6 +20,7 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 use Qobo\Survey\Model\Entity\SurveyEntry;
+use Qobo\Survey\Model\Entity\SurveyEntryQuestion;
 use Webmozart\Assert\Assert;
 
 /**
@@ -247,11 +248,12 @@ class SurveyResultsTable extends Table
      * Save Results Entity
      *
      * @param \Qobo\Survey\Model\Entity\SurveyEntry $entry instance
+     * @param \Qobo\Survey\Model\Entity\SurveyEntryQuestion $questionEntry instance
      * @param mixed[] $data with post data
      *
      * @return \Qobo\Survey\Model\Entity\SurveyResult|bool $result
      */
-    public function saveResultsEntity(SurveyEntry $entry, array $data)
+    public function saveResultsEntity(SurveyEntry $entry, array $data, SurveyEntryQuestion $questionEntry)
     {
         $result = false;
         $score = 0;
@@ -273,16 +275,12 @@ class SurveyResultsTable extends Table
 
         $entity = $this->newEntity();
 
-        $entity->set('submit_id', $entry->get('id'));
-        $entity->set('submit_date', $entry->get('submit_date'));
-        $entity->set('survey_id', $entry->get('survey_id'));
-        $entity->set('survey_question_id', $data['survey_question_id']);
+        $entity->set('survey_entry_question_id', $questionEntry->get('id'));
         $entity->set('result', (!empty($data['result']) ? $data['result'] : null));
         $entity->set('survey_answer_id', $data['survey_answer_id']);
         $entity->set('score', $score);
 
         $result = $this->save($entity);
-
         if (!$result) {
             Log::error(print_r($entity->getErrors(), true));
         }
