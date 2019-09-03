@@ -78,17 +78,21 @@ class SurveyEntry extends Entity
     {
         $result = 0;
 
-        $results = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+        $answersTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyAnswers');
+        $results = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntryQuestions');
 
         $query = $results->find()
             ->where([
-                'submit_id' => $this->get('id')
-            ]);
+                'survey_entry_id' => $this->get('id'),
+                'status' => 'pass'
+            ])
+            ->contain(['SurveyResults']);
 
         foreach ($query as $entity) {
-            if ($entity->get('status') !== 'fail') {
-                $result += $entity->get('score');
-            }
+           foreach ($entity->get('survey_results') as $submit) {
+               $answer = $answersTable->get($submit->get('survey_answer_id'));
+               $result += $answer->get('score');
+           }
         }
 
         return $result;
