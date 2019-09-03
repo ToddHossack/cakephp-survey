@@ -36,7 +36,7 @@ $count = 1;
     <?php
         echo $this->Form->create($survey, ['url' => ['action' => 'submit']]);
         echo $this->Form->hidden('SurveyEntries.survey_id', ['value' => $survey->get('id')]);
-        echo $this->Form->hidden('SurveyEntries.submit_date', ['value' => Time::now()]);
+        echo $this->Form->hidden('SurveyEntries.submit_date', ['value' => Time::now()->i18nFormat('yyyy-MM-dd HH:mm:ss')]);
 
         /** $user variable derives from AppController of application */
         echo $this->Form->hidden('SurveyEntries.resource_id', ['value' => $userId]);
