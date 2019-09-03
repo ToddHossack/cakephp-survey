@@ -75,6 +75,7 @@ class SurveyQuestion extends Entity
 
         $result = $query->first();
         Assert::isInstanceOf($result, SurveyEntryQuestion::class);
+
         return $result;
     }
 
