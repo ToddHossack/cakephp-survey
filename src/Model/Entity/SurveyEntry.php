@@ -89,10 +89,10 @@ class SurveyEntry extends Entity
             ->contain(['SurveyResults']);
 
         foreach ($query as $entity) {
-           foreach ($entity->get('survey_results') as $submit) {
-               $answer = $answersTable->get($submit->get('survey_answer_id'));
-               $result += $answer->get('score');
-           }
+            foreach ($entity->get('survey_results') as $submit) {
+                $answer = $answersTable->get($submit->get('survey_answer_id'));
+                $result += $answer->get('score');
+            }
         }
 
         return $result;

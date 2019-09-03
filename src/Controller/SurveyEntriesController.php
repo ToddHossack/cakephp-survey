@@ -97,7 +97,6 @@ class SurveyEntriesController extends AppController
                                 $score += $submit->get('score');
                             }
                         }
-
                     }
 
                     $entity->set('score', $score);

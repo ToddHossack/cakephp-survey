@@ -248,8 +248,8 @@ class SurveyResultsTable extends Table
      * Save Results Entity
      *
      * @param \Qobo\Survey\Model\Entity\SurveyEntry $entry instance
-     * @param \Qobo\Survey\Model\Entity\SurveyEntryQuestion $questionEntry instance
      * @param mixed[] $data with post data
+     * @param \Qobo\Survey\Model\Entity\SurveyEntryQuestion $questionEntry instance
      *
      * @return \Qobo\Survey\Model\Entity\SurveyResult|bool $result
      */
