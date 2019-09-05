@@ -1,6 +1,7 @@
 <?php
 namespace Qobo\Survey\Model\Entity;
 
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -50,18 +51,19 @@ class SurveyEntry extends Entity
         $result = [];
         $table = TableRegistry::getTableLocator()->get($this->get('resource'));
 
-        if ($table instanceof Table) {
+        try {
             $user = $table->get($this->get('resource_id'));
+
+            $result['displayField'] = $user->get($table->displayField());
+        } catch (RecordNotFoundException $e) {
+            $result['displayField'] = __('{0} Instance: [{1}]', $this->get('resource'), $this->get('resource_id'));
         }
 
-        $result = [
-            'displayField' => $user->get($table->displayField()),
-            'url' => [
+        $result['url'] = [
                 'plugin' => false,
                 'controller' => $this->get('resource'),
                 'action' => 'view',
                 $this->get('resource_id')
-            ]
         ];
 
         return $result;
