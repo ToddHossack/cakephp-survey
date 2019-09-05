@@ -100,7 +100,7 @@ class MigrateToEntriesTask extends Shell
 
         $this->out((string)__('Found [{0}] survey_result records', $query->count()));
 
-        if(empty($query->count())) {
+        if (empty($query->count())) {
             return $result;
         }
 
@@ -148,6 +148,10 @@ class MigrateToEntriesTask extends Shell
      * records that carry survey_entry_id and questions that been submitted to it.
      *
      * These instances will be matched to `survey_results`.`survey_entry_question_id`
+     *
+     * @param mixed[] $entryIds array of survey_entries ids
+     *
+     * @return mixed[] $result with entry_question_id list
      */
     protected function createSurveyEntryQuestions(array $entryIds = []) : array
     {
@@ -174,7 +178,7 @@ class MigrateToEntriesTask extends Shell
                 continue;
             }
 
-            foreach($query as $surveyResultEntity) {
+            foreach ($query as $surveyResultEntity) {
                 $questionEntry = $this->SurveyEntryQuestions->find()
                     ->where([
                         'survey_entry_id' => $entryId,
@@ -212,6 +216,9 @@ class MigrateToEntriesTask extends Shell
     /**
      * Link SurveyResults entries to survey_entry_questions.id
      *
+     * @param string $questionEntryId of the survey_entry_questions instance
+     *
+     * @return void
      */
     private function linkEntryQuestionToSurveyResults(string $questionEntryId) : void
     {
