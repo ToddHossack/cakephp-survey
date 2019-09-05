@@ -7,17 +7,13 @@ use Cake\Console\Shell;
  * Surveys shell command.
  *
  * @property \Qobo\Survey\Shell\Task\AddDefaultSectionsTask $AddDefaultSections
- * @property \Qobo\Survey\Shell\Task\MoveSubmitsToEntriesTask $MoveSubmitsToEntries
- * @property \Qobo\Survey\Shell\Task\MigrateScoresToSurveyResultsTask $MigrateScoresToSurveyResults
- * @property \Qobo\Survey\Shell\Task\MoveSurveyResultsToEntryQuestionsTask $MoveSurveyResultsToEntryQuestions
+ * @property \Qobo\Survey\Shell\Task\MigrateToEntriesTask $MigrateToEntries
  */
 class SurveysShell extends Shell
 {
     public $tasks = [
         'Qobo/Survey.AddDefaultSections',
-        'Qobo/Survey.MoveSubmitsToEntries',
-        'Qobo/Survey.MigrateScoresToSurveyResults',
-        'Qobo/Survey.MoveSurveyResultsToEntryQuestions',
+        'Qobo/Survey.MigrateToEntries',
     ];
     /**
      * Manage the available sub-commands along with their arguments and help
@@ -38,22 +34,10 @@ class SurveysShell extends Shell
                     'parser' => $this->AddDefaultSections->getOptionParser()
                 ]
             )->addSubcommand(
-                'move_submits_to_entries',
+                'migrate_to_entries',
                 [
-                    'help' => 'Pre-populating Survey Entry with all the submits that took place',
-                    'parser' => $this->MoveSubmitsToEntries->getOptionParser()
-                ]
-            )->addSubcommand(
-                'migrate_scores_to_survey_results',
-                [
-                    'help' => 'Migrate score values to survey_results records',
-                    'parser' => $this->MigrateScoresToSurveyResults->getOptionParser()
-                ]
-            )->addSubcommand(
-                'move_survey_results_to_entry_questions',
-                [
-                    'help' => 'Assign survey_entry_question_id fields for survey_results',
-                    'parser' => $this->MoveSurveyResultsToEntryQuestions->getOptionParser(),
+                    'help' => 'Migrate existing surveys into new entries structure',
+                    'parser' => $this->MigrateToEntries->getOptionParser(),
                 ]
             );
 
