@@ -95,7 +95,9 @@ class SurveysController extends AppController
      */
     public function index()
     {
-        $surveys = $this->paginate($this->Surveys);
+        $query = $this->Surveys->find()->order(['expiry_date' => 'DESC']);
+        $surveys = $this->paginate($query);
+
         $this->set(compact('surveys'));
     }
 
