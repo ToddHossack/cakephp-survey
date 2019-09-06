@@ -250,7 +250,7 @@ class MigrateToEntriesTask extends Shell
         foreach ($query as $submit) {
             $submit->set('survey_entry_question_id', $questionEntryId);
 
-            // updating survey_results.score
+            /** @var \Qobo\Survey\Model\Entity\SurveyAnswer|null $answer */
             $answer = $answersTable->find()
                 ->where([
                     'id' => $submit->get('survey_answer_id'),
