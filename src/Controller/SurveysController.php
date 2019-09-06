@@ -42,6 +42,8 @@ class SurveysController extends AppController
 
     protected $SurveyAnswers;
 
+    protected $SurveyEntryQuestions;
+
     /**
      * @{inheritDoc}
      *
@@ -65,6 +67,9 @@ class SurveysController extends AppController
 
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyAnswers');
         $this->SurveyAnswers = $table;
+
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntryQuestions');
+        $this->SurveyEntryQuestions = $table;
     }
 
     /**
@@ -90,7 +95,9 @@ class SurveysController extends AppController
      */
     public function index()
     {
-        $surveys = $this->paginate($this->Surveys);
+        $query = $this->Surveys->find()->order(['expiry_date' => 'DESC']);
+        $surveys = $this->paginate($query);
+
         $this->set(compact('surveys'));
     }
 
@@ -342,26 +349,31 @@ class SurveysController extends AppController
         $entry = $this->SurveyEntries->newEntity();
         $this->SurveyEntries->patchEntity($entry, $data);
 
-        $entry = $this->SurveyEntries->save($entry);
+        $saved = $this->SurveyEntries->save($entry);
         Assert::isInstanceOf($entry, SurveyEntry::class);
 
         foreach ($questions as $k => $item) {
             if (empty($item['survey_answer_id'])) {
                 continue;
             }
+            $questionEntry = $this->SurveyEntryQuestions->newEntity();
+
+            $questionEntry->set('survey_entry_id', $entry->get('id'));
+            $questionEntry->set('survey_question_id', $item['survey_question_id']);
+
+            $this->SurveyEntryQuestions->save($questionEntry);
 
             if (!is_array($item['survey_answer_id'])) {
-                $result = $this->SurveyResults->saveResultsEntity($entry, $item);
+                $result = $this->SurveyResults->saveResultsEntity($entry, $item, $questionEntry);
             } else {
                 foreach ($item['survey_answer_id'] as $answer) {
                     $tmp = $item;
                     $tmp['survey_answer_id'] = $answer;
-                    $this->SurveyResults->saveResultsEntity($entry, $tmp);
+                    $this->SurveyResults->saveResultsEntity($entry, $tmp, $questionEntry);
                 }
             }
-
-            $this->Flash->success((string)__('Successfully submitted survey'));
         }
+        $this->Flash->success((string)__('Successfully submitted survey'));
 
         return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $data['SurveyEntries']['survey_id']]);
     }

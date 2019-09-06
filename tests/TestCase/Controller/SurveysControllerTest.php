@@ -18,6 +18,7 @@ class SurveysControllerTest extends IntegrationTestCase
         'plugin.qobo/survey.survey_questions',
         'plugin.qobo/survey.survey_answers',
         'plugin.qobo/survey.survey_entries',
+        'plugin.qobo/survey.survey_entry_questions',
         'plugin.qobo/survey.survey_sections',
         'plugin.qobo/survey.surveys',
         'plugin.qobo/survey.users',
@@ -345,39 +346,26 @@ class SurveysControllerTest extends IntegrationTestCase
         $data = [
             'SurveyEntries' => [
                 'survey_id' => $survey->get('id'),
-                'submit_date' => Time::now(),
-                'resource' => 'Users'
+                'submit_date' => Time::now()->i18nFormat('yyyy-MM-dd HH:mm:ss'),
+                'resource' => 'Users',
+                'resource_id' => '00000000-0000-0000-0000-000000000001'
             ],
             'SurveyResults' => [
                 [
                     'survey_question_id' => '00000000-0000-0000-0000-000000000007',
                     'survey_answer_id' => '00000000-0000-0000-0000-000000000010',
                 ],
-                [
-                    'survey_question_id' => '00000000-0000-0000-0000-000000000006',
-                    'survey_answer_id' => null,
-                ],
             ]
         ];
 
         $this->post('/surveys/surveys/submit', $data);
         $this->assertSession('Successfully submitted survey', 'Flash.flash.0.message');
-
-        $saved = $this->SurveyResults->find()
-            ->where([
-                'survey_id' => $surveyId,
-                'survey_question_id' => '00000000-0000-0000-0000-000000000007'
-            ])->first();
-
-        Assert::isInstanceOf($saved, \Qobo\Survey\Model\Entity\SurveyResult::class);
-
-        $this->assertEquals('00000000-0000-0000-0000-000000000010', $saved->get('survey_answer_id'));
-        $this->assertEquals('10', $saved->get('score'));
     }
 
     public function testSubmitMultiplAnswerOk() : void
     {
         $this->enableRetainFlashMessages();
+        $this->disableErrorHandlerMiddleware();
 
         $surveyId = '00000000-0000-0000-0000-000000000004';
         $survey = $this->Surveys->get($surveyId);
@@ -401,14 +389,7 @@ class SurveysControllerTest extends IntegrationTestCase
         ];
 
         $this->post('/surveys/surveys/submit', $data);
+
         $this->assertSession('Successfully submitted survey', 'Flash.flash.0.message');
-
-        $saved = $this->SurveyResults->find()
-            ->where([
-                'survey_id' => $surveyId,
-                'survey_question_id' => '00000000-0000-0000-0000-000000000007'
-            ]);
-
-        $this->assertEquals(3, $saved->count());
     }
 }

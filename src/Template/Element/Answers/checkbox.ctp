@@ -12,28 +12,8 @@
 $options = [];
 $extraAttributes = ['multiple' => 'checkbox'];
 
-foreach ($entity->survey_answers as $item) {
-    $text = $item->get('answer');
-
-    if (!empty($showAnswerScore)) {
-        $text .= __(' (Weight: {0})', $item->get('score'));
-    }
-    $options[$item->get('id')] = $text;
-}
-
-if (!empty($loadResults)) {
-    $submits = $entity->getResultsPerEntry($surveyEntry->get('id'));
-
-    if (!empty($submits)) {
-        $extraAttributes['value'] = [];
-        foreach ($submits as $item) {
-            array_push($extraAttributes['value'], $item->get('survey_answer_id'));
-        }
-    }
-}
-
-if (!empty($disabled)) {
-    $extraAttributes['disabled'] = true;
+foreach ($entity->get('survey_answers') as $item) {
+    $options[$item->get('id')] = $item->get('answer');
 }
 
 $key = (isset($key) ? $key . '.' : '');

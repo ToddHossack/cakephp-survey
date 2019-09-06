@@ -14,6 +14,8 @@ namespace Qobo\Survey\Model\Entity;
 use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
+use Qobo\Survey\Model\Entity\SurveyEntryQuestion;
+use Webmozart\Assert\Assert;
 
 /**
  * SurveyQuestion Entity
@@ -48,95 +50,71 @@ class SurveyQuestion extends Entity
     ];
 
     /**
-     * Get Score of the question based on Survey Entry id
-     *
-     * @param string $id of the survey entries instance
-     *
-     * @return int|float $result;
-     */
-    public function getScorePerEntry(string $id)
-    {
-        $result = 0;
-
-        $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
-
-        $query = $resultsTable->find()
-            ->where([
-                'submit_id' => $id,
-                'survey_question_id' => $this->get('id'),
-            ]);
-
-        if (empty($query->count())) {
-            return $result;
-        }
-
-        foreach ($query as $submit) {
-            $result += $submit->get('score');
-        }
-
-        return $result;
-    }
-
-    /**
      * Retrieve related submits based on the question instance and SurveyEntries `id`
      *
      * @param string $id of the survey_entries record
      *
-     * @return null|\Cake\Datasource\ResultSetInterface $result of records
+     * @return null|\Qobo\Survey\Model\Entity\SurveyEntryQuestion $result of entry with related submits
      */
-    public function getResultsPerEntry(string $id) : ?ResultSetInterface
+    public function getQuestionEntryResultsPerEntry(string $id): ?SurveyEntryQuestion
     {
         $result = null;
-        $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+        $questionEntryTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntryQuestions');
 
-        $query = $resultsTable->find()
+        /** @var \Cake\ORM\Query $query */
+        $query = $questionEntryTable->find()
             ->where([
-                'submit_id' => $id,
-                'survey_question_id' => $this->get('id'),
-            ]);
+                'survey_entry_id' => $id,
+                'survey_question_id' => $this->get('id')
+            ])
+            ->contain(['SurveyResults']);
 
         if (empty($query->count())) {
             return $result;
         }
 
-        $result = $query->all();
+        $result = $query->first();
+        Assert::isInstanceOf($result, SurveyEntryQuestion::class);
 
         return $result;
     }
 
     /**
-     * Retrieve unique status of Submitted survey_results per question/entry
+     * Retrieve the list of id/value of survey answers for element rendering
      *
-     * @param string $entryId of survey_entries instance
+     * @param mixed[] $options with various flags
      *
-     * @return string $result containing unique status of the submits.
+     * @return mixed[] $result array with options.
      */
-    public function getSubmitStatus(string $entryId) : string
+    public function getAnswerOptions(array $options = []) : array
     {
-        $result = 'pass';
+        $result = [];
 
-        $resultsTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
-
-        $query = $resultsTable->find()
-            ->where([
-                'submit_id' => $entryId,
-                'survey_question_id' => $this->get('id'),
-            ]);
-
-        if (empty($query->count())) {
+        if (empty($this->get('survey_answers'))) {
             return $result;
         }
 
-        $statuses = [];
-        foreach ($query as $entity) {
-            $statuses[] = $entity->get('status');
+        $withScore = empty($options['withScore']) ? false : true;
+
+        foreach ($this->get('survey_answers') as $entity) {
+            $answer = $entity->get('answer');
+
+            if ($withScore) {
+                $answer .= (string)__(' [Score: {0}]', $entity->get('score'));
+            }
+
+            $result[$entity->get('id')] = $answer;
         }
 
-        $uniqueStatus = array_unique($statuses);
-        $result = array_shift($uniqueStatus);
+        // radio checkboxes have different array structure for Form helper.
+        if (!empty($options['isRadio']) && !empty($result)) {
+            $tmp = [];
 
-        if (is_null($result)) {
-            $result = 'pass';
+            foreach ($result as $id => $text) {
+                array_push($tmp, ['value' => $id, 'text' => $text]);
+            }
+
+            $result = $tmp;
         }
 
         return $result;

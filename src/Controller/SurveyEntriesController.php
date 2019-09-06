@@ -11,6 +11,7 @@ use Qobo\Survey\Controller\AppController;
  * @property \Qobo\Survey\Model\Table\SurveyEntriesTable $SurveyEntries
  * @property \Qobo\Survey\Model\Table\SurveyResultsTable $SurveyResults
  * @property \Qobo\Survey\Model\Table\SurveysTable $Surveys
+ * @property \Qobo\Survey\Model\Table\SurveyEntryQuestionsTable $SurveyEntryQuestions
  *
  * @method \Qobo\Survey\Model\Entity\SurveyEntry[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
@@ -21,6 +22,8 @@ class SurveyEntriesController extends AppController
     public $SurveyResults;
 
     public $SurveyAnswers;
+
+    public $SurveyEntryQuestions;
 
     /**
      * Initialize survey answers controller
@@ -40,6 +43,9 @@ class SurveyEntriesController extends AppController
 
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyAnswers');
         $this->SurveyAnswers = $table;
+
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntryQuestions');
+        $this->SurveyEntryQuestions = $table;
     }
 
     /**
@@ -53,31 +59,49 @@ class SurveyEntriesController extends AppController
     {
         $entryStatuses = $this->SurveyEntries->getStatuses();
         $surveyEntry = $this->SurveyEntries->get($id, [
-            'contain' => ['SurveyResults'],
+            'contain' => [
+                'SurveyEntryQuestions' =>
+                [
+                    'SurveyQuestions' => 'SurveyAnswers',
+                    'SurveyResults'
+                ]
+            ],
         ]);
-        $survey = $this->Surveys->getSurveyData($surveyEntry->get('survey_id'), true);
+
+        $survey = $this->Surveys->find()
+            ->where([
+                'id' => $surveyEntry->get('survey_id')
+            ])
+            ->contain(
+                [
+                    'SurveySections' => [
+                        'SurveyQuestions' => 'SurveyAnswers'
+                    ]
+                ]
+            )->first();
 
         if ($this->request->is(['post', 'put', 'patch'])) {
             $data = (array)$this->request->getData();
-            if (!empty($data['SurveyResults'])) {
-                foreach ($data['SurveyResults'] as $item) {
-                    $query = $this->SurveyResults->getQuestionResultsByEntryId($surveyEntry->get('id'), $item['survey_question_id']);
+            if (!empty($data['SurveyEntryQuestions'])) {
+                foreach ($data['SurveyEntryQuestions'] as $item) {
+                    $entity = $this->SurveyEntryQuestions->get($item['id']);
+                    $score = 0;
+                    if ($item['status'] !== 'fail') {
+                        $query = $this->SurveyResults->find()
+                            ->where([
+                                'survey_entry_question_id' => $item['id']
+                            ]);
 
-                    if (!$query) {
-                        continue;
-                    }
-
-                    foreach ($query as $entity) {
-                        if ($item['status'] == 'fail') {
-                            $entity->set('score', 0);
-                        } else {
-                            $answer = $this->SurveyAnswers->get($entity->get('survey_answer_id'));
-                            $entity->set('score', $answer->get('score'));
+                        if (!empty($query->count())) {
+                            foreach ($query as $submit) {
+                                $score += $submit->get('score');
+                            }
                         }
-
-                        $entity->set('status', $item['status']);
-                        $this->SurveyResults->save($entity);
                     }
+
+                    $entity->set('score', $score);
+                    $entity->set('status', $item['status']);
+                    $saved = $this->SurveyEntryQuestions->save($entity);
                 }
             }
 

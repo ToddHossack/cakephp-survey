@@ -15,12 +15,6 @@ use Webmozart\Assert\Assert;
  */
 class SurveyResultsController extends AppController
 {
-    protected $Surveys;
-
-    protected $SurveyEntries;
-
-    protected $SurveyQuestions;
-
     /**
      * Initialize survey answers controller
      * pre-load Surveys table object
@@ -30,66 +24,6 @@ class SurveyResultsController extends AppController
     public function initialize()
     {
         parent::initialize();
-
-        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.Surveys');
-        $this->Surveys = $table;
-
-        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntries');
-        $this->SurveyEntries = $table;
-
-        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyQuestions');
-        $this->SurveyQuestions = $table;
-    }
-
-    /**
-     * Edit submitted survey question with its survey results
-     *
-     * @param string $entryId of the survey
-     * @param string $questionId of the survey
-     *
-     * @return \Cake\Http\Response|void|null
-     */
-    public function edit(string $entryId, string $questionId)
-    {
-        $result = [];
-        $surveyEntry = $this->SurveyEntries->get($entryId);
-        $survey = $this->Surveys->get($surveyEntry->get('survey_id'));
-
-        $question = $this->SurveyQuestions->get($questionId, ['contain' => ['SurveyAnswers']]);
-
-        $query = $this->SurveyResults->getQuestionResultsByEntryId($entryId, $questionId);
-        Assert::isInstanceOf($query, Query::class);
-
-        $submits = $query->all();
-
-        if ($this->request->is(['post', 'put', 'patch'])) {
-            $data = (array)$this->request->getData();
-            foreach ($data['SurveyResults'] as $item) {
-                $entity = $this->SurveyResults->get($item['id']);
-                $entity->set('status', $item['status']);
-
-                //if `failed` status of the submit, reset question submit score
-                if ('failed' == $item['status']) {
-                    $entity->set('score', 0);
-                    $entity->set('comment', $item['comment']);
-                } else {
-                    $entity->set('score', $item['score']);
-                }
-
-                $saved = $this->SurveyResults->save($entity);
-                if ($saved) {
-                    $result[] = true;
-                } else {
-                    $result[] = $entity->getErrors();
-                }
-            }
-
-            $this->Flash->success((string)__('Question Submit Status successfully saved'));
-
-            return $this->redirect($this->referer());
-        }
-
-        $this->set(compact('survey', 'surveyEntry', 'question', 'submits'));
     }
 
     /**

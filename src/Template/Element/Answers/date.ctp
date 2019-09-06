@@ -39,22 +39,7 @@ $options = [
     ]
 ];
 
-if (!empty($loadResults)) {
-    $submits = $entity->getResultsPerEntry($surveyEntry->get('id'));
-
-    if (!empty($submits)) {
-        foreach ($submits as $item) {
-            $options['value'] = $item->get('result');
-        }
-    }
-}
-
-if (!empty($disabled)) {
-    $options['disabled'] = true;
-}
-
 echo $this->element('Qobo/Survey.SurveyQuestions/view_extras', ['entity' => $entity, 'id' => $id, 'collapsed' => $collapsed]);
-
 ?>
 <div class="row">
     <div class="col-xs-12 col-md-6">

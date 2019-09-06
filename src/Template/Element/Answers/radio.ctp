@@ -13,32 +13,10 @@ $options = [];
 $extraAttributes = [];
 
 foreach ($entity->get('survey_answers') as $item) {
-    $text = $item->get('answer');
-
-    if (!empty($showAnswerScore)) {
-        $text .= __(' (Weight: {0})', $item->get('score'));
-    }
     $options[] = [
         'value' => $item->get('id'),
-        'text' => $text,
+        'text' => $item->get('answer')
     ];
-}
-
-if (!empty($options) && !empty($loadResults)) {
-    $submits = $entity->getResultsPerEntry($surveyEntry->get('id'));
-    if (!empty($submits)) {
-        foreach ($options as $k => $item) {
-            foreach ($submits as $submit) {
-                if ($item['value'] == $submit->get('survey_answer_id')) {
-                    $options[$k]['checked'] = true;
-                }
-            }
-        }
-    }
-}
-
-if (!empty($disabled)) {
-    $extraAttributes['disabled'] = true;
 }
 
 $key = (isset($key) ? $key . '.' : '');

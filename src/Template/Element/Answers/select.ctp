@@ -21,19 +21,6 @@ foreach ($entity->get('survey_answers') as $item) {
     $attributes['options'][$item->get('id')] = $item->get('answer');
 }
 
-if (!empty($loadResults)) {
-    $submits = $entity->getResultsPerEntry($surveyEntry->get('id'));
-    if (!empty($submits)) {
-        foreach ($submits as $item) {
-            $attributes['value'] = $item->get('survey_answer_id');
-        }
-    }
-}
-
-if (!empty($disabled)) {
-    $attributes['disabled'] = true;
-}
-
 $key = (isset($key) ? $key . '.' : '');
 $id = md5(serialize($attributes['options']));
 

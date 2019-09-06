@@ -1,6 +1,7 @@
 <?php
 namespace Qobo\Survey\Model\Entity;
 
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -50,18 +51,19 @@ class SurveyEntry extends Entity
         $result = [];
         $table = TableRegistry::getTableLocator()->get($this->get('resource'));
 
-        if ($table instanceof Table) {
+        try {
             $user = $table->get($this->get('resource_id'));
+
+            $result['displayField'] = $user->get($table->displayField());
+        } catch (RecordNotFoundException $e) {
+            $result['displayField'] = __('{0} Instance: [{1}]', $this->get('resource'), $this->get('resource_id'));
         }
 
-        $result = [
-            'displayField' => $user->get($table->displayField()),
-            'url' => [
+        $result['url'] = [
                 'plugin' => false,
                 'controller' => $this->get('resource'),
                 'action' => 'view',
                 $this->get('resource_id')
-            ]
         ];
 
         return $result;
@@ -78,16 +80,20 @@ class SurveyEntry extends Entity
     {
         $result = 0;
 
-        $results = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+        $answersTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyAnswers');
+        $results = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntryQuestions');
 
         $query = $results->find()
             ->where([
-                'submit_id' => $this->get('id')
-            ]);
+                'survey_entry_id' => $this->get('id'),
+                'status' => 'pass'
+            ])
+            ->contain(['SurveyResults']);
 
         foreach ($query as $entity) {
-            if ($entity->get('status') !== 'fail') {
-                $result += $entity->get('score');
+            foreach ($entity->get('survey_results') as $submit) {
+                $answer = $answersTable->get($submit->get('survey_answer_id'));
+                $result += $answer->get('score');
             }
         }
 
