@@ -245,9 +245,22 @@ class MigrateToEntriesTask extends Shell
             return;
         }
 
+        $answersTable = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyAnswers');
+
         foreach ($query as $submit) {
-            if ($submit->isEmpty('survey_entry_question_id')) {
+            // if ($submit->isEmpty('survey_entry_question_id')) {
                 $submit->set('survey_entry_question_id', $questionEntryId);
+
+                // updating survey_results.score
+                $answer = $answersTable->find()
+                    ->where([
+                        'id' => $submit->get('survey_answer_id'),
+                    ])
+                    ->first();
+
+                if (!empty($answer)) {
+                    $submit->set('score', $answer->get('score'));
+                }
 
                 $saved = $this->SurveyResults->save($submit);
                 if ($saved) {
@@ -255,7 +268,7 @@ class MigrateToEntriesTask extends Shell
                 } else {
                     $this->out(print_r($submit->getErrors(), true));
                 }
-            }
+            // }
         }
 
         $this->out((string)__('Updated {0} with survey_entry_question_id: {1}', $count, $questionEntryId));
