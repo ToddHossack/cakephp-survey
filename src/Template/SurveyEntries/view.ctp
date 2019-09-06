@@ -9,6 +9,8 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+use Cake\Core\Configure;
+
 $surveyId = !empty($survey->get('slug')) ? $survey->get('slug') : $survey->get('id');
 
 $resourceUser = $surveyEntry->get('resource_user');
@@ -19,6 +21,8 @@ $options['title'] = __(
     $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId]),
     __('Submit at "{0}" by "{1}"', $surveyEntry->get('submit_date')->i18nFormat('yyyy-MM-dd HH:mm'), $resourceUser['displayField'])
 );
+
+$entryStatuses = Configure::read('Survey.Options.statuses');
 ?>
 <section class="content-header">
     <div class="row">
@@ -59,6 +63,18 @@ $options['title'] = __(
             <?php $count++; ?>
         <?php endforeach;?>
     <?php endforeach;?>
-    <?= $this->Form->button(__('Save'), ['class' => 'btn btn-success']) ?>
+    <div class="box">
+        <div class="box-body">
+            <?= $this->Form->control(
+                'SurveyEntries.status',
+                [
+                    'options' => $entryStatuses,
+                    'value' => $surveyEntry->get('status'),
+                    'empty' => __('Choose Survey status')
+                ]
+            ) ?>
+            <?= $this->Form->button(__('Save'), ['class' => 'btn btn-success']) ?>
+        </div>
+    </div>
     <?= $this->Form->end() ?>
 </section>
