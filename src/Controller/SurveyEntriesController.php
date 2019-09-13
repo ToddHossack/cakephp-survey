@@ -118,9 +118,9 @@ class SurveyEntriesController extends AppController
             }
 
             return $this->redirect([
-                'controller' => 'Surveys',
+                'controller' => 'SurveyEntries',
                 'action' => 'view',
-                $survey->get('slug')
+                $surveyEntry->get('id')
             ]);
         }
 
