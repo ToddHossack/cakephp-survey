@@ -90,7 +90,7 @@ $options['title'] = __(
                 $survey->get('id')
             ],
             [
-                'class' => 'btn btn-link    '
+                'class' => 'btn btn-link'
             ]) ?>
         <?= $this->Form->end() ?>
 </section>

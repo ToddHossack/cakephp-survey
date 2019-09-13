@@ -47,6 +47,31 @@ $entryStatuses = Configure::read('Survey.Options.statuses');
     <?= $this->Form->create() ?>
     <?= $this->Form->hidden('SurveyEntries.id', ['value' => $surveyEntry->get('id')]) ?>
     <?= $this->Form->hidden('SurveyEntries.survey_id', ['value' => $survey->get('id')]) ?>
+
+    <div class="box">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <h4><?= __('Current Score: {0}', $surveyEntry->get('score')) ?></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <?= $this->Form->control(
+                        'SurveyEntries.status',
+                        [
+                            'options' => $entryStatuses,
+                            'value' => $surveyEntry->get('status'),
+                            'empty' => __('Choose Survey status')
+                        ]
+                    ) ?>
+                </div>
+            </div>
+            <?= $this->Form->button(__('Save'), ['class' => 'btn btn-success']) ?>
+        </div>
+    </div>
+
+
     <?php $count = 0; ?>
     <?php foreach ($survey->get('survey_sections') as $section) : ?>
         <?php foreach ($section->get('survey_questions') as $question) : ?>
@@ -65,14 +90,18 @@ $entryStatuses = Configure::read('Survey.Options.statuses');
     <?php endforeach;?>
     <div class="box">
         <div class="box-body">
-            <?= $this->Form->control(
-                'SurveyEntries.status',
-                [
-                    'options' => $entryStatuses,
-                    'value' => $surveyEntry->get('status'),
-                    'empty' => __('Choose Survey status')
-                ]
-            ) ?>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <?= $this->Form->control(
+                        'SurveyEntries.status',
+                        [
+                            'options' => $entryStatuses,
+                            'value' => $surveyEntry->get('status'),
+                            'empty' => __('Choose Survey status')
+                        ]
+                    ) ?>
+                </div>
+            </div>
             <?= $this->Form->button(__('Save'), ['class' => 'btn btn-success']) ?>
         </div>
     </div>
