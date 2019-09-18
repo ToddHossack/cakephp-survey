@@ -4,13 +4,16 @@ namespace Qobo\Survey\Model\Table;
 use ArrayObject;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
-use Cake\I18n\Time;
 use Cake\Event\Event;
+use Cake\I18n\Time;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
+use Qobo\Survey\Model\Entity\SurveyEntry;
+use Qobo\Survey\Model\Entity\SurveyEntryQuestion;
+use Webmozart\Assert\Assert;
 
 /**
  * SurveyEntries Model
@@ -160,7 +163,7 @@ class SurveyEntriesTable extends Table
      *
      * @return bool|\Qobo\Survey\Model\Entity\SurveyEntry $savedEntry of created submitted entry
      */
-    public function saveSurveyEntryData(array $surveyResults = [], EntityInterface $resource, string $surveyId)
+    public function saveSurveyEntryData(array $surveyResults, EntityInterface $resource, string $surveyId)
     {
         /** @var \Qobo\Survey\Model\Table\SurveyResultsTable $table */
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
@@ -178,10 +181,7 @@ class SurveyEntriesTable extends Table
         $entry->set('status', 'in_review');
 
         $savedEntry = $this->save($entry);
-
-        if (!$savedEntry) {
-            return false;
-        }
+        Assert::isInstanceOf($savedEntry, SurveyEntry::class);
 
         foreach ($surveyResults as $item) {
             $questionEntry = $surveyEntryQuestionsTable->newEntity();
@@ -189,10 +189,7 @@ class SurveyEntriesTable extends Table
             $questionEntry->set('survey_question_id', $item['survey_question_id']);
 
             $surveyEntryQuestionsTable->save($questionEntry);
-
-            if (!$questionEntry) {
-                return false;
-            }
+            Assert::isInstanceOf($questionEntry, SurveyEntryQuestion::class);
 
             if (!is_array($item['survey_answer_id'])) {
                 $result = $surveyResultsTable->saveResultsEntity($savedEntry, $item, $questionEntry);
