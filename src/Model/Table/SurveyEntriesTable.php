@@ -4,10 +4,12 @@ namespace Qobo\Survey\Model\Table;
 use ArrayObject;
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
+use Cake\I18n\Time;
 use Cake\Event\Event;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -147,5 +149,136 @@ class SurveyEntriesTable extends Table
     public function getStatuses() : array
     {
         return Configure::read('Survey.Options.statuses');
+    }
+
+    /**
+     * Save Survey Entry with its corresponding entry_questions and survey_results bond to it.
+     *
+     * @param mixed[] $surveyResults containing request->getData('SurveyResults')
+     * @param \Cake\Datasource\EntityInterface $resource instance to which the survey is linked.
+     * @param string $surveyId with possible extra configs
+     *
+     * @return bool|\Qobo\Survey\Model\Entity\SurveyEntry $savedEntry of created submitted entry
+     */
+    public function saveSurveyEntryData(array $surveyResults = [], EntityInterface $resource, string $surveyId)
+    {
+        /** @var \Qobo\Survey\Model\Table\SurveyResultsTable $table */
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults');
+        $surveyResultsTable = $table;
+
+        /** @var \Qobo\Survey\Model\Table\SurveyEntryQuestionsTable $table */
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntryQuestions');
+        $surveyEntryQuestionsTable = $table;
+
+        $entry = $this->newEntity();
+        $entry->set('resource', $resource->getSource());
+        $entry->set('resource_id', $resource->get('id'));
+        $entry->set('survey_id', $surveyId);
+        $entry->set('submit_date', Time::now());
+        $entry->set('status', 'in_review');
+
+        $savedEntry = $this->save($entry);
+
+        if (!$savedEntry) {
+            return false;
+        }
+
+        foreach ($surveyResults as $item) {
+            $questionEntry = $surveyEntryQuestionsTable->newEntity();
+            $questionEntry->set('survey_entry_id', $savedEntry->get('id'));
+            $questionEntry->set('survey_question_id', $item['survey_question_id']);
+
+            $surveyEntryQuestionsTable->save($questionEntry);
+
+            if (!$questionEntry) {
+                return false;
+            }
+
+            if (!is_array($item['survey_answer_id'])) {
+                $result = $surveyResultsTable->saveResultsEntity($savedEntry, $item, $questionEntry);
+            } else {
+                foreach ($item['survey_answer_id'] as $answer) {
+                    $tmp = $item;
+                    $tmp['survey_answer_id'] = $answer;
+                    $result = $surveyResultsTable->saveResultsEntity($savedEntry, $tmp, $questionEntry);
+                }
+            }
+        }
+
+        return $savedEntry;
+    }
+
+    /**
+     * Collect Survey Entry payload in array, including entry questions and survey results
+     *
+     * @param string $id of SurveyEntries instance
+     *
+     * @return mixed[] $result containing the payload with all required saved entries
+     */
+    public function getSurveyEntryPayload(string $id): array
+    {
+        $data = [];
+        $surveysTable = TableRegistry::getTableLocator()->get('Qobo/Survey.Surveys');
+
+        $entry = $this->get($id);
+        $survey = $surveysTable->get($entry->get('survey_id'));
+
+        /** @var \Cake\ORM\Query $query */
+        $query = $this->find()
+            ->enableHydration(true)
+            ->where([
+                'id' => $id
+            ])
+            ->contain(['SurveyEntryQuestions' => ['SurveyResults']]);
+
+        if (! $query->count()) {
+            return $data;
+        }
+
+        foreach ($query as $entity) {
+            $data['Surveys'] = [
+                'id' => $survey->get('id'),
+                'slug' => $survey->get('slug'),
+                'portal_id' => $survey->get('portal_id'),
+                'portal_form' => $survey->get('portal_form')
+            ];
+
+            $data['SurveyEntries'] = [
+                'id' => $entity->get('id'),
+                'resource' => $entity->get('resource'),
+                'resource_id' => $entity->get('resource_id'),
+                'status' => $entity->get('status'),
+                'score' => $entity->get('score'),
+                'submit_date' => $entity->get('submit_date')->i18nFormat('yyyy-MM-dd HH:mm:ss')
+            ];
+
+            if (empty($entity->get('survey_entry_questions'))) {
+                continue;
+            }
+
+            $data['SurveyEntryQuestions'] = [];
+
+            foreach ($entity->get('survey_entry_questions') as $entryQuestion) {
+                $tmp['id'] = $entryQuestion->get('id');
+                $tmp['status'] = $entryQuestion->get('status');
+                $tmp['score'] = $entryQuestion->get('score');
+                $tmp['survey_question_id'] = $entryQuestion->get('survey_question_id');
+                $tmp['survey_results'] = [];
+
+                if (! empty($entryQuestion->get('survey_results'))) {
+                    foreach ($entryQuestion->get('survey_results') as $submit) {
+                        $submitItem['id'] = $submit->get('id');
+                        $submitItem['survey_answer_id'] = $submit->get('survey_answer_id');
+                        $submitItem['result'] = $submit->get('survey_answer_id');
+
+                        $tmp['survey_results'][] = $submitItem;
+                    }
+                }
+
+                $data['SurveyEntryQuestions'][] = $tmp;
+            }
+        }
+
+        return $data;
     }
 }
