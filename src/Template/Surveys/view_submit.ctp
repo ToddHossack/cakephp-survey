@@ -9,9 +9,9 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-$surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
+$surveyId = empty($survey->get('slug')) ? $survey->get('id') : $survey->get('slug');
 
-$options['title'] = __(
+$options['title'] = (string)__(
     '{0} &raquo; Submission Details',
     $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId])
 );
@@ -30,47 +30,34 @@ $order = 1;
     </div>
 </section>
 <section class="content">
-<?php foreach ($surveyResults as $question) : ?>
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <h3 class="box-title"><?= $order . '. ' . $question->question;?></h3>
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
+    <?php foreach ($surveyEntry->get('survey_entry_questions') as $k => $entryQuestion) : ?>
+        <?php $surveyQuestion = $entryQuestion->get('survey_question'); ?>
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title"><?= __('{0}. {1}', $order, $surveyQuestion->get('question')) ?></h3>
             </div>
-        </div>
-        <div class="box-body">
-            <?php
-
-            echo $this->element('Qobo/Survey.SurveyQuestions/view_extras', ['entity' => $question, 'collapsed' => true, 'id' => md5($question->id)]);
-
-            $isText = in_array($question->type, ['input', 'textarea']) ? true : false;
-
-            foreach ($question->survey_answers as $answer) {
-                if (empty($answer->survey_results)) {
+            <div class="box-body">
+                <?php
+                if (empty($entryQuestion->get('survey_results'))) {
                     continue;
                 }
 
-                echo $isText ? '' : '<ul>';
+                $isOpenEndedQuestion = in_array($surveyQuestion->get('type'), ['input', 'textarea']) ? true : false;
 
-                foreach ($answer->survey_results as $item) {
-                    if ($answer->id !== $item->survey_answer_id) {
-                        continue;
-                    }
+                echo $isOpenEndedQuestion ? '' : '<ul>';
 
-                    if ($isText) {
-                        echo '<p>' . $item->result . '</p>';
-                    } else {
-                        echo '<li>' . $answer->answer . '</li>';
-                    }
+                foreach ($entryQuestion->get('survey_results') as $surveyResult) {
+                    $answer = $surveyResult->get('survey_answer');
+
+                    echo $isOpenEndedQuestion
+                        ? __('<p>{0}</p>', $surveyResult->get('result'))
+                        : __('<li>{0}</li>', $answer->get('answer'));
                 }
 
-                echo $isText ? '' :'</ul>';
-            }
-            ?>
+                echo $isOpenEndedQuestion ? '' : '</ul>';
+                ?>
+            </div>
         </div>
-    </div>
     <?php $order++; ?>
-<?php endforeach; ?>
+    <?php endforeach; ?>
 </section>
