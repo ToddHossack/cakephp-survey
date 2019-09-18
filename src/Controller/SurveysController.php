@@ -308,15 +308,14 @@ class SurveysController extends AppController
             ->where([
                 'id' => $surveyEntryId
             ])
-            ->contain(
-                [
-                    'SurveyEntryQuestions' => [
-                        'SurveyQuestions',
-                        'SurveyResults' => [
-                            'SurveyAnswers'
-                        ]
+            ->contain([
+                'SurveyEntryQuestions' => [
+                    'SurveyQuestions',
+                    'SurveyResults' => [
+                        'SurveyAnswers'
                     ]
-                ])
+                ]
+            ])
             ->first();
 
         $this->set(compact('survey', 'surveyEntry'));
