@@ -236,8 +236,6 @@ class SurveyEntriesTable extends Table
             $data['Surveys'] = [
                 'id' => $survey->get('id'),
                 'slug' => $survey->get('slug'),
-                'portal_id' => $survey->get('portal_id'),
-                'portal_form' => $survey->get('portal_form')
             ];
 
             $data['SurveyEntries'] = [
