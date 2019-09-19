@@ -151,5 +151,16 @@ class SurveyAnswersFixture extends TestFixture
             'score' => 10,
             'trashed' => null,
         ],
+        [
+            'id' => '00000000-0000-0000-0000-000000000011',
+            'survey_question_id' => '00000000-0000-0000-0000-000000000008',
+            'answer' => 'Moscow',
+            'comment' => 'Open Ended',
+            'created' => '2018-08-29 10:56:36',
+            'modified' => '2018-08-29 10:56:36',
+            'order' => 4,
+            'score' => 10,
+            'trashed' => null,
+        ],
     ];
 }

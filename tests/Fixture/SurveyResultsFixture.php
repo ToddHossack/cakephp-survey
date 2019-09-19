@@ -98,8 +98,24 @@ class SurveyResultsFixture extends TestFixture
                 'status' => 'pass',
                 'trashed' => null,
             ],
-
+            [
+                'id' => '00000000-0000-0000-0000-000000000004',
+                'submit_id' => '00000000-0000-0000-0000-000000000003',
+                'submit_date' => '2018-04-09 09:00:00',
+                'survey_id' => '00000000-0000-0000-0000-000000000004',
+                'survey_question_id' => '00000000-0000-0000-0000-000000000008',
+                'survey_answer_id' => '00000000-0000-0000-0000-000000000011',
+                'user_id' => null,
+                'result' => 'Hello World',
+                'created' => '2019-08-29 14:57:08',
+                'modified' => '2019-08-29 14:57:08',
+                'score' => 10,
+                'comment' => 'no comments',
+                'status' => 'pass',
+                'trashed' => null,
+            ],
         ];
+
         parent::init();
     }
 }
