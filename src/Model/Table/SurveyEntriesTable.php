@@ -208,6 +208,20 @@ class SurveyEntriesTable extends Table
     /**
      * Collect Survey Entry payload in array, including entry questions and survey results
      *
+     * Payload example:
+     * [
+     *    'Surveys' => ['id', 'slug'],
+     *    'SurveyEntries' => ['id', 'resource', 'resource_id', 'status', 'score', 'submit_date'],
+     *    'SurveyEntryQuestions' => [
+     *        [
+     *            'id', 'status', 'score', 'survey_question_id',
+     *            'survey_results' => [
+     *                  'id', 'survey_answer_id', 'result'
+     *            ]
+     *        ]
+     *    ]
+     * ]
+     *
      * @param string $id of SurveyEntries instance
      *
      * @return mixed[] $result containing the payload with all required saved entries
@@ -247,11 +261,11 @@ class SurveyEntriesTable extends Table
                 'submit_date' => $entity->get('submit_date')->i18nFormat('yyyy-MM-dd HH:mm:ss')
             ];
 
+            $data['SurveyEntryQuestions'] = [];
+
             if (empty($entity->get('survey_entry_questions'))) {
                 continue;
             }
-
-            $data['SurveyEntryQuestions'] = [];
 
             foreach ($entity->get('survey_entry_questions') as $entryQuestion) {
                 $tmp['id'] = $entryQuestion->get('id');
