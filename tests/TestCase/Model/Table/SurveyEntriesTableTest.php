@@ -77,11 +77,11 @@ class SurveyEntriesTableTest extends TestCase
     }
 
     /**
-    * @dataProvider getSurveyResultsProvider
-    *
-    * @param mixed[] $data with survey_results samples
-    * @return void
-    */
+     * @dataProvider getSurveyResultsProvider
+     *
+     * @param mixed[] $data with survey_results samples
+     * @return void
+     */
     public function testSaveSurveyEntryData(array $data) : void
     {
         $surveyId = '00000000-0000-0000-0000-000000000004';
