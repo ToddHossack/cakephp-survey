@@ -76,8 +76,13 @@ class SurveyEntriesTableTest extends TestCase
         $this->assertEquals(0, $score);
     }
 
-    /** @dataProvider getSurveyResultsProvider */
-    public function testSaveSurveyEntryData($data) : void
+    /**
+    * @dataProvider getSurveyResultsProvider
+    *
+    * @param mixed[] $data with survey_results samples
+    * @return void
+    */
+    public function testSaveSurveyEntryData(array $data) : void
     {
         $surveyId = '00000000-0000-0000-0000-000000000004';
 
@@ -93,6 +98,7 @@ class SurveyEntriesTableTest extends TestCase
             ]
         );
 
+        /** @var \Qobo\Survey\Model\Entity\SurveyEntry $result */
         $result = $this->SurveyEntries->saveSurveyEntryData($data, $resourceEntity, $surveyId);
 
         $this->assertInstanceOf(\Qobo\Survey\Model\Entity\SurveyEntry::class, $result);
@@ -100,6 +106,9 @@ class SurveyEntriesTableTest extends TestCase
         $this->assertEquals($result->get('survey_id'), $surveyId);
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getSurveyResultsProvider() : array
     {
         return [
