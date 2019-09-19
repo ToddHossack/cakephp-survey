@@ -295,32 +295,30 @@ class SurveysController extends AppController
      * Get Specific survey results based on submission id
      *
      * @param string $surveyId of the given survey
-     * @param string $submitId of specific submission
+     * @param string $surveyEntryId of specific submission
      *
      * @return \Cake\Http\Response|void|null
      */
-    public function viewSubmit(string $surveyId, string $submitId)
+    public function viewSubmit(string $surveyId, string $surveyEntryId)
     {
-        deprecationWarning((string)__('This method is currently depracted'));
-        $surveyResults = [];
+        $survey = $this->Surveys->get($surveyId);
 
-        $survey = $this->Surveys->getSurveyData($surveyId);
-        Assert::isInstanceOf($survey, EntityInterface::class);
+        $surveyEntry = $this->SurveyEntries->find()
+            ->enableHydration(true)
+            ->where([
+                'id' => $surveyEntryId
+            ])
+            ->contain([
+                'SurveyEntryQuestions' => [
+                    'SurveyQuestions',
+                    'SurveyResults' => [
+                        'SurveyAnswers'
+                    ]
+                ]
+            ])
+            ->first();
 
-        $query = $this->SurveyQuestions->find()
-            ->where(['survey_id' => $survey->get('id')]);
-        $query->enableHydration(true);
-        $query->contain([
-                'SurveyAnswers' => ['SurveyResults' => function ($q) use ($submitId) {
-                    return $q->where(['submit_id' => $submitId]);
-                }]
-            ]);
-
-        if ($query->count()) {
-            $surveyResults = $query->all();
-        }
-
-        $this->set(compact('survey', 'surveyResults'));
+        $this->set(compact('survey', 'surveyEntry'));
     }
 
     /**

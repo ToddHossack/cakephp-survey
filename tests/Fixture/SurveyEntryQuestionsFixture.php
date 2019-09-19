@@ -53,6 +53,17 @@ class SurveyEntryQuestionsFixture extends TestFixture
                 'modified' => '2019-08-30 12:26:13',
                 'trashed' => null
             ],
+            [
+                'id' => '00000000-0000-0000-0000-000000000002',
+                'survey_entry_id' => '00000000-0000-0000-0000-000000000003',
+                'survey_question_id' => '00000000-0000-0000-0000-000000000008',
+                'status' => 'passed',
+                'score' => 1,
+                'created' => '2019-08-30 12:26:13',
+                'modified' => '2019-08-30 12:26:13',
+                'trashed' => null
+            ],
+
         ];
         parent::init();
     }

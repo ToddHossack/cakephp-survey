@@ -19,6 +19,7 @@ class SurveyResultsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'uuid', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'submit_id' => ['type' => 'uuid', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
+        'survey_entry_question_id' => ['type' => 'uuid', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'submit_date' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'survey_id' => ['type' => 'uuid', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'survey_question_id' => ['type' => 'uuid', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
@@ -65,6 +66,7 @@ class SurveyResultsFixture extends TestFixture
                 'comment' => 'Lorem ipsum dolor sit amet, aliquet feugiat.',
                 'status' => 'pass',
                 'trashed' => null,
+                'survey_entry_question_id' => null,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000002',
@@ -81,6 +83,7 @@ class SurveyResultsFixture extends TestFixture
                 'comment' => 'Lorem ipsum dolor sit amet, aliquet feugiat.',
                 'status' => 'pass',
                 'trashed' => null,
+                'survey_entry_question_id' => null
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000003',
@@ -97,9 +100,44 @@ class SurveyResultsFixture extends TestFixture
                 'comment' => 'Lorem ipsum dolor sit amet, aliquet feugiat.',
                 'status' => 'pass',
                 'trashed' => null,
+                'survey_entry_question_id' => '00000000-0000-0000-0000-000000000001'
             ],
-
+            [
+                'id' => '00000000-0000-0000-0000-000000000004',
+                'submit_id' => '00000000-0000-0000-0000-000000000003',
+                'submit_date' => '2018-04-09 09:00:00',
+                'survey_id' => '00000000-0000-0000-0000-000000000004',
+                'survey_question_id' => '00000000-0000-0000-0000-000000000008',
+                'survey_answer_id' => '00000000-0000-0000-0000-000000000011',
+                'user_id' => null,
+                'result' => 'Hello World',
+                'created' => '2019-08-29 14:57:08',
+                'modified' => '2019-08-29 14:57:08',
+                'score' => 10,
+                'comment' => 'no comments',
+                'status' => 'pass',
+                'trashed' => null,
+                'survey_entry_question_id' => null
+            ],
+            [
+                'id' => '00000000-0000-0000-0000-000000000005',
+                'submit_id' => null,
+                'submit_date' => '2018-04-09 09:00:00',
+                'survey_id' => '00000000-0000-0000-0000-000000000004',
+                'survey_question_id' => '00000000-0000-0000-0000-000000000008',
+                'survey_answer_id' => '00000000-0000-0000-0000-000000000011',
+                'user_id' => null,
+                'result' => 'Hello World',
+                'created' => '2019-08-29 14:57:08',
+                'modified' => '2019-08-29 14:57:08',
+                'score' => 10,
+                'comment' => 'no comments',
+                'status' => 'pass',
+                'trashed' => null,
+                'survey_entry_question_id' => '00000000-0000-0000-0000-000000000002'
+            ],
         ];
+
         parent::init();
     }
 }
