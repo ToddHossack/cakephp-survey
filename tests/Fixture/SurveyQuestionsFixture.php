@@ -139,7 +139,7 @@ class SurveyQuestionsFixture extends TestFixture
             'active' => 1,
             'created' => '2018-08-29 10:56:36',
             'modified' => '2018-08-29 10:56:36',
-            'order' => 1,
+            'order' => 2,
             'trashed' => null,
         ],
     ];

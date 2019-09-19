@@ -76,6 +76,19 @@ class SurveyEntriesTableTest extends TestCase
         $this->assertEquals(0, $score);
     }
 
+    public function testGetSurveyEntryPayload() : void
+    {
+        $surveyEntryId = '00000000-0000-0000-0000-000000000003';
+        $result = $this->SurveyEntries->getSurveyEntryPayload($surveyEntryId);
+
+        $this->assertTrue(is_array($result));
+        $this->assertTrue(!empty($result));
+
+        $this->assertArrayHasKey('Surveys', $result);
+        $this->assertArrayHasKey('SurveyEntries', $result);
+        $this->assertArrayHasKey('SurveyEntryQuestions', $result);
+    }
+
     /**
      * @dataProvider getSurveyResultsProvider
      *
