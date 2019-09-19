@@ -44,7 +44,6 @@ $entryStatuses = Configure::read('Survey.Options.statuses');
 </section>
 
 <section class="content">
-    <?= $this->Form->create() ?>
     <?= $this->Form->hidden('SurveyEntries.id', ['value' => $surveyEntry->get('id')]) ?>
     <?= $this->Form->hidden('SurveyEntries.survey_id', ['value' => $survey->get('id')]) ?>
 
@@ -57,17 +56,9 @@ $entryStatuses = Configure::read('Survey.Options.statuses');
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <?= $this->Form->control(
-                        'SurveyEntries.status',
-                        [
-                            'options' => $entryStatuses,
-                            'value' => $surveyEntry->get('status'),
-                            'empty' => __('Choose Survey status')
-                        ]
-                    ) ?>
+                    <h4><?= __('Current Status: {0}', $entryStatuses[$surveyEntry->get('status')]) ?></h4>
                 </div>
             </div>
-            <?= $this->Form->button(__('Save'), ['class' => 'btn btn-success']) ?>
         </div>
     </div>
 
@@ -88,22 +79,4 @@ $entryStatuses = Configure::read('Survey.Options.statuses');
             <?php $count++; ?>
         <?php endforeach;?>
     <?php endforeach;?>
-    <div class="box">
-        <div class="box-body">
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <?= $this->Form->control(
-                        'SurveyEntries.status',
-                        [
-                            'options' => $entryStatuses,
-                            'value' => $surveyEntry->get('status'),
-                            'empty' => __('Choose Survey status')
-                        ]
-                    ) ?>
-                </div>
-            </div>
-            <?= $this->Form->button(__('Save'), ['class' => 'btn btn-success']) ?>
-        </div>
-    </div>
-    <?= $this->Form->end() ?>
 </section>

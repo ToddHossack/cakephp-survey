@@ -80,6 +80,41 @@ class SurveyEntriesController extends AppController
                 ]
             )->first();
 
+        $this->set(compact('surveyEntry', 'survey', 'entryStatuses'));
+    }
+
+    /**
+     * Edit method
+     *
+     * @param string $id Survey Entry id.
+     * @return \Cake\Http\Response|void|null
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function edit(string $id)
+    {
+        $entryStatuses = $this->SurveyEntries->getStatuses();
+        $surveyEntry = $this->SurveyEntries->get($id, [
+            'contain' => [
+                'SurveyEntryQuestions' =>
+                [
+                    'SurveyQuestions' => 'SurveyAnswers',
+                    'SurveyResults'
+                ]
+            ],
+        ]);
+
+        $survey = $this->Surveys->find()
+            ->where([
+                'id' => $surveyEntry->get('survey_id')
+            ])
+            ->contain(
+                [
+                    'SurveySections' => [
+                        'SurveyQuestions' => 'SurveyAnswers'
+                    ]
+                ]
+            )->first();
+
         if ($this->request->is(['post', 'put', 'patch'])) {
             $data = (array)$this->request->getData();
             if (!empty($data['SurveyEntryQuestions'])) {
@@ -125,31 +160,6 @@ class SurveyEntriesController extends AppController
         }
 
         $this->set(compact('surveyEntry', 'survey', 'entryStatuses'));
-    }
-
-    /**
-     * Edit method
-     *
-     * @param string $id Survey Entry id.
-     * @return \Cake\Http\Response|void|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit(string $id)
-    {
-        $surveyEntry = $this->SurveyEntries->get($id);
-
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $surveyEntry = $this->SurveyEntries->patchEntity($surveyEntry, (array)$this->request->getData());
-            if ($this->SurveyEntries->save($surveyEntry)) {
-                $this->Flash->success((string)__('The survey entry has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error((string)__('The survey entry could not be saved. Please, try again.'));
-        }
-        $surveys = $this->SurveyEntries->Surveys->find('list');
-
-        $this->set(compact('surveyEntry', 'surveys'));
     }
 
     /**
