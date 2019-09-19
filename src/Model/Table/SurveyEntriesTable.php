@@ -264,7 +264,7 @@ class SurveyEntriesTable extends Table
                     foreach ($entryQuestion->get('survey_results') as $submit) {
                         $submitItem['id'] = $submit->get('id');
                         $submitItem['survey_answer_id'] = $submit->get('survey_answer_id');
-                        $submitItem['result'] = $submit->get('survey_answer_id');
+                        $submitItem['result'] = $submit->get('result');
 
                         $tmp['survey_results'][] = $submitItem;
                     }
