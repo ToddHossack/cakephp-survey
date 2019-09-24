@@ -30,6 +30,5 @@ class SectionsQuestion extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false,
     ];
 }
