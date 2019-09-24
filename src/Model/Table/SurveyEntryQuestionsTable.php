@@ -98,7 +98,7 @@ class SurveyEntryQuestionsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        // $rules->add($rules->existsIn('survey_entry_id', 'SurveyEntries'));
+        $rules->add($rules->existsIn('survey_entry_id', 'SurveyEntries'));
         $rules->add($rules->existsIn('survey_question_id', 'SurveyQuestions'));
 
         return $rules;
