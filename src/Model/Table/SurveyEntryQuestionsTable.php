@@ -41,6 +41,7 @@ class SurveyEntryQuestionsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Muffin/Trash.Trash');
 
         $this->belongsTo('SurveyEntries', [
             'foreignKey' => 'survey_entry_id',
@@ -97,8 +98,8 @@ class SurveyEntryQuestionsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['survey_entry_id'], 'SurveyEntries'));
-        $rules->add($rules->existsIn(['survey_question_id'], 'SurveyQuestions'));
+        $rules->add($rules->existsIn('survey_entry_id', 'SurveyEntries'));
+        $rules->add($rules->existsIn('survey_question_id', 'SurveyQuestions'));
 
         return $rules;
     }

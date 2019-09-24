@@ -46,7 +46,6 @@ class SurveyQuestion extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false,
     ];
 
     /**

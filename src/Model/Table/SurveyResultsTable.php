@@ -249,10 +249,11 @@ class SurveyResultsTable extends Table
      * @param \Qobo\Survey\Model\Entity\SurveyEntry $entry instance
      * @param mixed[] $data with post data
      * @param \Qobo\Survey\Model\Entity\SurveyEntryQuestion $questionEntry instance
+     * @param mixed[] $options for entity options
      *
      * @return \Qobo\Survey\Model\Entity\SurveyResult|bool $result
      */
-    public function saveResultsEntity(SurveyEntry $entry, array $data, SurveyEntryQuestion $questionEntry)
+    public function saveResultsEntity(SurveyEntry $entry, array $data, SurveyEntryQuestion $questionEntry, array $options = [])
     {
         $result = false;
         $score = 0;
@@ -272,7 +273,11 @@ class SurveyResultsTable extends Table
         Assert::isInstanceOf($answerEntity, EntityInterface::class);
         $score = $answerEntity->get('score');
 
-        $entity = $this->newEntity();
+        $entity = $this->newEntity(null, $options);
+
+        if (!empty($data['id']) && !empty($options['accessibleFields'])) {
+            $entity->set('id', $data['id']);
+        }
 
         $entity->set('survey_entry_question_id', $questionEntry->get('id'));
         $entity->set('survey_question_id', $questionEntry->get('survey_question_id'));
