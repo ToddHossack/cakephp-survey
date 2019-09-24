@@ -59,6 +59,7 @@ $id = md5(serialize($options));
         [
             'key' => $key,
             'questionEntry' => $questionEntry,
+            'isDisabled' => $isDisabled,
         ]
     )?>
 </div>

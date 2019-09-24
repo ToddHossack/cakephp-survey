@@ -1,3 +1,6 @@
+<?php
+$isDisabled = !isset($isDisabled) ? false : $isDisabled;
+?>
 <div class="box-footer">
 <?php if (!empty($questionEntry)) : ?>
     <?= $this->Form->hidden('SurveyEntryQuestions.' . $key . '.id', ['value' => $questionEntry->get('id')]) ?>
@@ -8,7 +11,8 @@
             ['value' => 'fail', 'text' => __('Fail')],
         ],
         [
-            'value' => ($questionEntry->isEmpty('status')) ? 'pass' : $questionEntry->get('status')
+            'value' => ($questionEntry->isEmpty('status')) ? 'pass' : $questionEntry->get('status'),
+            'disabled' => $isDisabled,
         ]
     ) ?>
     <hr/>
