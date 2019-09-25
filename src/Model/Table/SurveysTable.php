@@ -22,6 +22,7 @@ use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Validation\Validator;
+use Qobo\Survey\Event\EventName;
 use Webmozart\Assert\Assert;
 
 /**
@@ -162,6 +163,17 @@ class SurveysTable extends Table
             if (! $query->count()) {
                 $table->createDefaultSection($entity->get('id'));
             }
+        }
+
+        // Publish survey
+        if (!empty($options['publishSurvey'])) {
+            $publishEvent = new Event((string)EventName::PUBLISH_SURVEY(), $this, [
+                'data' => [
+                    'action' => 'add_survey',
+                    'survey' => $this->getSurveyData($entity->get('id'), true),
+                ]
+            ]);
+            $this->getEventManager()->dispatch($publishEvent);
         }
     }
 
