@@ -3,8 +3,12 @@ namespace Qobo\Survey\Test\TestCase\Model\Table;
 
 use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
+use Cake\Event\EventList;
+use Cake\Event\EventManager;
+use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Qobo\Survey\Event\EventName;
 use Qobo\Survey\Model\Table\SurveysTable;
 
 /**
@@ -30,6 +34,7 @@ class SurveysTableTest extends TestCase
         'plugin.qobo/survey.survey_questions',
         'plugin.qobo/survey.survey_answers',
         'plugin.qobo/survey.survey_sections',
+        'plugin.qobo/survey.survey_results',
     ];
 
     /**
@@ -170,5 +175,21 @@ class SurveysTableTest extends TestCase
                 $this->assertNotEquals($oldAnswerOrder, $newAnwserOrder);
             }
         }
+    }
+
+    /**
+     * Test whether the publish event is called after an entity
+     */
+    public function testPublishEventIsCalled(): void
+    {
+        $eventManager = EventManager::instance();
+        $eventManager->setEventList(new EventList());
+
+        $surveyId = '00000000-0000-0000-0000-000000000001';
+        $entity = $this->Surveys->get($surveyId);
+        $entity->set('publish_date', Time::now());
+        $entity->set('expiry_date', new Time('next year'));
+        $result = $this->Surveys->save($entity, ['publishSurvey' => true]);
+        $this->assertEventFired((string)EventName::PUBLISH_SURVEY());
     }
 }

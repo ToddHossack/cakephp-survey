@@ -131,16 +131,11 @@ class SurveysController extends AppController
      */
     public function publish(string $id)
     {
-        $survey = $this->Surveys->getSurveyData($id);
+        $survey = $this->Surveys->get($id);
         Assert::isInstanceOf($survey, EntityInterface::class);
 
-        // Fix for existing copied surveys
-        if (empty($survey->get('publish_date'))) {
-            $survey->set('expiry_date', null);
-        }
-
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $validated = $this->Surveys->prepublishValidate($id, $this->request);
+            $validated = $this->Surveys->prepublishValidate($id, $this->getRequest());
             if (false === $validated['status']) {
                 $this->Flash->error(implode("\r\n", $validated['errors']), ['escape' => false]);
 
@@ -148,24 +143,13 @@ class SurveysController extends AppController
             }
 
             $data = $this->request->getData();
-            $survey = $this->Surveys->patchEntity($survey, (array)$data, ['validate' => false]);
+            $survey = $this->Surveys->patchEntity($survey, (array)$data);
 
-            if ($this->Surveys->save($survey)) {
-                $this->Flash->success((string)__('Survey was successfully saved.'));
-
-                $fullSurvey = $this->Surveys->getSurveyData($survey->get('id'), true);
-
-                $event = new Event((string)EventName::PUBLISH_SURVEY(), $this, [
-                    'data' => [
-                        'action' => 'add_survey',
-                        'survey' => $fullSurvey,
-                    ]
-                ]);
-                $this->getEventManager()->dispatch($event);
+            if ($this->Surveys->save($survey, ['publishSurvey' => true])) {
+                $this->Flash->success((string)__('Survey was successfully published.'));
 
                 return $this->redirect(['action' => 'view', $id]);
             }
-
             $this->Flash->error((string)__('Couldn\'t publish the survey'));
         }
 
