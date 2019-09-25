@@ -135,7 +135,7 @@ class SurveysController extends AppController
         Assert::isInstanceOf($survey, EntityInterface::class);
 
         if ($this->request->is(['post', 'put', 'patch'])) {
-            $validated = $this->Surveys->prepublishValidate($id, $this->request);
+            $validated = $this->Surveys->prepublishValidate($id, $this->getRequest());
             if (false === $validated['status']) {
                 $this->Flash->error(implode("\r\n", $validated['errors']), ['escape' => false]);
 
