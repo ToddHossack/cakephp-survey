@@ -89,22 +89,5 @@ $entryStatuses = Configure::read('Survey.Options.statuses');
             <?php $count++; ?>
         <?php endforeach;?>
     <?php endforeach;?>
-    <div class="box">
-        <div class="box-body">
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <?= $this->Form->control(
-                        'SurveyEntries.status',
-                        [
-                            'options' => $entryStatuses,
-                            'value' => $surveyEntry->get('status'),
-                            'empty' => __('Choose Survey status')
-                        ]
-                    ) ?>
-                </div>
-            </div>
-            <?= $this->Form->button(__('Save'), ['class' => 'btn btn-success']) ?>
-        </div>
-    </div>
     <?= $this->Form->end() ?>
 </section>
