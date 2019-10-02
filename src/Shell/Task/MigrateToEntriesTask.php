@@ -132,7 +132,6 @@ class MigrateToEntriesTask extends Shell
                 $entry->set('status', 'in_review');
                 $entry->set('score', 0);
 
-                // avoid failing when survey_id is trashed.
                 $saved = $this->SurveyEntries->save($entry);
 
                 if ($saved) {
