@@ -105,6 +105,15 @@ class MigrateToEntriesTask extends Shell
         }
 
         foreach ($query as $item) {
+            $survey = $this->Surveys->find()
+                ->where(['id' => $item->get('survey_id')]);
+
+            if (!$survey->count()) {
+                $this->warn((string)__('Survey [{0}] is not found. Moving on', $item->get('survey_id')));
+
+                continue;
+            }
+
             $entry = $this->SurveyEntries->find()
                 ->where([
                     'id' => $item->get('submit_id')
@@ -112,6 +121,10 @@ class MigrateToEntriesTask extends Shell
                 ->first();
 
             if (empty($entry)) {
+                if (empty($item->get('submit_id'))) {
+                    continue;
+                }
+
                 $entry = $this->SurveyEntries->newEntity();
                 $entry->set('id', $item->get('submit_id'));
                 $entry->set('submit_date', $item->get('submit_date'));
@@ -119,14 +132,14 @@ class MigrateToEntriesTask extends Shell
                 $entry->set('status', 'in_review');
                 $entry->set('score', 0);
 
+                // avoid failing when survey_id is trashed.
                 $saved = $this->SurveyEntries->save($entry);
 
                 if ($saved) {
                     $result[] = $saved->get('id');
                     $count++;
                 } else {
-                    $this->error((string)__('Survey Result with {0} cannot be saved', $item->get('submit_id')));
-                    $this->out(print_r($entry->getErrors(), true));
+                    $this->out((string)__('Survey Result with Submit ID [{0}] cannot be saved. Next', $item->get('submit_id')));
                 }
             } else {
                 // saving existing survey_entries,
