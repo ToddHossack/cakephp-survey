@@ -63,7 +63,7 @@ class SurveyQuestionsTable extends Table
         $this->belongsTo('Surveys', [
             'foreignKey' => 'survey_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.Surveys'
+            'className' => 'Qobo/Survey.Surveys',
         ]);
 
         $this->belongsTo('SurveySections', [
@@ -73,11 +73,11 @@ class SurveyQuestionsTable extends Table
 
         $this->hasMany('SurveyAnswers', [
             'foreignKey' => 'survey_question_id',
-            'className' => 'Qobo/Survey.SurveyAnswers'
+            'className' => 'Qobo/Survey.SurveyAnswers',
         ]);
         $this->hasMany('SurveyResults', [
             'foreignKey' => 'survey_question_id',
-            'className' => 'Qobo/Survey.SurveyResults'
+            'className' => 'Qobo/Survey.SurveyResults',
         ]);
     }
 
@@ -127,7 +127,7 @@ class SurveyQuestionsTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules) : RulesChecker
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['survey_id'], 'Surveys'));
 

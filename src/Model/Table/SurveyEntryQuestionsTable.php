@@ -46,18 +46,18 @@ class SurveyEntryQuestionsTable extends Table
         $this->belongsTo('SurveyEntries', [
             'foreignKey' => 'survey_entry_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.SurveyEntries'
+            'className' => 'Qobo/Survey.SurveyEntries',
         ]);
         $this->belongsTo('SurveyQuestions', [
             'foreignKey' => 'survey_question_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.SurveyQuestions'
+            'className' => 'Qobo/Survey.SurveyQuestions',
         ]);
 
         $this->hasMany('SurveyResults', [
             'foreignKey' => 'survey_entry_question_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.SurveyResults'
+            'className' => 'Qobo/Survey.SurveyResults',
         ]);
     }
 

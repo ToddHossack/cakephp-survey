@@ -42,6 +42,6 @@ class Survey extends Entity
      * @var array
      */
     protected $_accessible = [
-        '*' => true
+        '*' => true,
     ];
 }

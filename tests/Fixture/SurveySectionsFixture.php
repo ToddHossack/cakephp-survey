@@ -51,7 +51,7 @@ class SurveySectionsFixture extends TestFixture
                 'order' => 1,
                 'created' => '2018-01-14 16:51:57',
                 'modified' => '2019-01-14 16:51:57',
-                'trashed' => null
+                'trashed' => null,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000002',
@@ -61,7 +61,7 @@ class SurveySectionsFixture extends TestFixture
                 'order' => 1,
                 'created' => '2018-01-14 16:51:57',
                 'modified' => '2019-01-14 16:51:57',
-                'trashed' => null
+                'trashed' => null,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000003',
@@ -71,7 +71,7 @@ class SurveySectionsFixture extends TestFixture
                 'order' => 1,
                 'created' => '2018-01-14 16:51:57',
                 'modified' => '2019-01-14 16:51:57',
-                'trashed' => null
+                'trashed' => null,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000004',
@@ -81,7 +81,7 @@ class SurveySectionsFixture extends TestFixture
                 'order' => 1,
                 'created' => '2019-08-29 08:00:00',
                 'modified' => '2019-08-29 08:00:00',
-                'trashed' => null
+                'trashed' => null,
             ],
         ];
         parent::init();

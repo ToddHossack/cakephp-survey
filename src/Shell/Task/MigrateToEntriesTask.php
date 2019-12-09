@@ -43,7 +43,7 @@ class MigrateToEntriesTask extends Shell
      *
      * @return void
      */
-    public function initTables() : void
+    public function initTables(): void
     {
         $table = TableRegistry::getTableLocator()->get('Qobo/Survey.Surveys');
         $this->Surveys = $table;
@@ -92,7 +92,7 @@ class MigrateToEntriesTask extends Shell
      *
      * @return mixed[] $result with survey_entries.id array
      */
-    protected function createSurveyEntries() : array
+    protected function createSurveyEntries(): array
     {
         $result = [];
         $query = $this->SurveyResults->find();
@@ -116,7 +116,7 @@ class MigrateToEntriesTask extends Shell
 
             $entry = $this->SurveyEntries->find()
                 ->where([
-                    'id' => $item->get('submit_id')
+                    'id' => $item->get('submit_id'),
                 ])
                 ->first();
 
@@ -165,7 +165,7 @@ class MigrateToEntriesTask extends Shell
      *
      * @return mixed[] $result with entry_question_id list
      */
-    protected function createSurveyEntryQuestions(array $entryIds = []) : array
+    protected function createSurveyEntryQuestions(array $entryIds = []): array
     {
         $result = [];
         $count = 0;
@@ -179,7 +179,7 @@ class MigrateToEntriesTask extends Shell
         foreach ($entryIds as $entryId) {
             $query = $this->SurveyResults->find()
                 ->where([
-                    'submit_id' => $entryId
+                    'submit_id' => $entryId,
                 ]);
 
             $this->out((string)__('Found [{0}] for survey results Entry ID: [{1}]', $query->count(), $entryId));
@@ -194,7 +194,7 @@ class MigrateToEntriesTask extends Shell
                 $questionEntry = $this->SurveyEntryQuestions->find()
                     ->where([
                         'survey_entry_id' => $entryId,
-                        'survey_question_id' => $surveyResultEntity->get('survey_question_id')
+                        'survey_question_id' => $surveyResultEntity->get('survey_question_id'),
                     ])
                     ->first();
 
@@ -232,7 +232,7 @@ class MigrateToEntriesTask extends Shell
      *
      * @return void
      */
-    private function linkEntryQuestionToSurveyResults(string $questionEntryId) : void
+    private function linkEntryQuestionToSurveyResults(string $questionEntryId): void
     {
         $questionEntry = $this->SurveyEntryQuestions->get($questionEntryId);
         $count = 0;
@@ -241,7 +241,7 @@ class MigrateToEntriesTask extends Shell
             ->where(
                 [
                     'submit_id' => $questionEntry->get('survey_entry_id'),
-                    'survey_question_id' => $questionEntry->get('survey_question_id')
+                    'survey_question_id' => $questionEntry->get('survey_question_id'),
                 ]
             );
 

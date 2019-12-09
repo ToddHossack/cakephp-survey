@@ -63,7 +63,7 @@ class AddDefaultSectionsTask extends Shell
         foreach ($query->all() as $survey) {
             $query = $this->SurveySections->find()
                 ->where([
-                    'survey_id' => $survey->get('id')
+                    'survey_id' => $survey->get('id'),
                 ]);
 
             if ($query->count()) {
@@ -119,7 +119,7 @@ class AddDefaultSectionsTask extends Shell
 
         $query = $this->SurveyQuestions->find()
             ->where([
-                'survey_id' => $survey->get('id')
+                'survey_id' => $survey->get('id'),
             ]);
 
         if (! $query->count()) {

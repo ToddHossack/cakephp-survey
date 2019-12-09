@@ -63,26 +63,26 @@ class SurveyResultsTable extends Table
         $this->belongsTo('Surveys', [
             'foreignKey' => 'survey_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.Surveys'
+            'className' => 'Qobo/Survey.Surveys',
         ]);
 
         //@FIXME: get rid off user s in survey_results
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.Users'
+            'className' => 'Qobo/Survey.Users',
         ]);
 
         $this->belongsTo('SurveyQuestions', [
             'foreignKey' => 'survey_question_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.SurveyQuestions'
+            'className' => 'Qobo/Survey.SurveyQuestions',
         ]);
 
         $this->belongsTo('SurveyAnswers', [
             'foreignKey' => 'survey_answer_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.SurveyAnswers'
+            'className' => 'Qobo/Survey.SurveyAnswers',
         ]);
 
         $this->belongsTo('SurveyEntries', [
@@ -266,7 +266,7 @@ class SurveyResultsTable extends Table
         $answerEntity = $answersTable->find()
             ->enableHydration(true)
             ->where([
-                'id' => $data['survey_answer_id']
+                'id' => $data['survey_answer_id'],
             ])
             ->first();
 

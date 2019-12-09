@@ -63,20 +63,20 @@ class SurveyEntriesController extends AppController
                 'SurveyEntryQuestions' =>
                 [
                     'SurveyQuestions' => 'SurveyAnswers',
-                    'SurveyResults'
-                ]
+                    'SurveyResults',
+                ],
             ],
         ]);
 
         $survey = $this->Surveys->find()
             ->where([
-                'id' => $surveyEntry->get('survey_id')
+                'id' => $surveyEntry->get('survey_id'),
             ])
             ->contain(
                 [
                     'SurveySections' => [
-                        'SurveyQuestions' => 'SurveyAnswers'
-                    ]
+                        'SurveyQuestions' => 'SurveyAnswers',
+                    ],
                 ]
             )->first();
 
@@ -98,20 +98,20 @@ class SurveyEntriesController extends AppController
                 'SurveyEntryQuestions' =>
                 [
                     'SurveyQuestions' => 'SurveyAnswers',
-                    'SurveyResults'
-                ]
+                    'SurveyResults',
+                ],
             ],
         ]);
 
         $survey = $this->Surveys->find()
             ->where([
-                'id' => $surveyEntry->get('survey_id')
+                'id' => $surveyEntry->get('survey_id'),
             ])
             ->contain(
                 [
                     'SurveySections' => [
-                        'SurveyQuestions' => 'SurveyAnswers'
-                    ]
+                        'SurveyQuestions' => 'SurveyAnswers',
+                    ],
                 ]
             )->first();
 
@@ -124,7 +124,7 @@ class SurveyEntriesController extends AppController
                     if ($item['status'] !== 'fail') {
                         $query = $this->SurveyResults->find()
                             ->where([
-                                'survey_entry_question_id' => $item['id']
+                                'survey_entry_question_id' => $item['id'],
                             ]);
 
                         if (!empty($query->count())) {
@@ -155,7 +155,7 @@ class SurveyEntriesController extends AppController
             return $this->redirect([
                 'controller' => 'SurveyEntries',
                 'action' => 'view',
-                $surveyEntry->get('id')
+                $surveyEntry->get('id'),
             ]);
         }
 
@@ -196,7 +196,7 @@ class SurveyEntriesController extends AppController
         return $this->redirect([
             'controller' => 'Surveys',
             'action' => 'view',
-            $survey->get('id')
+            $survey->get('id'),
         ]);
     }
 }

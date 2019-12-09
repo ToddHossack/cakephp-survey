@@ -60,11 +60,11 @@ class SurveyAnswersTable extends Table
         $this->belongsTo('SurveyQuestions', [
             'foreignKey' => 'survey_question_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.SurveyQuestions'
+            'className' => 'Qobo/Survey.SurveyQuestions',
         ]);
         $this->hasMany('SurveyResults', [
             'foreignKey' => 'survey_answer_id',
-            'className' => 'Qobo/Survey.SurveyResults'
+            'className' => 'Qobo/Survey.SurveyResults',
         ]);
     }
 
