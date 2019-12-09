@@ -18,7 +18,7 @@ $isPublished = empty($survey->survey->publish_date) ? false : true;
             <div class="btn-group btn-group-sm" role="group">
                 <?php if (!$isPublished) : ?>
                     <?= $this->Html->link(
-                        '<i class="fa fa-plus"></i> ' . __('Add Answer'),
+                        '<i class="fa fa-plus"></i> ' . __d('Qobo/Survey', 'Add Answer'),
                         ['controller' => 'SurveyAnswers', 'action' => 'add', $surveyId, $surveyQuestion->id],
                         ['class' => 'btn btn-default', 'escape' => false]
                     )?>
@@ -30,11 +30,11 @@ $isPublished = empty($survey->survey->publish_date) ? false : true;
 <table class="table table-hover table-condensed table-vertical-align table-datatable" width="100%">
     <thead>
         <tr>
-            <th scope="col"><?= __('Order') ?></th>
-            <th scope="col"><?= __('Answer') ?></th>
-            <th scope="col"><?= __('Score') ?></th>
-            <th scope="col"><?= __('Created') ?></th>
-            <th scope="col" class="actions"><?= __('Actions') ?></th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Order') ?></th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Answer') ?></th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Score') ?></th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Created') ?></th>
+            <th scope="col" class="actions"><?= __d('Qobo/Survey', 'Actions') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -46,7 +46,7 @@ $isPublished = empty($survey->survey->publish_date) ? false : true;
                 if (!in_array($surveyQuestion->type, ['textarea', 'input'])) {
                     echo h($surveyAnswer->answer);
                 } else {
-                    echo __('Text input answer');
+                    echo __d('Qobo/Survey', 'Text input answer');
                 }
                 ?>
             </td>
@@ -72,7 +72,7 @@ $isPublished = empty($survey->survey->publish_date) ? false : true;
                     <?= $this->Form->postLink(
                         '<i class="fa fa-trash"></i>',
                         ['controller' => 'SurveyAnswers', 'action' => 'delete', $surveyId, $surveyQuestion->id, $surveyAnswer->id],
-                        ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}?', $surveyAnswer->id)]
+                        ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __d('Qobo/Survey', 'Are you sure you want to delete # {0}?', $surveyAnswer->id)]
                     )?>
                 <?php endif; ?>
                 </div>

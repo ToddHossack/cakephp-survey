@@ -38,9 +38,9 @@ class SurveyResultsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
         $surveyResult = $this->SurveyResults->get($id);
         if ($this->SurveyResults->delete($surveyResult)) {
-            $this->Flash->success((string)__('The survey result has been deleted.'));
+            $this->Flash->success((string)__d('Qobo/Survey', 'The survey result has been deleted.'));
         } else {
-            $this->Flash->error((string)__('The survey result could not be deleted. Please, try again.'));
+            $this->Flash->error((string)__d('Qobo/Survey', 'The survey result could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);

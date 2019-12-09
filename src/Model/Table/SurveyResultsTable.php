@@ -144,7 +144,7 @@ class SurveyResultsTable extends Table
      */
     public function getResults(array $data = [], array $options = []): array
     {
-        deprecationWarning((string)__('This method will be deprecated in following major version release'));
+        deprecationWarning((string)__d('Qobo/Survey', 'This method will be deprecated in following major version release'));
 
         $result = [];
 
@@ -186,7 +186,7 @@ class SurveyResultsTable extends Table
      */
     public function getSubmits(string $surveyId = null, array $options = []): ?ResultSetInterface
     {
-        deprecationWarning((string)__('This method will be deprecated in following major version release'));
+        deprecationWarning((string)__d('Qobo/Survey', 'This method will be deprecated in following major version release'));
 
         $result = null;
 
@@ -221,7 +221,7 @@ class SurveyResultsTable extends Table
      */
     public function getTotalScorePerSubmit(string $entryId, string $surveyId): int
     {
-        deprecationWarning((string)__('getTotalScorePerSubmit() method is deprecated'));
+        deprecationWarning((string)__d('Qobo/Survey', 'getTotalScorePerSubmit() method is deprecated'));
 
         $result = 0;
         $query = $this->find()

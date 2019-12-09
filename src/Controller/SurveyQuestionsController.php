@@ -130,7 +130,7 @@ class SurveyQuestionsController extends AppController
             $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, (array)$this->request->getData());
 
             if ($this->SurveyQuestions->save($surveyQuestion)) {
-                $this->Flash->success((string)__('The survey question has been saved.'));
+                $this->Flash->success((string)__d('Qobo/Survey', 'The survey question has been saved.'));
 
                 return $this->redirect(['controller' => 'SurveyAnswers', 'action' => 'add', $surveyId, $surveyQuestion->get('id')]);
             }
@@ -159,7 +159,7 @@ class SurveyQuestionsController extends AppController
             $surveyQuestion = $this->SurveyQuestions->patchEntity($surveyQuestion, (array)$this->request->getData());
 
             if ($this->SurveyQuestions->save($surveyQuestion)) {
-                $this->Flash->success((string)__('The survey question has been saved.'));
+                $this->Flash->success((string)__d('Qobo/Survey', 'The survey question has been saved.'));
 
                 return $this->redirect($this->referer());
             }
@@ -185,7 +185,7 @@ class SurveyQuestionsController extends AppController
         $question = $this->SurveyQuestions->get($id);
 
         if ($this->SurveyQuestions->delete($question)) {
-            $this->Flash->success((string)__('The survey question has been deleted.'));
+            $this->Flash->success((string)__d('Qobo/Survey', 'The survey question has been deleted.'));
 
             $survey = $this->Surveys->getSurveyData($surveyId);
             Assert::isInstanceOf($survey, EntityInterface::class);
@@ -199,7 +199,7 @@ class SurveyQuestionsController extends AppController
 
             return $this->redirect($redirect);
         } else {
-            $this->Flash->error((string)__('The survey question could not be deleted. Please, try again.'));
+            $this->Flash->error((string)__d('Qobo/Survey', 'The survey question could not be deleted. Please, try again.'));
         }
     }
 }

@@ -20,7 +20,7 @@ $statuses = Configure::read('Survey.Options.statuses');
             <div class="btn-group btn-group-sm" role="group">
                 <?php if (empty($survey->publish_date)) : ?>
                     <?= $this->Html->link(
-                        '<i class="fa fa-plus"></i> ' . __('Add Submit'),
+                        '<i class="fa fa-plus"></i> ' . __d('Qobo/Survey', 'Add Submit'),
                         ['controller' => 'Surveys', 'action' => 'preview', $surveyId],
                         ['class' => 'btn btn-default', 'escape' => false]
                     )?>
@@ -32,11 +32,11 @@ $statuses = Configure::read('Survey.Options.statuses');
 <table class="table table-hover table-condensed table-vertical-align table-datatable" width="100%">
     <thead>
         <tr>
-            <th scope="col"><?= __('Origin') ?> </th>
-            <th scope="col"><?= __('Status') ?></th>
-            <th scope="col"><?= __('Score') ?></th>
-            <th scope="col"><?= __('Submit Date') ?></th>
-            <th scope="col" class="actions"><?= __('Actions') ?></th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Origin') ?> </th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Status') ?></th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Score') ?></th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Submit Date') ?></th>
+            <th scope="col" class="actions"><?= __d('Qobo/Survey', 'Actions') ?></th>
         </tr>
     </thead>
     <tbody>

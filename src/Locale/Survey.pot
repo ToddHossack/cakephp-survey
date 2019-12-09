@@ -1,0 +1,445 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2019-12-09 08:07+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+msgid "The survey answer has been saved."
+msgstr ""
+
+msgid "The survey answer has been deleted."
+msgstr ""
+
+msgid "Successfully updated survey results"
+msgstr ""
+
+msgid "Couldn't save updated survey results"
+msgstr ""
+
+msgid "The survey entry has been deleted."
+msgstr ""
+
+msgid "The survey entry could not be deleted. Please, try again."
+msgstr ""
+
+msgid "The survey question has been saved."
+msgstr ""
+
+msgid "The survey question has been deleted."
+msgstr ""
+
+msgid "The survey question could not be deleted. Please, try again."
+msgstr ""
+
+msgid "The survey result has been deleted."
+msgstr ""
+
+msgid "The survey result could not be deleted. Please, try again."
+msgstr ""
+
+msgid "The survey section has been saved."
+msgstr ""
+
+msgid "The survey section has been deleted."
+msgstr ""
+
+msgid "The survey section could not be deleted. Please, try again."
+msgstr ""
+
+msgid "Survey was successfully published."
+msgstr ""
+
+msgid "Couldn't publish the survey"
+msgstr ""
+
+msgid "Survey was successfully duplicated"
+msgstr ""
+
+msgid "The survey has been saved."
+msgstr ""
+
+msgid "The survey could not be saved. Please, try again."
+msgstr ""
+
+msgid "You cannot edit alredy published survey"
+msgstr ""
+
+msgid "The survey has been deleted."
+msgstr ""
+
+msgid "The survey could not be deleted. Please, try again."
+msgstr ""
+
+msgid "No questions submitted to survey"
+msgstr ""
+
+msgid "Successfully submitted survey"
+msgstr ""
+
+msgid "{0} Instance: [{1}]"
+msgstr ""
+
+msgid " [Score: {0}]"
+msgstr ""
+
+msgid "This method will be deprecated in following major version release"
+msgstr ""
+
+msgid "getTotalScorePerSubmit() method is deprecated"
+msgstr ""
+
+msgid "Expiry date should be bigger than publish date"
+msgstr ""
+
+msgid "Preparing migration of existing surveys to new structure"
+msgstr ""
+
+msgid "No submitted surveys found. Exiting"
+msgstr ""
+
+msgid "Found [{0}] survey_result records"
+msgstr ""
+
+msgid "Survey [{0}] is not found. Moving on"
+msgstr ""
+
+msgid "Survey Result with Submit ID [{0}] cannot be saved. Next"
+msgstr ""
+
+msgid "Saved [{0}] survey_entries"
+msgstr ""
+
+msgid "Not `survey_entries` passed to create Survey Entry Questions"
+msgstr ""
+
+msgid "Found [{0}] for survey results Entry ID: [{1}]"
+msgstr ""
+
+msgid "No survey_results found for {0} entry. Skipping"
+msgstr ""
+
+msgid "Couldnt save survey_entry_question record for {0} entryId"
+msgstr ""
+
+msgid "Saved {0} survey_entry_question record"
+msgstr ""
+
+msgid "No submits found for entry ID {0} and Question ID {1}"
+msgstr ""
+
+msgid "Updated {0} with survey_entry_question_id: {1}"
+msgstr ""
+
+msgid "Your answer:"
+msgstr ""
+
+msgid "-- Choose Answer --"
+msgstr ""
+
+msgid "Add Answer"
+msgstr ""
+
+msgid "Order"
+msgstr ""
+
+msgid "Answer"
+msgstr ""
+
+msgid "Score"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Text input answer"
+msgstr ""
+
+msgid "Are you sure you want to delete # {0}?"
+msgstr ""
+
+msgid "Add Submit"
+msgstr ""
+
+msgid "Origin"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Submit Date"
+msgstr ""
+
+msgid "Required:"
+msgstr ""
+
+msgid "Pass"
+msgstr ""
+
+msgid "Fail"
+msgstr ""
+
+msgid "Score: 0 (No answers submitted)"
+msgstr ""
+
+msgid "Add Question"
+msgstr ""
+
+msgid "Question"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Section"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Required"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Add Section"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Questions"
+msgstr ""
+
+msgid "Are you sure you want to delete {0}?"
+msgstr ""
+
+msgid "Create {0}"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Edit \"{0}\""
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Are you sure you want to delete # {0}"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "Survey Question"
+msgstr ""
+
+msgid "Question Type"
+msgstr ""
+
+msgid "Modified"
+msgstr ""
+
+msgid "Comment"
+msgstr ""
+
+msgid "{0} &raquo; {1} &raquo; {2}"
+msgstr ""
+
+msgid "Surveys"
+msgstr ""
+
+msgid "Submit at \"{0}\" by \"{1}\""
+msgstr ""
+
+msgid "Current Score: {0}"
+msgstr ""
+
+msgid "Choose Survey status"
+msgstr ""
+
+msgid "Current Status: {0}"
+msgstr ""
+
+msgid "{0} &raquo; {1} &raquo; Add Question"
+msgstr ""
+
+msgid "{0} &raquo; {1} &raquo; Edit Question"
+msgstr ""
+
+msgid "{0} &raquo; {1} &raquo; Preview Question"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "{0} &raquo; {1} &raquo; \"{2}\" question"
+msgstr ""
+
+msgid "Current Section"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "Survey"
+msgstr ""
+
+msgid "Answers"
+msgstr ""
+
+msgid "{0} &raquo; {1} &raquo; {2} &raquo; Review the Grade"
+msgstr ""
+
+msgid "Submit at \"{0}\" by {1}"
+msgstr ""
+
+msgid "Passed"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "Question Result Preview"
+msgstr ""
+
+msgid "Question Submit Details"
+msgstr ""
+
+msgid "Question Submit Status"
+msgstr ""
+
+msgid "Choose Status"
+msgstr ""
+
+msgid "If failed, leave a comment why:"
+msgstr ""
+
+msgid "Short comment here"
+msgstr ""
+
+msgid "Fail All"
+msgstr ""
+
+msgid "Are you sure that you want to fail all choices?"
+msgstr ""
+
+msgid "{0} &raquo; Create Survey Section"
+msgstr ""
+
+msgid "{0} &raquo; Edit {1}"
+msgstr ""
+
+msgid "Default Section"
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid "Edit {0}"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "View Survey & Results"
+msgstr ""
+
+msgid "first"
+msgstr ""
+
+msgid "previous"
+msgstr ""
+
+msgid "next"
+msgstr ""
+
+msgid "last"
+msgstr ""
+
+msgid "Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total"
+msgstr ""
+
+msgid "{0} &raquo; {1} &raquo; Preview"
+msgstr ""
+
+msgid "{0} &raquo; {1} &raquo; Publishing survey"
+msgstr ""
+
+msgid "Date of publishing"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "{0} &raquo; {1}"
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "Duplicate whole survey"
+msgstr ""
+
+msgid "Publish"
+msgstr ""
+
+msgid "Slug"
+msgstr ""
+
+msgid "Publish Date"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Expiry Date"
+msgstr ""
+
+msgid "Sections"
+msgstr ""
+
+msgid "Entries"
+msgstr ""
+
+msgid "{0} &raquo; Submission Details"
+msgstr ""
+
+msgid "{0}. {1}"
+msgstr ""
+
+msgid "<p>{0}</p>"
+msgstr ""
+
+msgid "<li>{0}</li>"
+msgstr ""
+

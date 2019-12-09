@@ -55,7 +55,7 @@ class SurveyEntry extends Entity
 
             $result['displayField'] = $user->get($table->displayField());
         } catch (RecordNotFoundException $e) {
-            $result['displayField'] = __('{0} Instance: [{1}]', $this->get('resource'), $this->get('resource_id'));
+            $result['displayField'] = __d('Qobo/Survey', '{0} Instance: [{1}]', $this->get('resource'), $this->get('resource_id'));
         }
 
         $result['url'] = [

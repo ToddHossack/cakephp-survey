@@ -9,7 +9,7 @@
  * @copyright     Copyright (c) Qobo Ltd. (https://www.qobo.biz)
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-$options['title'] = __(
+$options['title'] = __d('Qobo/Survey',
     '{0} &raquo; {1} &raquo; Preview Question',
     $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $survey->get('slug')]),
     $this->Html->link($surveyQuestion->get('question'), ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->get('id'), $surveyQuestion->get('id')])
@@ -25,7 +25,7 @@ $options['title'] = __(
                 <div class="btn-group btn-group-sm" role="group">
                     <?php if (empty($survey->get('publish_date'))) : ?>
                         <?= $this->Html->link(
-                            '<i class="fa fa-pencil"></i> ' . __('Edit'),
+                            '<i class="fa fa-pencil"></i> ' . __d('Qobo/Survey', 'Edit'),
                             [
                                 'controller' => 'SurveyQuestions',
                                 'action' => 'edit',
@@ -59,7 +59,7 @@ $options['title'] = __(
         </div>
     </div>
 <?= $this->Html->link(
-    __('Back'),
+    __d('Qobo/Survey', 'Back'),
     ['controller' => 'SurveyQuestions', 'action' => 'view', $survey->get('id'), $surveyQuestion->get('id')],
     ['class' => 'btn btn-success']
 )?>

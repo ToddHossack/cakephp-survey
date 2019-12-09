@@ -12,9 +12,9 @@
 
 $surveyId = empty($survey->slug) ? $survey->id : $survey->slug;
 
-$options['title'] = __(
+$options['title'] = __d('Qobo/Survey',
     '{0} &raquo; {1} &raquo; Add Question',
-    $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
+    $this->Html->link(__d('Qobo/Survey', 'Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
     $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId])
 );
 ?>
@@ -30,7 +30,7 @@ $options['title'] = __(
     <?= $this->Form->hidden('survey_id', ['value' => $survey->id]);?>
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title"><?= __('Details');?></h3>
+            <h3 class="box-title"><?= __d('Qobo/Survey', 'Details');?></h3>
         </div>
         <div class="box-body">
             <div class="row">
@@ -73,6 +73,6 @@ $options['title'] = __(
 
         </div>
     </div>
-    <?= $this->Form->button(__('Save')) ?>
+    <?= $this->Form->button(__d('Qobo/Survey', 'Save')) ?>
     <?= $this->Form->end() ?>
 </section>

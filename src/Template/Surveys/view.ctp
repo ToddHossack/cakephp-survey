@@ -34,9 +34,9 @@ echo $this->Html->script(
 
 $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
 
-$options['title'] = __(
+$options['title'] = __d('Qobo/Survey',
     '{0} &raquo; {1}',
-    $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
+    $this->Html->link(__d('Qobo/Survey', 'Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
     $survey->get('name')
 );
 ?>
@@ -49,31 +49,31 @@ $options['title'] = __(
             <div class="pull-right">
             <div class="btn-group btn-group-sm" role="group">
                 <?= $this->Form->postLink(
-                    '<i class="fa fa-clipboard"></i> ' . __('Copy'),
+                    '<i class="fa fa-clipboard"></i> ' . __d('Qobo/Survey', 'Copy'),
                     ['action' => 'duplicate', $survey->id],
-                    ['escape' => false, 'class' => 'btn btn-default', 'title' => __('Duplicate whole survey')]
+                    ['escape' => false, 'class' => 'btn btn-default', 'title' => __d('Qobo/Survey', 'Duplicate whole survey')]
                 ); ?>
                 <?= $this->Html->link(
-                    '<i class="fa fa-file"></i> ' . __('Preview'),
+                    '<i class="fa fa-file"></i> ' . __d('Qobo/Survey', 'Preview'),
                     ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'preview', $surveyId],
                     ['class' => 'btn btn-default', 'escape' => false]
                 ); ?>
                 <?php if (empty($survey->publish_date)) : ?>
                     <?= $this->Html->link(
-                        '<i class="fa fa-calendar"></i> ' . __('Publish'),
+                        '<i class="fa fa-calendar"></i> ' . __d('Qobo/Survey', 'Publish'),
                         ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'publish', $surveyId],
                         ['class' => 'btn btn-default', 'escape' => false]
                     )?>
                     <?= $this->Html->link(
-                        '<i class="fa fa-pencil"></i> ' . __('Edit'),
+                        '<i class="fa fa-pencil"></i> ' . __d('Qobo/Survey', 'Edit'),
                         ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'edit', $surveyId],
                         ['class' => 'btn btn-default', 'escape' => false]
                     ); ?>
                 <?php endif; ?>
                 <?= $this->Form->postLink(
-                    '<i class="fa fa-trash"></i> ' . __('Delete'),
+                    '<i class="fa fa-trash"></i> ' . __d('Qobo/Survey', 'Delete'),
                     ['plugin' => 'Qobo/Survey', 'controller' => 'Surveys', 'action' => 'delete', $survey->id],
-                    ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}', $survey->name)]
+                    ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __d('Qobo/Survey', 'Are you sure you want to delete # {0}', $survey->name)]
                 ); ?>
             </div>
             </div>
@@ -84,7 +84,7 @@ $options['title'] = __(
 <section class="content">
        <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title"><?= __('Details'); ?></h3>
+            <h3 class="box-title"><?= __d('Qobo/Survey', 'Details'); ?></h3>
             <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
                     <i class="fa fa-minus"></i>
@@ -94,14 +94,14 @@ $options['title'] = __(
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Name') ?>:</strong>
+                    <strong><?= __d('Qobo/Survey', 'Name') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
                     <?= h($survey->name) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('ID') ?>:</strong>
+                    <strong><?= __d('Qobo/Survey', 'ID') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
                     <?= h($survey->id) ?>
@@ -110,14 +110,14 @@ $options['title'] = __(
             </div>
             <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Slug') ?>:</strong>
+                    <strong><?= __d('Qobo/Survey', 'Slug') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
                     <?= h($survey->slug) ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Publish Date') ?>:</strong>
+                    <strong><?= __d('Qobo/Survey', 'Publish Date') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
                     <?= empty($survey->publish_date) ? 'N/A' : $survey->publish_date->i18nFormat('yyyy-MM-dd HH:mm') ?>
@@ -126,21 +126,21 @@ $options['title'] = __(
             </div>
             <div class="row">
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Description') ?>:</strong>
+                    <strong><?= __d('Qobo/Survey', 'Description') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
                     <?= $this->Text->autoParagraph(h($survey->description)); ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Active') ?>:</strong>
+                    <strong><?= __d('Qobo/Survey', 'Active') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
-                    <?= $survey->active ? __('Yes') : __('No'); ?>
+                    <?= $survey->active ? __d('Qobo/Survey', 'Yes') : __d('Qobo/Survey', 'No'); ?>
                 </div>
                 <div class="clearfix visible-xs visible-sm"></div>
                 <div class="col-xs-4 col-md-2 text-right">
-                    <strong><?= __('Expiry Date') ?>:</strong>
+                    <strong><?= __d('Qobo/Survey', 'Expiry Date') ?>:</strong>
                 </div>
                 <div class="col-xs-8 col-md-4">
                     <?= empty($survey->expiry_date) ? 'N/A' : $survey->expiry_date->i18nFormat('yyyy-MM-dd HH:mm') ?>
@@ -154,12 +154,12 @@ $options['title'] = __(
         <ul id="relatedTabs" class="nav nav-tabs" role="tablist">
             <li role="presentation">
                 <a href="#manage-survey-sections" aria-controls="manage-content" role="tab" data-toggle="tab">
-                    <i class="fa fa-list-ul"></i> <i class="fa question-circle"></i> <?= __('Sections'); ?>
+                    <i class="fa fa-list-ul"></i> <i class="fa question-circle"></i> <?= __d('Qobo/Survey', 'Sections'); ?>
                 </a>
             </li>
             <li role="presentation">
                 <a href="#manage-survey-entries" aria-controls="manager-survey-entries" role="tab" data-toggle="tab">
-                    <i class="fa fa-signal"></i> <?= __('Entries') ?>
+                    <i class="fa fa-signal"></i> <?= __d('Qobo/Survey', 'Entries') ?>
                 </a>
             </li>
         </ul>

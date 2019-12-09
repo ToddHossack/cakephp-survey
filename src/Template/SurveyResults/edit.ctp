@@ -2,12 +2,12 @@
 $surveyId = empty($survey->get('slug')) ? $survey->get('id') : $survey->get('slug');
 $resourceUser = $surveyEntry->get('resource_user');
 
-$options['title'] = __(
+$options['title'] = __d('Qobo/Survey',
     '{0} &raquo; {1} &raquo; {2} &raquo; Review the Grade',
-    $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
+    $this->Html->link(__d('Qobo/Survey', 'Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
     $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId]),
     $this->Html->link(
-        __('Submit at "{0}" by {1}', $surveyEntry->get('submit_date')->i18nFormat('yyyy-MM-dd HH:mm'), $resourceUser['displayField']),
+        __d('Qobo/Survey', 'Submit at "{0}" by {1}', $surveyEntry->get('submit_date')->i18nFormat('yyyy-MM-dd HH:mm'), $resourceUser['displayField']),
         [
             'controller' => 'SurveyEntries',
             'action' => 'view',
@@ -17,8 +17,8 @@ $options['title'] = __(
 );
 
 $status = [
-    'passed' => __('Passed'),
-    'failed' => __('Failed'),
+    'passed' => __d('Qobo/Survey', 'Passed'),
+    'failed' => __d('Qobo/Survey', 'Failed'),
 ];
 ?>
 <section class="content-header">
@@ -33,7 +33,7 @@ $status = [
 <section class="content">
     <div class="box box-info">
         <div class="box-header with-border">
-            <h3 class="box-title"><?= __('Question Result Preview')?></h3>
+            <h3 class="box-title"><?= __d('Qobo/Survey', 'Question Result Preview')?></h3>
         </div>
         <div class="box-body">
             <div class="row">
@@ -60,7 +60,7 @@ $status = [
 
     <?= $this->Form->create(); ?>
     <div class="box box-info">
-        <div class="box-header with-border"><h3 class="box-title"><?= __('Question Submit Details')?></h3></div>
+        <div class="box-header with-border"><h3 class="box-title"><?= __d('Qobo/Survey', 'Question Submit Details')?></h3></div>
         <div class="box-body">
             <?php foreach ($question->get('survey_answers') as $answer) : ?>
                 <?php foreach ($submits as $key => $entity) : ?>
@@ -82,8 +82,8 @@ $status = [
                                     'value' => $entity->get('status'),
                                     'type' => 'select',
                                     'options' => $status,
-                                    'label' => __('Question Submit Status'),
-                                    'empty' => __('Choose Status')
+                                    'label' => __d('Qobo/Survey', 'Question Submit Status'),
+                                    'empty' => __d('Qobo/Survey', 'Choose Status')
                                 ]
                             ) ?>
                         </div>
@@ -93,8 +93,8 @@ $status = [
                                 [
                                     'value' => $entity->get('comment'),
                                     'type' => 'textarea',
-                                    'label' => __('If failed, leave a comment why:'),
-                                    'placeholder' => __('Short comment here')
+                                    'label' => __d('Qobo/Survey', 'If failed, leave a comment why:'),
+                                    'placeholder' => __d('Qobo/Survey', 'Short comment here')
                                 ]
                             ) ?>
                         </div>
@@ -103,11 +103,11 @@ $status = [
             <?php endforeach;?>
         </div>
         <div class="box-footer">
-            <?= $this->Form->button(__('Save'), ['type' => 'submit']); ?>
+            <?= $this->Form->button(__d('Qobo/Survey', 'Save'), ['type' => 'submit']); ?>
             <?= $this->Form->end(); ?>
             <div class="pull-right">
             <?= $this->Form->postLink(
-                __('Fail All'),
+                __d('Qobo/Survey', 'Fail All'),
                 [
                     'controller' => 'SurveyResults',
                     'action' => 'fail',
@@ -116,7 +116,7 @@ $status = [
                 ],
                 [
                     'class' => 'btn btn-danger',
-                    'confirm' => __('Are you sure that you want to fail all choices?')
+                    'confirm' => __d('Qobo/Survey', 'Are you sure that you want to fail all choices?')
                 ]
             ) ?>
         </div>

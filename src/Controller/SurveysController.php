@@ -146,11 +146,11 @@ class SurveysController extends AppController
             $survey = $this->Surveys->patchEntity($survey, (array)$data);
 
             if ($this->Surveys->save($survey, ['publishSurvey' => true])) {
-                $this->Flash->success((string)__('Survey was successfully published.'));
+                $this->Flash->success((string)__d('Qobo/Survey', 'Survey was successfully published.'));
 
                 return $this->redirect(['action' => 'view', $id]);
             }
-            $this->Flash->error((string)__('Couldn\'t publish the survey'));
+            $this->Flash->error((string)__d('Qobo/Survey', 'Couldn\'t publish the survey'));
         }
 
         $this->set(compact('survey'));
@@ -195,7 +195,7 @@ class SurveysController extends AppController
             Assert::isInstanceOf($entity, EntityInterface::class);
 
             $sorted = $this->Surveys->setSequentialOrder($entity);
-            $this->Flash->success((string)__('Survey was successfully duplicated'));
+            $this->Flash->success((string)__d('Qobo/Survey', 'Survey was successfully duplicated'));
 
             return $this->redirect(['action' => 'view', $entity->get('id')]);
         }
@@ -213,12 +213,12 @@ class SurveysController extends AppController
         if ($this->request->is(['post', 'put', 'patch'])) {
             $survey = $this->Surveys->patchEntity($survey, (array)$this->request->getData());
             if ($this->Surveys->save($survey)) {
-                $this->Flash->success((string)__('The survey has been saved.'));
+                $this->Flash->success((string)__d('Qobo/Survey', 'The survey has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
 
-            $this->Flash->error((string)__('The survey could not be saved. Please, try again.'));
+            $this->Flash->error((string)__d('Qobo/Survey', 'The survey could not be saved. Please, try again.'));
         }
         $this->set(compact('survey'));
     }
@@ -237,7 +237,7 @@ class SurveysController extends AppController
         $redirect = ['controller' => 'Surveys', 'action' => 'view', $id];
 
         if (!empty($survey->get('publish_date'))) {
-            $this->Flash->error((string)__('You cannot edit alredy published survey'));
+            $this->Flash->error((string)__d('Qobo/Survey', 'You cannot edit alredy published survey'));
 
             return $this->redirect($redirect);
         }
@@ -245,11 +245,11 @@ class SurveysController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $survey = $this->Surveys->patchEntity($survey, (array)$this->request->getData());
             if ($this->Surveys->save($survey)) {
-                $this->Flash->success((string)__('The survey has been saved.'));
+                $this->Flash->success((string)__d('Qobo/Survey', 'The survey has been saved.'));
 
                 return $this->redirect($redirect);
             }
-            $this->Flash->error((string)__('The survey could not be saved. Please, try again.'));
+            $this->Flash->error((string)__d('Qobo/Survey', 'The survey could not be saved. Please, try again.'));
         }
         $this->set(compact('survey'));
     }
@@ -267,9 +267,9 @@ class SurveysController extends AppController
         Assert::isInstanceOf($survey, EntityInterface::class);
 
         if ($this->Surveys->delete($survey)) {
-            $this->Flash->success((string)__('The survey has been deleted.'));
+            $this->Flash->success((string)__d('Qobo/Survey', 'The survey has been deleted.'));
         } else {
-            $this->Flash->error((string)__('The survey could not be deleted. Please, try again.'));
+            $this->Flash->error((string)__d('Qobo/Survey', 'The survey could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
@@ -323,7 +323,7 @@ class SurveysController extends AppController
         }
 
         if (empty($questions)) {
-            $this->Flash->error((string)__('No questions submitted to survey'));
+            $this->Flash->error((string)__d('Qobo/Survey', 'No questions submitted to survey'));
 
             return $this->redirect($this->referer());
         }
@@ -355,7 +355,7 @@ class SurveysController extends AppController
                 }
             }
         }
-        $this->Flash->success((string)__('Successfully submitted survey'));
+        $this->Flash->success((string)__d('Qobo/Survey', 'Successfully submitted survey'));
 
         return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $data['SurveyEntries']['survey_id']]);
     }

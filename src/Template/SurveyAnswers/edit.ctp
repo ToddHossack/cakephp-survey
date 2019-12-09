@@ -14,7 +14,7 @@ $options['title'] = $this->Html->link($survey->name, ['controller' => 'Surveys',
 $options['title'] .= ' &raquo; ';
 $options['title'] .= $this->Html->link($question->question, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $question->id]);
 $options['title'] .= ' &raquo; ';
-$options['title'] .= __('Edit "{0}"', [$surveyAnswer->answer]);
+$options['title'] .= __d('Qobo/Survey', 'Edit "{0}"', [$surveyAnswer->answer]);
 ?>
 <section class="content-header">
     <div class="row">
@@ -28,7 +28,7 @@ $options['title'] .= __('Edit "{0}"', [$surveyAnswer->answer]);
     <?= $this->Form->hidden('SurveyAnswers.survey_question_id', ['value' => $this->request->getParam('pass.1')]) ?>
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title"><?= __('Details');?></h3>
+            <h3 class="box-title"><?= __d('Qobo/Survey', 'Details');?></h3>
         </div>
         <div class="box-body">
             <div class="row">
@@ -41,6 +41,6 @@ $options['title'] .= __('Edit "{0}"', [$surveyAnswer->answer]);
             </div>
         </div>
     </div>
-    <?= $this->Form->button(__('Save')) ?>
+    <?= $this->Form->button(__d('Qobo/Survey', 'Save')) ?>
     <?= $this->Form->end() ?>
 </section>

@@ -286,7 +286,7 @@ class SurveysTable extends Table
             $response['status'] = $validated;
 
             if (!$validated) {
-                $response['errors'][] = __('Expiry date should be bigger than publish date');
+                $response['errors'][] = __d('Qobo/Survey', 'Expiry date should be bigger than publish date');
             }
         }
 

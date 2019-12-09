@@ -65,14 +65,14 @@ class MigrateToEntriesTask extends Shell
      */
     public function main()
     {
-        $this->out((string)__('Preparing migration of existing surveys to new structure'));
+        $this->out((string)__d('Qobo/Survey', 'Preparing migration of existing surveys to new structure'));
 
         $this->initTables();
 
         $surveyEntriesIds = $this->createSurveyEntries();
 
         if (empty($surveyEntriesIds)) {
-            $this->out((string)__('No submitted surveys found. Exiting'));
+            $this->out((string)__d('Qobo/Survey', 'No submitted surveys found. Exiting'));
 
             return true;
         }
@@ -98,7 +98,7 @@ class MigrateToEntriesTask extends Shell
         $query = $this->SurveyResults->find();
         $count = 0;
 
-        $this->out((string)__('Found [{0}] survey_result records', $query->count()));
+        $this->out((string)__d('Qobo/Survey', 'Found [{0}] survey_result records', $query->count()));
 
         if (empty($query->count())) {
             return $result;
@@ -109,7 +109,7 @@ class MigrateToEntriesTask extends Shell
                 ->where(['id' => $item->get('survey_id')]);
 
             if (!$survey->count()) {
-                $this->warn((string)__('Survey [{0}] is not found. Moving on', $item->get('survey_id')));
+                $this->warn((string)__d('Qobo/Survey', 'Survey [{0}] is not found. Moving on', $item->get('survey_id')));
 
                 continue;
             }
@@ -138,7 +138,7 @@ class MigrateToEntriesTask extends Shell
                     $result[] = $saved->get('id');
                     $count++;
                 } else {
-                    $this->out((string)__('Survey Result with Submit ID [{0}] cannot be saved. Next', $item->get('submit_id')));
+                    $this->out((string)__d('Qobo/Survey', 'Survey Result with Submit ID [{0}] cannot be saved. Next', $item->get('submit_id')));
                 }
             } else {
                 // saving existing survey_entries,
@@ -147,7 +147,7 @@ class MigrateToEntriesTask extends Shell
             }
         }
 
-        $this->out((string)__('Saved [{0}] survey_entries', $count));
+        $this->out((string)__d('Qobo/Survey', 'Saved [{0}] survey_entries', $count));
 
         //keeping only unique entry ids, to avoid excessive iterations.
         $result = array_values(array_unique($result));
@@ -171,7 +171,7 @@ class MigrateToEntriesTask extends Shell
         $count = 0;
 
         if (empty($entryIds)) {
-            $this->out((string)__("Not `survey_entries` passed to create Survey Entry Questions"));
+            $this->out((string)__d("Qobo/Survey", "Not `survey_entries` passed to create Survey Entry Questions"));
 
             return $result;
         }
@@ -182,10 +182,10 @@ class MigrateToEntriesTask extends Shell
                     'submit_id' => $entryId
                 ]);
 
-            $this->out((string)__('Found [{0}] for survey results Entry ID: [{1}]', $query->count(), $entryId));
+            $this->out((string)__d('Qobo/Survey', 'Found [{0}] for survey results Entry ID: [{1}]', $query->count(), $entryId));
 
             if (empty($query->count())) {
-                $this->out((string)__('No survey_results found for {0} entry. Skipping', $entryId));
+                $this->out((string)__d('Qobo/Survey', 'No survey_results found for {0} entry. Skipping', $entryId));
 
                 continue;
             }
@@ -214,13 +214,13 @@ class MigrateToEntriesTask extends Shell
                     $result[] = $saved->get('id');
                     $count++;
                 } else {
-                    $this->out((string)__('Couldnt save survey_entry_question record for {0} entryId', $entryId));
+                    $this->out((string)__d('Qobo/Survey', 'Couldnt save survey_entry_question record for {0} entryId', $entryId));
                     $this->out(print_r($questionEntry->getErrors(), true));
                 }
             }
         }
 
-        $this->out((string)__('Saved {0} survey_entry_question record', $count));
+        $this->out((string)__d('Qobo/Survey', 'Saved {0} survey_entry_question record', $count));
 
         return $result;
     }
@@ -247,7 +247,7 @@ class MigrateToEntriesTask extends Shell
 
         if (empty($query->count())) {
             $this->out(
-                (string)__(
+                (string)__d('Qobo/Survey',
                     'No submits found for entry ID {0} and Question ID {1}',
                     $questionEntry->get('survey_entry_id'),
                     $questionEntry->get('survey_question_id')
@@ -281,6 +281,6 @@ class MigrateToEntriesTask extends Shell
             }
         }
 
-        $this->out((string)__('Updated {0} with survey_entry_question_id: {1}', $count, $questionEntryId));
+        $this->out((string)__d('Qobo/Survey', 'Updated {0} with survey_entry_question_id: {1}', $count, $questionEntryId));
     }
 }
