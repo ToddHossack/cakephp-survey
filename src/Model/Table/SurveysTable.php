@@ -69,7 +69,7 @@ class SurveysTable extends Table
             'remove' => ['publish_date', 'created', 'modified', 'slug', 'expiry_date'],
             'append' => [
                 'name' => ' - (duplicated: ' . date('Y-m-d H:i', time()) . ')',
-            ]
+            ],
         ]);
 
         $this->hasMany('SurveyQuestions', [
@@ -171,7 +171,7 @@ class SurveysTable extends Table
                 'data' => [
                     'action' => 'add_survey',
                     'survey' => $this->getSurveyData($entity->get('id'), true),
-                ]
+                ],
             ]);
             $this->getEventManager()->dispatch($publishEvent);
         }
@@ -217,8 +217,8 @@ class SurveysTable extends Table
         $query->where([
             'OR' => [
                 'Surveys.id' => $surveyId,
-                'Surveys.slug' => $surveyId
-            ]
+                'Surveys.slug' => $surveyId,
+            ],
         ]);
         if ($contain) {
             $query->contain([
@@ -228,9 +228,9 @@ class SurveysTable extends Table
                         'sort' => ['SurveyQuestions.order' => 'ASC'],
                         'SurveyAnswers' => [
                             'sort' => ['SurveyAnswers.order' => 'ASC'],
-                            'SurveyResults'
-                        ]
-                    ]
+                            'SurveyResults',
+                        ],
+                    ],
                 ],
             ]);
         }
@@ -263,7 +263,7 @@ class SurveysTable extends Table
     {
         $response = [
             'status' => false,
-            'errors' => []
+            'errors' => [],
         ];
         $entity = $this->getSurveyData($id, true);
         Assert::isInstanceOf($entity, EntityInterface::class);
@@ -299,7 +299,7 @@ class SurveysTable extends Table
      * @param mixed[] $data containing Surveys request data
      * @return bool $validated for expiration date.
      */
-    public function validatePublishDate(array $data = []) : bool
+    public function validatePublishDate(array $data = []): bool
     {
         $validated = false;
 

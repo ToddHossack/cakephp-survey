@@ -15,7 +15,7 @@ class SurveyHelper extends Helper
      *
      * @return string $result with defined score.
      */
-    public function renderAnswerScore(?SurveyAnswer $entity) : string
+    public function renderAnswerScore(?SurveyAnswer $entity): string
     {
         $score = (string)__d('Qobo/Survey', ' [Score: {0}]', 'N/A');
 

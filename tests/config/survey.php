@@ -14,7 +14,7 @@ return [
                 'in_review' => 'In Review',
                 'rejected' => 'Rejected',
                 'failed' => 'Failed',
-                'passed' => 'Passed'
+                'passed' => 'Passed',
             ],
             'questions' => [
                 'input' => 'Short Text or Number',
@@ -24,6 +24,6 @@ return [
                 'textarea' => 'Paragraph',
                 'radio' => 'Radio Buttons',
             ],
-        ]
+        ],
     ],
 ];

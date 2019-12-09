@@ -55,7 +55,7 @@ class SurveySectionsTable extends Table
         $this->belongsTo('Surveys', [
             'foreignKey' => 'survey_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.Surveys'
+            'className' => 'Qobo/Survey.Surveys',
         ]);
 
         $this->hasMany('SurveyQuestions', [

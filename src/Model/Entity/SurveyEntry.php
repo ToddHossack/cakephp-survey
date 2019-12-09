@@ -45,7 +45,7 @@ class SurveyEntry extends Entity
      *
      * @return mixed[] $result
      */
-    protected function _getResourceUser() : array
+    protected function _getResourceUser(): array
     {
         $result = [];
         $table = TableRegistry::getTableLocator()->get($this->get('resource'));
@@ -62,7 +62,7 @@ class SurveyEntry extends Entity
                 'plugin' => false,
                 'controller' => $this->get('resource'),
                 'action' => 'view',
-                $this->get('resource_id')
+                $this->get('resource_id'),
         ];
 
         return $result;
@@ -85,7 +85,7 @@ class SurveyEntry extends Entity
         $query = $results->find()
             ->where([
                 'survey_entry_id' => $this->get('id'),
-                'status' => 'pass'
+                'status' => 'pass',
             ])
             ->contain(['SurveyResults']);
 

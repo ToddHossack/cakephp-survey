@@ -31,7 +31,7 @@ class SurveysShell extends Shell
                 'add_default_sections',
                 [
                     'help' => 'Add default sections to existing surveys',
-                    'parser' => $this->AddDefaultSections->getOptionParser()
+                    'parser' => $this->AddDefaultSections->getOptionParser(),
                 ]
             )->addSubcommand(
                 'migrate_to_entries',

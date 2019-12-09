@@ -46,8 +46,8 @@ class SurveysControllerTest extends IntegrationTestCase
         $userId = '00000000-0000-0000-0000-000000000001';
         $this->session([
             'Auth' => [
-                'User' => TableRegistry::get('Users')->get($userId)->toArray()
-            ]
+                'User' => TableRegistry::get('Users')->get($userId)->toArray(),
+            ],
         ]);
 
         /**
@@ -240,7 +240,7 @@ class SurveysControllerTest extends IntegrationTestCase
             'Surveys' => [
                 'publish_date' => '2018-04-08 09:00:00',
                 'expiry_date' => '2019-04-18 09:00:00',
-            ]
+            ],
         ];
 
         $this->post('/surveys/surveys/publish/' . $survey->id, $data);
@@ -272,7 +272,7 @@ class SurveysControllerTest extends IntegrationTestCase
             'Surveys' => [
                 'publish_date' => '2018-04-08 09:00:00',
                 'expiry_date' => '2017-04-18 09:00:00',
-            ]
+            ],
         ];
 
         $this->post('/surveys/surveys/publish/' . $survey->get('id'), $data);
@@ -312,8 +312,8 @@ class SurveysControllerTest extends IntegrationTestCase
                     'survey_question_id' => $genericId,
                     'survey_answer_id' => $genericId,
                     'result' => 'foobar',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->post('/surveys/surveys/preview/' . $survey->id, $postData);
@@ -336,7 +336,7 @@ class SurveysControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testSubmitOk() : void
+    public function testSubmitOk(): void
     {
         $this->enableRetainFlashMessages();
 
@@ -348,21 +348,21 @@ class SurveysControllerTest extends IntegrationTestCase
                 'survey_id' => $survey->get('id'),
                 'submit_date' => Time::now()->i18nFormat('yyyy-MM-dd HH:mm:ss'),
                 'resource' => 'Users',
-                'resource_id' => '00000000-0000-0000-0000-000000000001'
+                'resource_id' => '00000000-0000-0000-0000-000000000001',
             ],
             'SurveyResults' => [
                 [
                     'survey_question_id' => '00000000-0000-0000-0000-000000000007',
                     'survey_answer_id' => '00000000-0000-0000-0000-000000000010',
                 ],
-            ]
+            ],
         ];
 
         $this->post('/surveys/surveys/submit', $data);
         $this->assertSession('Successfully submitted survey', 'Flash.flash.0.message');
     }
 
-    public function testSubmitMultiplAnswerOk() : void
+    public function testSubmitMultiplAnswerOk(): void
     {
         $this->enableRetainFlashMessages();
         $this->disableErrorHandlerMiddleware();
@@ -374,7 +374,7 @@ class SurveysControllerTest extends IntegrationTestCase
             'SurveyEntries' => [
                 'survey_id' => $survey->get('id'),
                 'submit_date' => Time::now(),
-                'resource' => 'Users'
+                'resource' => 'Users',
             ],
             'SurveyResults' => [
                 [
@@ -383,9 +383,9 @@ class SurveysControllerTest extends IntegrationTestCase
                     [
                         '00000000-0000-0000-0000-000000000010',
                         '00000000-0000-0000-0000-000000000009',
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ];
 
         $this->post('/surveys/surveys/submit', $data);

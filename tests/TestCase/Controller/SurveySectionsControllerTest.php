@@ -47,8 +47,8 @@ class SurveySectionsControllerTest extends IntegrationTestCase
          $userId = '00000000-0000-0000-0000-000000000001';
          $this->session([
              'Auth' => [
-                 'User' => TableRegistry::getTableLocator()->get('Users')->get($userId)->toArray()
-             ]
+                 'User' => TableRegistry::getTableLocator()->get('Users')->get($userId)->toArray(),
+             ],
          ]);
 
          /**
@@ -87,7 +87,7 @@ class SurveySectionsControllerTest extends IntegrationTestCase
             'survey_id' => $surveyId,
             'name' => 'Foobar',
             'active' => 1,
-            'order' => 123
+            'order' => 123,
         ];
 
         $this->post('/surveys/survey-sections/add/' . $survey->get('slug'), $data);
@@ -95,7 +95,7 @@ class SurveySectionsControllerTest extends IntegrationTestCase
             'plugin' => 'Qobo/Survey',
             'controller' => 'Surveys',
             'action' => 'view',
-            $survey->get('slug')
+            $survey->get('slug'),
         ]);
 
         $entity = $this->SurveySections->find()
@@ -133,7 +133,7 @@ class SurveySectionsControllerTest extends IntegrationTestCase
             'plugin' => 'Qobo/Survey',
             'controller' => 'Surveys',
             'action' => 'view',
-            $survey->get('slug')
+            $survey->get('slug'),
         ]);
     }
 
@@ -157,7 +157,7 @@ class SurveySectionsControllerTest extends IntegrationTestCase
             'plugin' => 'Qobo/Survey',
             'controller' => 'Surveys',
             'action' => 'view',
-            $survey->get('slug')
+            $survey->get('slug'),
         ]);
     }
 }

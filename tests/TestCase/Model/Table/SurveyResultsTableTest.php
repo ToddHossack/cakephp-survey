@@ -36,7 +36,7 @@ class SurveyResultsTableTest extends TestCase
         'plugin.qobo/survey.survey_questions',
         'plugin.qobo/survey.survey_answers',
         'plugin.qobo/survey.survey_sections',
-        'plugin.qobo/survey.users'
+        'plugin.qobo/survey.users',
     ];
 
     /**
@@ -89,7 +89,7 @@ class SurveyResultsTableTest extends TestCase
 
         $result = $this->SurveyResults->getResults($data, [
             'user' => $user,
-            'survey' => $survey
+            'survey' => $survey,
         ]);
 
         $this->assertEquals(count($result), $expected);
@@ -103,26 +103,26 @@ class SurveyResultsTableTest extends TestCase
         return [
             [
                 [],
-                0
+                0,
             ],
             [
                 [
                     'user_id' => '123',
                     'survey_question_id' => '123123',
                     'survey_answer_id' => '123',
-                    'survey_id' => '321'
+                    'survey_id' => '321',
                 ],
-                1
+                1,
             ],
             [
                  [
                     'user_id' => '123',
                     'survey_question_id' => '123123',
                     'survey_answer_id' => ['123', '456'],
-                    'survey_id' => '321'
+                    'survey_id' => '321',
                  ],
-                 2
-            ]
+                 2,
+            ],
         ];
     }
 }

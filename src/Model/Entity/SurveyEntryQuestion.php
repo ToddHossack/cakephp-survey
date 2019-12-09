@@ -42,7 +42,7 @@ class SurveyEntryQuestion extends Entity
      *
      * @return mixed[] $result with values if any.
      */
-    public function getSurveyResultValues(array $options = []) : array
+    public function getSurveyResultValues(array $options = []): array
     {
         $result = [];
 

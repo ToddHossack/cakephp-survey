@@ -64,7 +64,7 @@ class SurveyQuestion extends Entity
         $query = $questionEntryTable->find()
             ->where([
                 'survey_entry_id' => $id,
-                'survey_question_id' => $this->get('id')
+                'survey_question_id' => $this->get('id'),
             ])
             ->contain(['SurveyResults']);
 
@@ -85,7 +85,7 @@ class SurveyQuestion extends Entity
      *
      * @return mixed[] $result array with options.
      */
-    public function getAnswerOptions(array $options = []) : array
+    public function getAnswerOptions(array $options = []): array
     {
         $result = [];
 

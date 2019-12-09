@@ -83,7 +83,7 @@ class SurveyResultsFixture extends TestFixture
                 'comment' => 'Lorem ipsum dolor sit amet, aliquet feugiat.',
                 'status' => 'pass',
                 'trashed' => null,
-                'survey_entry_question_id' => null
+                'survey_entry_question_id' => null,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000003',
@@ -100,7 +100,7 @@ class SurveyResultsFixture extends TestFixture
                 'comment' => 'Lorem ipsum dolor sit amet, aliquet feugiat.',
                 'status' => 'pass',
                 'trashed' => null,
-                'survey_entry_question_id' => '00000000-0000-0000-0000-000000000001'
+                'survey_entry_question_id' => '00000000-0000-0000-0000-000000000001',
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000004',
@@ -117,7 +117,7 @@ class SurveyResultsFixture extends TestFixture
                 'comment' => 'no comments',
                 'status' => 'pass',
                 'trashed' => null,
-                'survey_entry_question_id' => null
+                'survey_entry_question_id' => null,
             ],
             [
                 'id' => '00000000-0000-0000-0000-000000000005',
@@ -134,7 +134,7 @@ class SurveyResultsFixture extends TestFixture
                 'comment' => 'no comments',
                 'status' => 'pass',
                 'trashed' => null,
-                'survey_entry_question_id' => '00000000-0000-0000-0000-000000000002'
+                'survey_entry_question_id' => '00000000-0000-0000-0000-000000000002',
             ],
         ];
 

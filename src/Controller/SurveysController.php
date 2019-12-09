@@ -78,7 +78,7 @@ class SurveysController extends AppController
      * Preloading extra vars for all methods
      *
      * @param \Cake\Event\Event $event broadcasted.
-     * @return \Cake\Http\Response|null
+     * @return \Cake\Http\Response|void|null
      */
     public function beforeFilter(Event $event)
     {
@@ -115,7 +115,7 @@ class SurveysController extends AppController
 
         $query = $this->SurveyEntries->find()
             ->where([
-                'survey_id' => $survey->get('id')
+                'survey_id' => $survey->get('id'),
             ])
             ->order(['submit_date' => 'DESC']);
         $entries = $query->all();
@@ -290,15 +290,15 @@ class SurveysController extends AppController
         $surveyEntry = $this->SurveyEntries->find()
             ->enableHydration(true)
             ->where([
-                'id' => $surveyEntryId
+                'id' => $surveyEntryId,
             ])
             ->contain([
                 'SurveyEntryQuestions' => [
                     'SurveyQuestions',
                     'SurveyResults' => [
-                        'SurveyAnswers'
-                    ]
-                ]
+                        'SurveyAnswers',
+                    ],
+                ],
             ])
             ->first();
 

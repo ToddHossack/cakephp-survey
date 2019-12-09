@@ -57,7 +57,7 @@ class SurveyAnswersController extends AppController
         $questionTypes = $this->SurveyAnswers->SurveyQuestions->getQuestionTypes();
 
         $surveyAnswer = $this->SurveyAnswers->get($id, [
-            'contain' => ['SurveyQuestions', 'SurveyResults']
+            'contain' => ['SurveyQuestions', 'SurveyResults'],
         ]);
 
         $this->set(compact('surveyAnswer', 'survey', 'questionTypes'));

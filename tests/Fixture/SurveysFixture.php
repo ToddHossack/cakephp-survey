@@ -100,7 +100,7 @@ class SurveysFixture extends TestFixture
                 'modified' => '2019-08-29 12:40:24',
                 'publish_date' => null,
                 'trashed' => null,
-            ]
+            ],
         ];
 
         parent::init();

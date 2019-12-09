@@ -55,13 +55,13 @@ class SurveyEntriesTable extends Table
         $this->belongsTo('Surveys', [
             'foreignKey' => 'survey_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.Surveys'
+            'className' => 'Qobo/Survey.Surveys',
         ]);
 
         $this->hasMany('SurveyEntryQuestions', [
             'foreignKey' => 'survey_entry_id',
             'joinType' => 'INNER',
-            'className' => 'Qobo/Survey.SurveyEntryQuestions'
+            'className' => 'Qobo/Survey.SurveyEntryQuestions',
         ]);
     }
 
@@ -133,7 +133,7 @@ class SurveyEntriesTable extends Table
      *
      * @return void
      */
-    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) : void
+    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options): void
     {
         if (is_null($entity->get('status'))) {
             $entity->set('status', 'received');
@@ -149,7 +149,7 @@ class SurveyEntriesTable extends Table
      *
      * @return mixed[] result of configs for `Survey.Options.statuses`
      */
-    public function getStatuses() : array
+    public function getStatuses(): array
     {
         return Configure::read('Survey.Options.statuses');
     }
@@ -238,7 +238,7 @@ class SurveyEntriesTable extends Table
         $query = $this->find()
             ->enableHydration(true)
             ->where([
-                'id' => $id
+                'id' => $id,
             ])
             ->contain(['SurveyEntryQuestions' => ['SurveyResults']]);
 
@@ -258,7 +258,7 @@ class SurveyEntriesTable extends Table
                 'resource_id' => $entity->get('resource_id'),
                 'status' => $entity->get('status'),
                 'score' => $entity->get('score'),
-                'submit_date' => $entity->get('submit_date')->i18nFormat('yyyy-MM-dd HH:mm:ss')
+                'submit_date' => $entity->get('submit_date')->i18nFormat('yyyy-MM-dd HH:mm:ss'),
             ];
 
             $data['SurveyEntryQuestions'] = [];

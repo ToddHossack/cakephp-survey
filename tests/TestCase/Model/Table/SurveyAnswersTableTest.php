@@ -28,7 +28,7 @@ class SurveyAnswersTableTest extends TestCase
         'plugin.qobo/survey.survey_questions',
         'plugin.qobo/survey.surveys',
         'plugin.qobo/survey.survey_results',
-        'plugin.qobo/survey.users'
+        'plugin.qobo/survey.users',
     ];
 
     /**

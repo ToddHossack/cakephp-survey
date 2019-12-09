@@ -49,7 +49,7 @@ class SurveyQuestionsController extends AppController
      * Preloading numerous vars for question methods
      *
      * @param \Cake\Event\Event $event broadcasted.
-     * @return \Cake\Http\Response|null
+     * @return \Cake\Http\Response|void|null
      */
     public function beforeFilter(Event $event)
     {
@@ -73,8 +73,8 @@ class SurveyQuestionsController extends AppController
                 'Surveys',
                 'SurveyAnswers' => [
                     'sort' => ['SurveyAnswers.order' => 'ASC'],
-                ]
-            ]
+                ],
+            ],
         ]);
         Assert::isInstanceOf($surveyQuestion, EntityInterface::class);
 
@@ -102,8 +102,8 @@ class SurveyQuestionsController extends AppController
                 'Surveys',
                 'SurveyAnswers' => [
                     'sort' => ['SurveyAnswers.order' => 'ASC'],
-                ]
-            ]
+                ],
+            ],
         ]);
 
         Assert::isInstanceOf($surveyQuestion, EntityInterface::class);
@@ -194,7 +194,7 @@ class SurveyQuestionsController extends AppController
             $redirect = [
                 'controller' => 'Surveys',
                 'action' => 'view',
-                $surveyId
+                $surveyId,
             ];
 
             return $this->redirect($redirect);
