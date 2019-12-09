@@ -37,8 +37,8 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $userId = '00000000-0000-0000-0000-000000000001';
         $this->session([
             'Auth' => [
-                'User' => TableRegistry::get('Users')->get($userId)->toArray()
-            ]
+                'User' => TableRegistry::get('Users')->get($userId)->toArray(),
+            ],
         ]);
 
         /**
@@ -240,7 +240,7 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
             'survey_section_id' => $surveyId,
             'question' => 'Who are you?',
             'type' => 'checkbox',
-            'order' => 1
+            'order' => 1,
         ];
 
         $this->post('/surveys/survey/' . $slug . '/questions/add', $postData);

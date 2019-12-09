@@ -47,7 +47,7 @@ class SectionsQuestionsFixture extends TestFixture
                 'survey_question_id' => 'c1eebd7c-41dc-44cd-8b06-fe6ff0860673',
                 'order' => 1,
                 'created' => '2019-01-14 16:46:46',
-                'modified' => '2019-01-14 16:46:46'
+                'modified' => '2019-01-14 16:46:46',
             ],
         ];
         parent::init();

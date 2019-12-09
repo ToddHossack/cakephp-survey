@@ -27,7 +27,7 @@ class SurveyEntriesTableTest extends TestCase
         'plugin.qobo/survey.survey_questions',
         'plugin.qobo/survey.survey_entry_questions',
         'plugin.qobo/survey.surveys',
-        'plugin.qobo/survey.users'
+        'plugin.qobo/survey.users',
     ];
 
     /**
@@ -61,13 +61,13 @@ class SurveyEntriesTableTest extends TestCase
      *
      * @return void
      */
-    public function testGetStatuses() : void
+    public function testGetStatuses(): void
     {
         $this->assertTrue(is_array(Configure::read('Survey.Options.statuses')));
         $this->assertEquals(Configure::read('Survey.Options.statuses'), $this->SurveyEntries->getStatuses());
     }
 
-    public function testGetTotalScoreFromEntity() : void
+    public function testGetTotalScoreFromEntity(): void
     {
         $entryId = '00000000-0000-0000-0000-000000000003';
         $entity = $this->SurveyEntries->get($entryId);
@@ -76,7 +76,7 @@ class SurveyEntriesTableTest extends TestCase
         $this->assertEquals(0, $score);
     }
 
-    public function testGetSurveyEntryPayload() : void
+    public function testGetSurveyEntryPayload(): void
     {
         $surveyEntryId = '00000000-0000-0000-0000-000000000003';
         $result = $this->SurveyEntries->getSurveyEntryPayload($surveyEntryId);
@@ -95,7 +95,7 @@ class SurveyEntriesTableTest extends TestCase
      * @param mixed[] $data with survey_results samples
      * @return void
      */
-    public function testSaveSurveyEntryData(array $data) : void
+    public function testSaveSurveyEntryData(array $data): void
     {
         $surveyId = '00000000-0000-0000-0000-000000000004';
 
@@ -104,10 +104,10 @@ class SurveyEntriesTableTest extends TestCase
             [
                 'id' => '00000000-0000-0000-0000-000000000001',
                 'first_name' => 'John',
-                'last_name' => 'Doe'
+                'last_name' => 'Doe',
             ],
             [
-                'source' => 'Users'
+                'source' => 'Users',
             ]
         );
 
@@ -122,7 +122,7 @@ class SurveyEntriesTableTest extends TestCase
     /**
      * @return mixed[]
      */
-    public function getSurveyResultsProvider() : array
+    public function getSurveyResultsProvider(): array
     {
         return [
             [
@@ -135,8 +135,8 @@ class SurveyEntriesTableTest extends TestCase
                     [
                         'survey_question_id' => '00000000-0000-0000-0000-000000000008',
                         'survey_answer_id' => '00000000-0000-0000-0000-000000000011',
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 // example of survey_results containing array of answer ids picked.
@@ -146,14 +146,14 @@ class SurveyEntriesTableTest extends TestCase
                         'survey_answer_id' => [
                             '00000000-0000-0000-0000-000000000010',
                             '00000000-0000-0000-0000-000000000009',
-                        ]
+                        ],
                     ],
                     [
                         'survey_question_id' => '00000000-0000-0000-0000-000000000008',
                         'survey_answer_id' => '00000000-0000-0000-0000-000000000011',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
     }
 }

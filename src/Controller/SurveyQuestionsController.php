@@ -73,8 +73,8 @@ class SurveyQuestionsController extends AppController
                 'Surveys',
                 'SurveyAnswers' => [
                     'sort' => ['SurveyAnswers.order' => 'ASC'],
-                ]
-            ]
+                ],
+            ],
         ]);
         Assert::isInstanceOf($surveyQuestion, EntityInterface::class);
 
@@ -102,8 +102,8 @@ class SurveyQuestionsController extends AppController
                 'Surveys',
                 'SurveyAnswers' => [
                     'sort' => ['SurveyAnswers.order' => 'ASC'],
-                ]
-            ]
+                ],
+            ],
         ]);
 
         Assert::isInstanceOf($surveyQuestion, EntityInterface::class);
@@ -194,7 +194,7 @@ class SurveyQuestionsController extends AppController
             $redirect = [
                 'controller' => 'Surveys',
                 'action' => 'view',
-                $surveyId
+                $surveyId,
             ];
 
             return $this->redirect($redirect);
