@@ -87,7 +87,7 @@ class SurveyAnswersController extends AppController
             $surveyAnswer = $this->SurveyAnswers->patchEntity($surveyAnswer, (array)$this->request->getData());
 
             if ($this->SurveyAnswers->save($surveyAnswer)) {
-                $this->Flash->success((string)__('The survey answer has been saved.'));
+                $this->Flash->success((string)__d('Qobo/Survey', 'The survey answer has been saved.'));
 
                 return $this->redirect($redirect);
             }
@@ -121,7 +121,7 @@ class SurveyAnswersController extends AppController
             $surveyAnswer = $this->SurveyAnswers->patchEntity($surveyAnswer, (array)$this->request->getData());
 
             if ($this->SurveyAnswers->save($surveyAnswer)) {
-                $this->Flash->success((string)__('The survey answer has been saved.'));
+                $this->Flash->success((string)__d('Qobo/Survey', 'The survey answer has been saved.'));
 
                 return $this->redirect($redirect);
             }
@@ -149,7 +149,7 @@ class SurveyAnswersController extends AppController
         $redirect = ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyId, $questionId];
 
         if ($this->SurveyAnswers->delete($answer)) {
-            $this->Flash->success((string)__('The survey answer has been deleted.'));
+            $this->Flash->success((string)__d('Qobo/Survey', 'The survey answer has been deleted.'));
         }
 
         return $this->redirect($redirect);

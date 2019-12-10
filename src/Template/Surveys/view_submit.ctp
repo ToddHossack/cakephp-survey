@@ -11,7 +11,7 @@
  */
 $surveyId = empty($survey->get('slug')) ? $survey->get('id') : $survey->get('slug');
 
-$options['title'] = (string)__(
+$options['title'] = (string)__d('Qobo/Survey',
     '{0} &raquo; Submission Details',
     $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId])
 );
@@ -34,7 +34,7 @@ $order = 1;
         <?php $surveyQuestion = $entryQuestion->get('survey_question'); ?>
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title"><?= __('{0}. {1}', $order, $surveyQuestion->get('question')) ?></h3>
+                <h3 class="box-title"><?= __d('Qobo/Survey', '{0}. {1}', $order, $surveyQuestion->get('question')) ?></h3>
             </div>
             <div class="box-body">
                 <?php
@@ -50,8 +50,8 @@ $order = 1;
                     $answer = $surveyResult->get('survey_answer');
 
                     echo $isOpenEndedQuestion
-                        ? __('<p>{0}</p>', $surveyResult->get('result'))
-                        : __('<li>{0}</li>', $answer->get('answer'));
+                        ? __d('Qobo/Survey', '<p>{0}</p>', $surveyResult->get('result'))
+                        : __d('Qobo/Survey', '<li>{0}</li>', $answer->get('answer'));
                 }
 
                 echo $isOpenEndedQuestion ? '' : '</ul>';

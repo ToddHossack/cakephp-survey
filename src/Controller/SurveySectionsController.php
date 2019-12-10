@@ -56,7 +56,7 @@ class SurveySectionsController extends AppController
             $entity = $this->SurveySections->patchEntity($surveySection, (array)$this->request->getData());
 
             if ($this->SurveySections->save($entity)) {
-                $this->Flash->success((string)__('The survey section has been saved.'));
+                $this->Flash->success((string)__d('Qobo/Survey', 'The survey section has been saved.'));
             }
 
             return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $surveyId]);
@@ -85,7 +85,7 @@ class SurveySectionsController extends AppController
             $entity = $this->SurveySections->patchEntity($surveySection, (array)$this->request->getData());
 
             if ($this->SurveySections->save($entity)) {
-                $this->Flash->success((string)__('The survey section has been saved.'));
+                $this->Flash->success((string)__d('Qobo/Survey', 'The survey section has been saved.'));
             }
 
             return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $surveyId]);
@@ -135,9 +135,9 @@ class SurveySectionsController extends AppController
         $surveySection = $this->SurveySections->get($id);
 
         if ($this->SurveySections->delete($surveySection)) {
-            $this->Flash->success((string)__('The survey section has been deleted.'));
+            $this->Flash->success((string)__d('Qobo/Survey', 'The survey section has been deleted.'));
         } else {
-            $this->Flash->error((string)__('The survey section could not be deleted. Please, try again.'));
+            $this->Flash->error((string)__d('Qobo/Survey', 'The survey section could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['controller' => 'Surveys', 'action' => 'view', $surveyId]);

@@ -99,7 +99,7 @@ class SurveyQuestion extends Entity
             $answer = $entity->get('answer');
 
             if ($withScore) {
-                $answer .= (string)__(' [Score: {0}]', $entity->get('score'));
+                $answer .= (string)__d('Qobo/Survey', ' [Score: {0}]', $entity->get('score'));
             }
 
             $result[$entity->get('id')] = $answer;

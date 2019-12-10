@@ -17,10 +17,10 @@ class SurveyHelper extends Helper
      */
     public function renderAnswerScore(?SurveyAnswer $entity): string
     {
-        $score = (string)__(' [Score: {0}]', 'N/A');
+        $score = (string)__d('Qobo/Survey', ' [Score: {0}]', 'N/A');
 
         if (!is_null($entity)) {
-            $score = (string)__(' [Score: {0}]', $entity->get('score'));
+            $score = (string)__d('Qobo/Survey', ' [Score: {0}]', $entity->get('score'));
         }
 
         $result = "<strong>$score</strong>";

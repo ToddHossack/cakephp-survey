@@ -20,7 +20,7 @@ echo $this->Html->script([
 <section class="content-header">
     <div class="row">
         <div class="col-xs-12 col-md-6">
-            <h4><?= __('Create {0}', ['Survey']);?></h4>
+            <h4><?= __d('Qobo/Survey', 'Create {0}', ['Survey']);?></h4>
         </div>
     </div>
 </section>
@@ -28,7 +28,7 @@ echo $this->Html->script([
     <?= $this->Form->create($survey) ?>
     <div class="box box-solid">
         <div class="box-header with-border">
-            <h3 class="box-title"><?= __('Details');?></h3>
+            <h3 class="box-title"><?= __d('Qobo/Survey', 'Details');?></h3>
         </div>
         <div class="box-body">
             <div class="row">
@@ -56,7 +56,7 @@ echo $this->Html->script([
                     ?>
                 </div>
             </div>
-            <?= $this->Form->button(__('Submit')) ?>
+            <?= $this->Form->button(__d('Qobo/Survey', 'Submit')) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

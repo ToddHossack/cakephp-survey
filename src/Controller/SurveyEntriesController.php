@@ -145,9 +145,9 @@ class SurveyEntriesController extends AppController
 
             $saved = $this->SurveyEntries->save($surveyEntry);
             if ($saved) {
-                $this->Flash->success((string)__('Successfully updated survey results'));
+                $this->Flash->success((string)__d('Qobo/Survey', 'Successfully updated survey results'));
             } else {
-                $this->Flash->error((string)__("Couldn't save updated survey results"));
+                $this->Flash->error((string)__d("Qobo/Survey", "Couldn't save updated survey results"));
 
                 Log::error((string)json_encode($surveyEntry->getErrors(), JSON_PRETTY_PRINT));
             }
@@ -177,9 +177,9 @@ class SurveyEntriesController extends AppController
         $survey = $this->Surveys->get($surveyEntry->get('survey_id'));
 
         if ($this->SurveyEntries->delete($surveyEntry)) {
-            $this->Flash->success((string)__('The survey entry has been deleted.'));
+            $this->Flash->success((string)__d('Qobo/Survey', 'The survey entry has been deleted.'));
         } else {
-            $this->Flash->error((string)__('The survey entry could not be deleted. Please, try again.'));
+            $this->Flash->error((string)__d('Qobo/Survey', 'The survey entry could not be deleted. Please, try again.'));
         }
 
         $query = $this->SurveyResults->find()

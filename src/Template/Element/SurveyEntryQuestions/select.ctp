@@ -18,7 +18,7 @@ $options = [
     'type' => 'select',
     'options' => [],
     'value' => [],
-    'empty' => __('-- Choose Answer --'),
+    'empty' => __d('Qobo/Survey', '-- Choose Answer --'),
 ];
 
 $options += $defaultOptions;
@@ -37,7 +37,7 @@ $id = md5(serialize($options));
     <div class="box-header with-border">
         <h3 class="box-title">
             <?php if ($question->get('is_required')) : ?>
-                <strong style="color:red;"><?= __('Required:') ?></strong>
+                <strong style="color:red;"><?= __d('Qobo/Survey', 'Required:') ?></strong>
             <?php endif; ?>
             <?= $question->get('question') ?>
         </h3>

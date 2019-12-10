@@ -34,14 +34,14 @@ $options['title'] .= empty($surveyAnswer->get('answer')) ? $surveyAnswer->commen
             <div class="pull-right">
             <div class="btn-group btn-group-sm" role="group">
             <?= $this->Html->link(
-                '<i class="fa fa-pencil"></i> ' . __('Edit'),
+                '<i class="fa fa-pencil"></i> ' . __d('Qobo/Survey', 'Edit'),
                 ['controller' => 'SurveyAnswers', 'action' => 'edit', $surveyId, $questionId, $surveyAnswer->id],
-                ['class' => 'btn btn-default', 'title' => __('Edit'), 'escape' => false]
+                ['class' => 'btn btn-default', 'title' => __d('Qobo/Survey', 'Edit'), 'escape' => false]
             )?>
             <?= $this->Form->postLink(
-                '<i class="fa fa-trash"></i>' . __('Delete'),
+                '<i class="fa fa-trash"></i>' . __d('Qobo/Survey', 'Delete'),
                 ['controller' => 'SurveyAnswers', 'action' => 'delete', $surveyId, $questionId, $surveyAnswer->id],
-                ['class' => 'btn btn-default', 'title' => __('Delete'), 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}', $surveyAnswer->id)]
+                ['class' => 'btn btn-default', 'title' => __d('Qobo/Survey', 'Delete'), 'escape' => false, 'confirm' => __d('Qobo/Survey', 'Are you sure you want to delete # {0}', $surveyAnswer->id)]
             )?>
             </div>
             </div>
@@ -53,7 +53,7 @@ $options['title'] .= empty($surveyAnswer->get('answer')) ? $surveyAnswer->commen
 <section class="content">
     <div class="box box-primary">
     <div class="box-header with-border">
-        <h3 class="box-title"><?= __('Details'); ?></h3>
+        <h3 class="box-title"><?= __d('Qobo/Survey', 'Details'); ?></h3>
         <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse">
                 <i class="fa fa-minus"></i>
@@ -63,49 +63,49 @@ $options['title'] .= empty($surveyAnswer->get('answer')) ? $surveyAnswer->commen
     <div class="box-body">
         <div class="row">
             <div class="col-xs-4 col-md-2 text-right">
-                <strong><?= __('ID') ?>:</strong>
+                <strong><?= __d('Qobo/Survey', 'ID') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
                 <?= h($surveyAnswer->id) ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
             <div class="col-xs-4 col-md-2 text-right">
-                <strong><?= __('Survey Question') ?>:</strong>
+                <strong><?= __d('Qobo/Survey', 'Survey Question') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
                 <?= $surveyAnswer->has('survey_question') ? $this->Html->link($surveyAnswer->survey_question->question, ['controller' => 'SurveyQuestions', 'action' => 'view', $surveyAnswer->survey_question->id]) : '' ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
             <div class="col-xs-4 col-md-2 text-right">
-                <strong><?= __('Question Type') ?>:</strong>
+                <strong><?= __d('Qobo/Survey', 'Question Type') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
                 <?= h($questionTypes[$surveyAnswer->survey_question->type]) ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
             <div class="col-xs-4 col-md-2 text-right">
-                <strong><?= __('Score') ?>:</strong>
+                <strong><?= __d('Qobo/Survey', 'Score') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
                 <?= h($surveyAnswer->score) ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
             <div class="col-xs-4 col-md-2 text-right">
-                <strong><?= __('Created') ?>:</strong>
+                <strong><?= __d('Qobo/Survey', 'Created') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
                 <?= h($surveyAnswer->created->i18nFormat('yyyy-MM-dd HH:mm')) ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
             <div class="col-xs-4 col-md-2 text-right">
-                <strong><?= __('Modified') ?>:</strong>
+                <strong><?= __d('Qobo/Survey', 'Modified') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
                 <?= h($surveyAnswer->modified->i18nFormat('yyyy-MM-dd HH:mm')) ?>
             </div>
             <div class="clearfix visible-xs visible-sm"></div>
             <div class="col-xs-4 col-md-2 text-right">
-                <strong><?= __('Answer') ?>:</strong>
+                <strong><?= __d('Qobo/Survey', 'Answer') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
                 <?= $this->Text->autoParagraph(h($surveyAnswer->answer)); ?>
@@ -114,7 +114,7 @@ $options['title'] .= empty($surveyAnswer->get('answer')) ? $surveyAnswer->commen
         </div>
         <div class="row">
             <div class="col-xs-4 col-md-2 text-right">
-                <strong><?= __('Comment') ?>:</strong>
+                <strong><?= __d('Qobo/Survey', 'Comment') ?>:</strong>
             </div>
             <div class="col-xs-8 col-md-4">
                 <?= $this->Text->autoParagraph(h($surveyAnswer->comment)); ?>

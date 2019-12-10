@@ -17,7 +17,7 @@ $defaultOptions = [
 $answer = $question->get('survey_answers')[0];
 
 $options = [
-    'label' => __('Your answer:') . $this->Survey->renderAnswerScore($answer),
+    'label' => __d('Qobo/Survey', 'Your answer:') . $this->Survey->renderAnswerScore($answer),
     'type' => 'textare',
     'placeholder' => $answer->get('comment'),
 ];
@@ -35,7 +35,7 @@ $id = md5(serialize($options));
     <div class="box-header with-border">
         <h3 class="box-title">
             <?php if ($question->get('is_required')) : ?>
-                <strong style="color:red;"><?= __('Required:') ?></strong>
+                <strong style="color:red;"><?= __d('Qobo/Survey', 'Required:') ?></strong>
             <?php endif; ?>
             <?= $question->get('question') ?>
         </h3>

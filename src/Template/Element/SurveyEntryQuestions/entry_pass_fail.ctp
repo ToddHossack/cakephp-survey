@@ -7,8 +7,8 @@ $isDisabled = !isset($isDisabled) ? false : $isDisabled;
     <?= $this->Form->radio(
         'SurveyEntryQuestions.' . $key . '.status',
         [
-            ['value' => 'pass', 'text' => __('Pass')],
-            ['value' => 'fail', 'text' => __('Fail')],
+            ['value' => 'pass', 'text' => __d('Qobo/Survey', 'Pass')],
+            ['value' => 'fail', 'text' => __d('Qobo/Survey', 'Fail')],
         ],
         [
             'value' => ($questionEntry->isEmpty('status')) ? 'pass' : $questionEntry->get('status'),
@@ -18,6 +18,6 @@ $isDisabled = !isset($isDisabled) ? false : $isDisabled;
     <hr/>
     <h4>Score: <?= $questionEntry->get('score') ?> </h4>
 <?php else: ?>
-    <h4><?= __('Score: 0 (No answers submitted)') ?></h4>
+    <h4><?= __d('Qobo/Survey', 'Score: 0 (No answers submitted)') ?></h4>
 <?php endif;?>
 </div>

@@ -15,11 +15,11 @@ $surveyId = !empty($survey->get('slug')) ? $survey->get('slug') : $survey->get('
 
 $resourceUser = $surveyEntry->get('resource_user');
 
-$options['title'] = __(
+$options['title'] = __d('Qobo/Survey',
     '{0} &raquo; {1} &raquo; {2}',
-    $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
+    $this->Html->link(__d('Qobo/Survey', 'Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
     $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId]),
-    __('Submit at "{0}" by "{1}"', $surveyEntry->get('submit_date')->i18nFormat('yyyy-MM-dd HH:mm'), $resourceUser['displayField'])
+    __d('Qobo/Survey', 'Submit at "{0}" by "{1}"', $surveyEntry->get('submit_date')->i18nFormat('yyyy-MM-dd HH:mm'), $resourceUser['displayField'])
 );
 
 $entryStatuses = Configure::read('Survey.Options.statuses');
@@ -33,9 +33,9 @@ $entryStatuses = Configure::read('Survey.Options.statuses');
             <div class="pull-right">
             <div class="btn-group btn-group-sm" role="group">
                 <?= $this->Form->postLink(
-                    '<i class="fa fa-trash"></i> ' . __('Delete'),
+                    '<i class="fa fa-trash"></i> ' . __d('Qobo/Survey', 'Delete'),
                     ['plugin' => 'Qobo/Survey', 'controller' => 'SurveyEntries', 'action' => 'delete', $surveyEntry->get('id')],
-                    ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete # {0}', $survey->name)]
+                    ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __d('Qobo/Survey', 'Are you sure you want to delete # {0}', $survey->name)]
                 ); ?>
             </div>
             </div>
@@ -52,7 +52,7 @@ $entryStatuses = Configure::read('Survey.Options.statuses');
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <h4><?= __('Current Score: {0}', $surveyEntry->get('score')) ?></h4>
+                    <h4><?= __d('Qobo/Survey', 'Current Score: {0}', $surveyEntry->get('score')) ?></h4>
                 </div>
             </div>
             <div class="row">
@@ -62,12 +62,12 @@ $entryStatuses = Configure::read('Survey.Options.statuses');
                         [
                             'options' => $entryStatuses,
                             'value' => $surveyEntry->get('status'),
-                            'empty' => __('Choose Survey status')
+                            'empty' => __d('Qobo/Survey', 'Choose Survey status')
                         ]
                     ) ?>
                 </div>
             </div>
-            <?= $this->Form->button(__('Save'), ['class' => 'btn btn-success']) ?>
+            <?= $this->Form->button(__d('Qobo/Survey', 'Save'), ['class' => 'btn btn-success']) ?>
         </div>
     </div>
 

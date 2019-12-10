@@ -18,9 +18,9 @@ echo $this->Html->script([
         'block' => 'scriptBottom'
     ]);
 
-$options['title'] = __(
+$options['title'] = __d('Qobo/Survey',
     '{0} &raquo; {1} &raquo; Publishing survey',
-    $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
+    $this->Html->link(__d('Qobo/Survey', 'Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
     $this->Html->link( $survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $survey->get('id')])
 );
 
@@ -36,7 +36,7 @@ $options['title'] = __(
     <?= $this->Form->create($survey) ?>
     <div class="box box-solid">
         <div class="box-header with-border">
-            <h3 class="box-title"><?= __('Date of publishing');?></h3>
+            <h3 class="box-title"><?= __d('Qobo/Survey', 'Date of publishing');?></h3>
         </div>
         <div class="box-body">
             <div class="row">
@@ -80,9 +80,9 @@ $options['title'] = __(
                 </div>
 
             </div>
-        <?= $this->Form->button(__('Submit')) ?>
+        <?= $this->Form->button(__d('Qobo/Survey', 'Submit')) ?>
         <?= $this->Html->link(
-            __('Cancel'),
+            __d('Qobo/Survey', 'Cancel'),
             [
                 'plugin' => 'Qobo/Survey',
                 'controller' => 'Surveys',

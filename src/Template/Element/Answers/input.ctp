@@ -16,7 +16,7 @@ $id = md5($answer);
 $options = [
     'type' => 'text',
     'placeholder' => $answer->get('comment'),
-    'label' => __('Your answer:')
+    'label' => __d('Qobo/Survey', 'Your answer:')
 ];
 
 echo $this->element('Qobo/Survey.SurveyQuestions/view_extras', ['entity' => $entity, 'id' => $id, 'collapsed' => $collapsed]);

@@ -16,9 +16,9 @@ use Cake\Utility\Text;
 $userId = $this->request->getSession()->read('Auth.User.id');
 $surveyId = empty($survey->get('slug')) ? $survey->get('id') : $survey->get('slug');
 
-$options['title'] = __(
+$options['title'] = __d('Qobo/Survey',
     '{0} &raquo; {1} &raquo; Preview',
-     $this->Html->link(__('Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
+     $this->Html->link(__d('Qobo/Survey', 'Surveys'), ['controller' => 'Surveys', 'action' => 'index']),
      $this->Html->link($survey->get('name'), ['controller' => 'Surveys', 'action' => 'view', $surveyId])
 );
 
@@ -97,7 +97,7 @@ $count = 1;
     </div>
 
     <?php if (Configure::read('Survey.Options.submitViaPreview')) : ?>
-        <?= $this->Form->submit(__('Submit')); ?>
+        <?= $this->Form->submit(__d('Qobo/Survey', 'Submit')); ?>
     <?php endif; ?>
     <?= $this->Form->end();?>
 </section>

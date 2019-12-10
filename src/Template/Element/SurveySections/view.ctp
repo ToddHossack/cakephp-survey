@@ -17,7 +17,7 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
             <div class="btn-group btn-group-sm" role="group">
                 <?php if (empty($survey->publish_date)) : ?>
                     <?= $this->Html->link(
-                        '<i class="fa fa-plus"></i> ' . __('Add Section'),
+                        '<i class="fa fa-plus"></i> ' . __d('Qobo/Survey', 'Add Section'),
                         ['controller' => 'SurveySections', 'action' => 'add', $surveyId],
                         ['class' => 'btn btn-default', 'escape' => false]
                     )?>
@@ -29,12 +29,12 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
 <table class="table table-hover table-condensed table-vertical-align table-datatable" width="100%">
     <thead>
         <tr>
-            <th scope="col"><?= __('Order') ?></th>
-            <th scope="col"><?= __('Name') ?></th>
-            <th scope="col"><?= __('Default') ?></th>
-            <th scope="col"><?= __('Questions') ?></th>
-            <th scope="col"><?= __('Active') ?></th>
-            <th scope="col" class="actions"><?= __('Actions') ?></th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Order') ?></th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Name') ?></th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Default') ?></th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Questions') ?></th>
+            <th scope="col"><?= __d('Qobo/Survey', 'Active') ?></th>
+            <th scope="col" class="actions"><?= __d('Qobo/Survey', 'Actions') ?></th>
         </tr>
     </thead>
     <tbody>
@@ -43,9 +43,9 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
              <tr>
                 <td><?= h($item->get('order')) ?></td>
                 <td><?= h($item->get('name')) ?></td>
-                <td><?= h($item->get('is_default') ? __('Yes') : __('No')) ?></td>
+                <td><?= h($item->get('is_default') ? __d('Qobo/Survey', 'Yes') : __d('Qobo/Survey', 'No')) ?></td>
                 <td><?= h(count($item->get('survey_questions'))) ?></td>
-                <td><?= h($item->get('active') ? __('Yes') : __('No')) ?></td>
+                <td><?= h($item->get('active') ? __d('Qobo/Survey', 'Yes') : __d('Qobo/Survey', 'No')) ?></td>
                 <td class="actions">
                     <div class="btn-group btn-group-xs">
                     <?php if (empty($survey->get('pubish_date'))) : ?>
@@ -55,7 +55,7 @@ $surveyId = !empty($survey->slug) ? $survey->slug : $survey->id;
                         <?= $this->Html->link('<i class="fa fa-pencil"></i>', ['controller' => 'SurveySections', 'action' => 'edit', $surveyId, $item->get('id')], ['escape' => false, 'class' => 'btn btn-default']) ?>
 
                         <?php if (! $hasQuestions) : ?>
-                            <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['controller' => 'SurveySections', 'action' => 'delete', $surveyId, $item->get('id')], ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __('Are you sure you want to delete {0}?', $item->get('name'))]) ?>
+                            <?= $this->Form->postLink('<i class="fa fa-trash"></i>', ['controller' => 'SurveySections', 'action' => 'delete', $surveyId, $item->get('id')], ['escape' => false, 'class' => 'btn btn-default', 'confirm' => __d('Qobo/Survey', 'Are you sure you want to delete {0}?', $item->get('name'))]) ?>
                         <?php endif; ?>
                     <?php endif;?>
                     </div>

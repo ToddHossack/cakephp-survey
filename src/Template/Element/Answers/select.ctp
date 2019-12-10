@@ -14,7 +14,7 @@ $options = [];
 $attributes = [
     'type' => 'select',
     'options' => [],
-    'empty' => __('-- Choose Answer --')
+    'empty' => __d('Qobo/Survey', '-- Choose Answer --')
 ];
 
 foreach ($entity->get('survey_answers') as $item) {
