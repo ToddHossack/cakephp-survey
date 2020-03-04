@@ -28,6 +28,7 @@
         }
     ],
     "require": {
+        "cakephp/cakephp": "^3.5 <3.7",
         "muffin/slug": "^1.2"
     },
     "require-dev": {
