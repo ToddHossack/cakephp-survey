@@ -74,28 +74,6 @@ class SurveyResultsTableTest extends TestCase
     }
 
     /**
-     * @dataProvider getResultsProvider
-     * @param mixed[] $data Data
-     * @param int $expected Expected result
-     */
-    public function testGetResults(array $data, int $expected): void
-    {
-        $this->markTestSkipped((string)__('Skipping this unit test, as method is deprecated'));
-
-        $user = ['id' => '123'];
-        $survey = (object)[
-            'id' => '111',
-        ];
-
-        $result = $this->SurveyResults->getResults($data, [
-            'user' => $user,
-            'survey' => $survey,
-        ]);
-
-        $this->assertEquals(count($result), $expected);
-    }
-
-    /**
      * @return mixed[]
      */
     public function getResultsProvider(): array
