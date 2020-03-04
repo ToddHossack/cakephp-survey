@@ -28,7 +28,6 @@
         }
     ],
     "require": {
-        "qobo/cakephp-utils": "^13.0",
         "muffin/slug": "^1.2"
     },
     "require-dev": {
