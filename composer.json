@@ -28,8 +28,11 @@
         }
     ],
     "require": {
-        "qobo/cakephp-utils": "^13.0",
-        "muffin/slug": "^1.2"
+        "admad/cakephp-sequence": "^2.2",
+        "cakephp/cakephp": "^3.5 <3.7",
+        "muffin/slug": "^1.2",
+        "muffin/trash": "^2.1",
+        "riesenia/cakephp-duplicatable": "^3.0"
     },
     "require-dev": {
         "qobo/cakephp-composer-dev": "^v1.0"

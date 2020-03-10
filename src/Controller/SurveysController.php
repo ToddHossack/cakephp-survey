@@ -120,7 +120,7 @@ class SurveysController extends AppController
             ->order(['submit_date' => 'DESC']);
         $entries = $query->all();
 
-        $this->set(compact('survey', 'questionTypes', 'submits', 'entries'));
+        $this->set(compact('survey', 'questionTypes', 'entries'));
     }
 
     /**
