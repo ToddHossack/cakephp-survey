@@ -102,16 +102,16 @@ class SurveyResultsTable extends Table
     {
         $validator
             ->uuid('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->scalar('result')
             ->maxLength('result', 4294967295)
-            ->allowEmpty('result');
+            ->allowEmptyString('result');
 
         $validator
             ->dateTime('trashed')
-            ->allowEmpty('trashed');
+            ->allowEmptyDateTime('trashed');
 
         return $validator;
     }

@@ -45,7 +45,7 @@ class SurveysTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Surveys') ? [] : ['className' => SurveysTable::class];
+        $config = TableRegistry::getTableLocator()->exists('Surveys') ? [] : ['className' => SurveysTable::class];
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveysTable $table

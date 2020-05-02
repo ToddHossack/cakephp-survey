@@ -78,21 +78,21 @@ class SurveyAnswersTable extends Table
     {
         $validator
             ->uuid('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->scalar('answer')
             ->maxLength('answer', 4294967295)
-            ->allowEmpty('answer');
+            ->allowEmptyString('answer');
 
         $validator
             ->scalar('comment')
             ->maxLength('comment', 4294967295)
-            ->allowEmpty('comment');
+            ->allowEmptyString('comment');
 
         $validator
             ->dateTime('trashed')
-            ->allowEmpty('trashed');
+            ->allowEmptyDateTime('trashed');
 
         return $validator;
     }

@@ -75,34 +75,33 @@ class SurveyEntriesTable extends Table
     {
         $validator
             ->uuid('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->scalar('status')
             ->maxLength('status', 255)
-            ->allowEmpty('status');
+            ->allowEmptyString('status');
 
         $validator
-            ->integer('grade')
-            ->allowEmpty('grade');
+            ->integer('grade');
 
         $validator
             ->scalar('context')
             ->maxLength('context', 4294967295)
-            ->allowEmpty('context');
+            ->allowEmptyString('context');
 
         $validator
             ->scalar('comment')
             ->maxLength('comment', 4294967295)
-            ->allowEmpty('comment');
+            ->allowEmptyString('comment');
 
         $validator
             ->dateTime('submit_date')
-            ->allowEmpty('submit_date');
+            ->allowEmptyDateTime('submit_date');
 
         $validator
             ->dateTime('trashed')
-            ->allowEmpty('trashed');
+            ->allowEmptyString('trashed');
 
         return $validator;
     }

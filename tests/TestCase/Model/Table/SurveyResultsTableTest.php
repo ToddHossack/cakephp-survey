@@ -47,17 +47,17 @@ class SurveyResultsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Qobo\Survey.SurveyResults') ? [] : ['className' => SurveyResultsTable::class];
+        $config = TableRegistry::getTableLocator()->exists('Qobo\Survey.SurveyResults') ? [] : ['className' => SurveyResultsTable::class];
         /**
          * @var \Qobo\Survey\Model\Table\SurveyResultsTable $table
          */
-        $table = TableRegistry::get('SurveyResults', $config);
+        $table = TableRegistry::getTableLocator()->get('SurveyResults', $config);
         $this->SurveyResults = $table;
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveysTable $table
          */
-        $table = TableRegistry::get('Surveys', ['className' => SurveysTable::class]);
+        $table = TableRegistry::getTableLocator()->get('Surveys', ['className' => SurveysTable::class]);
         $this->Surveys = $table;
     }
 

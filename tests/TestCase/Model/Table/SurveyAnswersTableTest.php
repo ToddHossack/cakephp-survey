@@ -39,11 +39,11 @@ class SurveyAnswersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Survey.SurveyAnswers') ? [] : ['className' => SurveyAnswersTable::class];
+        $config = TableRegistry::getTableLocator()->exists('Survey.SurveyAnswers') ? [] : ['className' => SurveyAnswersTable::class];
         /**
          * @var \Qobo\Survey\Model\Table\SurveyAnswersTable $table
          */
-        $table = TableRegistry::get('Survey.SurveyAnswers', $config);
+        $table = TableRegistry::getTableLocator()->get('Survey.SurveyAnswers', $config);
         $this->SurveyAnswers = $table;
     }
 

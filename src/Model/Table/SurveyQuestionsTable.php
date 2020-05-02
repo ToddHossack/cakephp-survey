@@ -91,31 +91,29 @@ class SurveyQuestionsTable extends Table
     {
         $validator
             ->uuid('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->scalar('question')
             ->maxLength('question', 4294967295)
             ->requirePresence('question', 'create')
-            ->notEmpty('question');
+            ->notEmptyString('question');
 
         $validator
             ->scalar('type')
             ->maxLength('type', 255)
             ->requirePresence('type', 'create')
-            ->notEmpty('type');
+            ->notEmptyString('type');
 
         $validator
-            ->boolean('active')
-            ->allowEmpty('active');
+            ->boolean('active');
 
         $validator
-            ->boolean('is_required')
-            ->allowEmpty('is_required');
+            ->boolean('is_required');
 
         $validator
             ->dateTime('trashed')
-            ->allowEmpty('trashed');
+            ->allowEmptyDateTime('trashed');
 
         return $validator;
     }

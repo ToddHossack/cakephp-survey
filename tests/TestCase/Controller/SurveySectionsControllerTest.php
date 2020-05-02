@@ -2,16 +2,18 @@
 namespace Qobo\Survey\Test\TestCase\Controller;
 
 use Cake\ORM\TableRegistry;
-use Cake\TestSuite\IntegrationTestCase;
-use Qobo\Survey\Controller\SurveySectionsController;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 use Qobo\Survey\Model\Table\SurveySectionsTable;
 use Qobo\Survey\Model\Table\SurveysTable;
 
 /**
  * Qobo\Survey\Controller\SurveySectionsController Test Case
  */
-class SurveySectionsControllerTest extends IntegrationTestCase
+class SurveySectionsControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
+
     /**
      * @var \Qobo\Survey\Model\Table\SurveysTable
      */

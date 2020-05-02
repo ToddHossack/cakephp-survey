@@ -3,13 +3,14 @@ namespace Qobo\Survey\Test\TestCase\Controller;
 
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
-use Cake\TestSuite\IntegrationTestCase;
-use Qobo\Survey\Controller\SurveysController;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 use Qobo\Survey\Model\Table\SurveyQuestionsTable;
 use Qobo\Survey\Model\Table\SurveysTable;
 
-class SurveyQuestionsControllerTest extends IntegrationTestCase
+class SurveyQuestionsControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     public $fixtures = [
         'plugin.Qobo/Survey.SurveyResults',
@@ -37,20 +38,20 @@ class SurveyQuestionsControllerTest extends IntegrationTestCase
         $userId = '00000000-0000-0000-0000-000000000001';
         $this->session([
             'Auth' => [
-                'User' => TableRegistry::get('Users')->get($userId)->toArray(),
+                'User' => TableRegistry::getTableLocator()->get('Users')->get($userId)->toArray(),
             ],
         ]);
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveysTable $table
          */
-        $table = TableRegistry::get('Survey.Surveys', ['className' => SurveysTable::class]);
+        $table = TableRegistry::getTableLocator()->get('Survey.Surveys', ['className' => SurveysTable::class]);
         $this->Surveys = $table;
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $table
          */
-        $table = TableRegistry::get('Survey.SurveyQuestions', ['className' => SurveyQuestionsTable::class]);
+        $table = TableRegistry::getTableLocator()->get('Survey.SurveyQuestions', ['className' => SurveyQuestionsTable::class]);
         $this->SurveyQuestions = $table;
     }
 

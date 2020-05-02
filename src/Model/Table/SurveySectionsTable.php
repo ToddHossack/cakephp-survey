@@ -74,21 +74,20 @@ class SurveySectionsTable extends Table
     {
         $validator
             ->uuid('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->notEmptyString('name');
 
         $validator
-            ->boolean('active')
-            ->allowEmpty('active');
+            ->boolean('active');
 
         $validator
             ->dateTime('trashed')
-            ->allowEmpty('trashed');
+            ->allowEmptyDateTime('trashed');
 
         return $validator;
     }

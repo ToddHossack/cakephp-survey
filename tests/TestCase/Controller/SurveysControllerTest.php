@@ -3,15 +3,15 @@ namespace Qobo\Survey\Test\TestCase\Controller;
 
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
-use Cake\TestSuite\IntegrationTestCase;
-use Qobo\Survey\Controller\SurveysController;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 use Qobo\Survey\Model\Table\SurveyEntriesTable;
 use Qobo\Survey\Model\Table\SurveyResultsTable;
 use Qobo\Survey\Model\Table\SurveysTable;
-use Webmozart\Assert\Assert;
 
-class SurveysControllerTest extends IntegrationTestCase
+class SurveysControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     public $fixtures = [
         'plugin.Qobo/Survey.SurveyResults',
@@ -46,26 +46,26 @@ class SurveysControllerTest extends IntegrationTestCase
         $userId = '00000000-0000-0000-0000-000000000001';
         $this->session([
             'Auth' => [
-                'User' => TableRegistry::get('Users')->get($userId)->toArray(),
+                'User' => TableRegistry::getTableLocator()->get('Users')->get($userId)->toArray(),
             ],
         ]);
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveysTable $table
          */
-        $table = TableRegistry::get('Qobo/Survey.Surveys', ['className' => SurveysTable::class]);
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.Surveys', ['className' => SurveysTable::class]);
         $this->Surveys = $table;
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveyResultsTable $table
          */
-        $table = TableRegistry::get('Qobo/Survey.SurveyResults', ['className' => SurveyResultsTable::class]);
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyResults', ['className' => SurveyResultsTable::class]);
         $this->SurveyResults = $table;
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveyEntriesTable $table
          */
-        $table = TableRegistry::get('Qobo/Survey.SurveyEntries', ['className' => SurveyEntriesTable::class]);
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyEntries', ['className' => SurveyEntriesTable::class]);
         $this->SurveyEntries = $table;
     }
 

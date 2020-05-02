@@ -12,7 +12,7 @@
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 
-$table = TableRegistry::get($this->name);
+$table = TableRegistry::getTableLocator()->get($this->name);
 
 echo $this->Html->scriptBlock('var apiToken="' . Configure::read('API.token') . '";', ['block' => 'scriptBottom']);
 echo $this->Html->css([
