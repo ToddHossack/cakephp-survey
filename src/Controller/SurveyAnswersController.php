@@ -13,7 +13,6 @@ namespace Qobo\Survey\Controller;
 
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
-use Qobo\Survey\Controller\AppController;
 use Webmozart\Assert\Assert;
 
 /**

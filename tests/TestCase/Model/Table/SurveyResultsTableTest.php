@@ -1,7 +1,6 @@
 <?php
 namespace Qobo\Survey\Test\TestCase\Model\Table;
 
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Qobo\Survey\Model\Table\SurveyResultsTable;

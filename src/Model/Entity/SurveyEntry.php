@@ -3,7 +3,6 @@ namespace Qobo\Survey\Model\Entity;
 
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\ORM\Entity;
-use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 
 /**

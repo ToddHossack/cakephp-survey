@@ -1,7 +1,6 @@
 <?php
 namespace Qobo\Survey\Test\TestCase\Model\Table;
 
-use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventList;
 use Cake\Event\EventManager;
