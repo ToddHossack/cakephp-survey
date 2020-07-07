@@ -1,7 +1,6 @@
 <?php
 namespace Qobo\Survey\Test\TestCase\Model\Table;
 
-use Cake\Core\Configure;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\EventList;
 use Cake\Event\EventManager;
@@ -30,11 +29,11 @@ class SurveysTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.qobo/survey.surveys',
-        'plugin.qobo/survey.survey_questions',
-        'plugin.qobo/survey.survey_answers',
-        'plugin.qobo/survey.survey_sections',
-        'plugin.qobo/survey.survey_results',
+        'plugin.Qobo/Survey.Surveys',
+        'plugin.Qobo/Survey.SurveyQuestions',
+        'plugin.Qobo/Survey.SurveyAnswers',
+        'plugin.Qobo/Survey.SurveySections',
+        'plugin.Qobo/Survey.SurveyResults',
     ];
 
     /**
@@ -45,7 +44,7 @@ class SurveysTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Surveys') ? [] : ['className' => SurveysTable::class];
+        $config = TableRegistry::getTableLocator()->exists('Surveys') ? [] : ['className' => SurveysTable::class];
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveysTable $table

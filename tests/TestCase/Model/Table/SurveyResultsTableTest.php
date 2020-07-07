@@ -1,7 +1,6 @@
 <?php
 namespace Qobo\Survey\Test\TestCase\Model\Table;
 
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use Qobo\Survey\Model\Table\SurveyResultsTable;
@@ -31,12 +30,12 @@ class SurveyResultsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.qobo/survey.survey_results',
-        'plugin.qobo/survey.surveys',
-        'plugin.qobo/survey.survey_questions',
-        'plugin.qobo/survey.survey_answers',
-        'plugin.qobo/survey.survey_sections',
-        'plugin.qobo/survey.users',
+        'plugin.Qobo/Survey.SurveyResults',
+        'plugin.Qobo/Survey.Surveys',
+        'plugin.Qobo/Survey.SurveyQuestions',
+        'plugin.Qobo/Survey.SurveyAnswers',
+        'plugin.Qobo/Survey.SurveySections',
+        'plugin.Qobo/Survey.Users',
     ];
 
     /**
@@ -47,17 +46,17 @@ class SurveyResultsTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Qobo\Survey.SurveyResults') ? [] : ['className' => SurveyResultsTable::class];
+        $config = TableRegistry::getTableLocator()->exists('Qobo\Survey.SurveyResults') ? [] : ['className' => SurveyResultsTable::class];
         /**
          * @var \Qobo\Survey\Model\Table\SurveyResultsTable $table
          */
-        $table = TableRegistry::get('SurveyResults', $config);
+        $table = TableRegistry::getTableLocator()->get('SurveyResults', $config);
         $this->SurveyResults = $table;
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveysTable $table
          */
-        $table = TableRegistry::get('Surveys', ['className' => SurveysTable::class]);
+        $table = TableRegistry::getTableLocator()->get('Surveys', ['className' => SurveysTable::class]);
         $this->Surveys = $table;
     }
 

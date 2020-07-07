@@ -14,11 +14,7 @@ namespace Qobo\Survey\Controller;
 use Cake\Datasource\EntityInterface;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
-use Qobo\Survey\Controller\AppController;
-use Qobo\Survey\Event\EventName;
 use Qobo\Survey\Model\Entity\SurveyEntry;
-use Qobo\Survey\Model\Table\SurveyQuestionsTable;
-use Qobo\Survey\Model\Table\SurveyResultsTable;
 use Webmozart\Assert\Assert;
 
 /**

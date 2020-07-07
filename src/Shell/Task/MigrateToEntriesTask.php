@@ -2,7 +2,6 @@
 namespace Qobo\Survey\Shell\Task;
 
 use Cake\Console\Shell;
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
 
 /**

@@ -1,10 +1,9 @@
 <?php
 namespace Qobo\Survey\Test\TestCase\Controller;
 
-use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
-use Cake\TestSuite\IntegrationTestCase;
-use Qobo\Survey\Controller\SurveysController;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 use Qobo\Survey\Model\Table\SurveyAnswersTable;
 use Qobo\Survey\Model\Table\SurveyQuestionsTable;
 use Qobo\Survey\Model\Table\SurveysTable;
@@ -14,16 +13,17 @@ use Qobo\Survey\Model\Table\SurveysTable;
  * @property \Qobo\Survey\Model\Table\SurveyQuestionsTable $SurveyQuestions
  * @property \Qobo\Survey\Model\Table\SurveyAnswersTable $SurveyAnswers
  */
-class SurveyAnswersControllerTest extends IntegrationTestCase
+class SurveyAnswersControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
 
     public $fixtures = [
-        'plugin.qobo/survey.survey_results',
-        'plugin.qobo/survey.survey_questions',
-        'plugin.qobo/survey.survey_answers',
-        'plugin.qobo/survey.survey_sections',
-        'plugin.qobo/survey.surveys',
-        'plugin.qobo/survey.users',
+        'plugin.Qobo/Survey.SurveyResults',
+        'plugin.Qobo/Survey.SurveyQuestions',
+        'plugin.Qobo/Survey.SurveyAnswers',
+        'plugin.Qobo/Survey.SurveySections',
+        'plugin.Qobo/Survey.Surveys',
+        'plugin.Qobo/Survey.Users',
     ];
 
     public function setUp()
@@ -33,26 +33,26 @@ class SurveyAnswersControllerTest extends IntegrationTestCase
         $userId = '00000000-0000-0000-0000-000000000001';
         $this->session([
             'Auth' => [
-                'User' => TableRegistry::get('Users')->get($userId)->toArray(),
+                'User' => TableRegistry::getTableLocator()->get('Users')->get($userId)->toArray(),
             ],
         ]);
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveysTable $table
          */
-        $table = TableRegistry::get('Surveys', ['className' => SurveysTable::class]);
+        $table = TableRegistry::getTableLocator()->get('Surveys', ['className' => SurveysTable::class]);
         $this->Surveys = $table;
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $table
          */
-        $table = TableRegistry::get('SurveyQuestions', ['className' => SurveyQuestionsTable::class]);
+        $table = TableRegistry::getTableLocator()->get('SurveyQuestions', ['className' => SurveyQuestionsTable::class]);
         $this->SurveyQuestions = $table;
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveyAnswersTable $table
          */
-        $table = TableRegistry::get('SurveyAnswers', ['className' => SurveyAnswersTable::class]);
+        $table = TableRegistry::getTableLocator()->get('SurveyAnswers', ['className' => SurveyAnswersTable::class]);
         $this->SurveyAnswers = $table;
     }
 

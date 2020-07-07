@@ -93,33 +93,32 @@ class SurveysTable extends Table
     {
         $validator
             ->uuid('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->scalar('name')
             ->maxLength('name', 255)
-            ->allowEmpty('name');
+            ->allowEmptyString('name');
 
         $validator
-            ->notEmpty('slug')
+            ->notEmptyString('slug')
             ->add('slug', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
-            ->allowEmpty('version');
+            ->allowEmptyString('version');
 
         $validator
             ->scalar('description')
             ->maxLength('description', 4294967295)
             ->requirePresence('description', 'create')
-            ->notEmpty('description');
+            ->notEmptyString('description');
 
         $validator
-            ->boolean('active')
-            ->allowEmpty('active');
+            ->boolean('active');
 
         $validator
             ->dateTime('trashed')
-            ->allowEmpty('trashed');
+            ->allowEmptyDateTime('trashed');
 
         return $validator;
     }
@@ -324,12 +323,12 @@ class SurveysTable extends Table
         /**
          * @var \Qobo\Survey\Model\Table\SurveyQuestionsTable $questions
          */
-        $questions = TableRegistry::get('Qobo/Survey.SurveyQuestions');
+        $questions = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyQuestions');
 
         /**
          * @var \Qobo\Survey\Model\Table\SurveyAnswersTable $answers
          */
-        $answers = TableRegistry::get('Qobo/Survey.SurveyAnswers');
+        $answers = TableRegistry::getTableLocator()->get('Qobo/Survey.SurveyAnswers');
 
         $query = $questions->find()
             ->where(['survey_id' => $entity->get('id')])

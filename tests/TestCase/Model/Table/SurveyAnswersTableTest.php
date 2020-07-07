@@ -24,11 +24,11 @@ class SurveyAnswersTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.qobo/survey.survey_answers',
-        'plugin.qobo/survey.survey_questions',
-        'plugin.qobo/survey.surveys',
-        'plugin.qobo/survey.survey_results',
-        'plugin.qobo/survey.users',
+        'plugin.Qobo/Survey.SurveyQuestions',
+        'plugin.Qobo/Survey.SurveyAnswers',
+        'plugin.Qobo/Survey.SurveyResults',
+        'plugin.Qobo/Survey.Surveys',
+        'plugin.Qobo/Survey.Users',
     ];
 
     /**
@@ -39,11 +39,11 @@ class SurveyAnswersTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Survey.SurveyAnswers') ? [] : ['className' => SurveyAnswersTable::class];
+        $config = TableRegistry::getTableLocator()->exists('Survey.SurveyAnswers') ? [] : ['className' => SurveyAnswersTable::class];
         /**
          * @var \Qobo\Survey\Model\Table\SurveyAnswersTable $table
          */
-        $table = TableRegistry::get('Survey.SurveyAnswers', $config);
+        $table = TableRegistry::getTableLocator()->get('Survey.SurveyAnswers', $config);
         $this->SurveyAnswers = $table;
     }
 

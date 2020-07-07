@@ -1,10 +1,8 @@
 <?php
 namespace Qobo\Survey\View\Helper;
 
-use Cake\Datasource\EntityInterface;
 use Cake\View\Helper;
 use Qobo\Survey\Model\Entity\SurveyAnswer;
-use Qobo\Survey\Model\Entity\SurveyQuestion;
 
 class SurveyHelper extends Helper
 {

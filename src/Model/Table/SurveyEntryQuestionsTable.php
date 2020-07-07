@@ -1,7 +1,6 @@
 <?php
 namespace Qobo\Survey\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -71,20 +70,19 @@ class SurveyEntryQuestionsTable extends Table
     {
         $validator
             ->uuid('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', null, 'create');
 
         $validator
             ->scalar('status')
             ->maxLength('status', 255)
-            ->allowEmpty('status');
+            ->allowEmptyString('status');
 
         $validator
-            ->integer('score')
-            ->allowEmpty('score');
+            ->integer('score');
 
         $validator
             ->dateTime('trashed')
-            ->allowEmpty('trashed');
+            ->allowEmptyDateTime('trashed');
 
         return $validator;
     }

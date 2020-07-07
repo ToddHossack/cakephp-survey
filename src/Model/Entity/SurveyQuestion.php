@@ -11,10 +11,8 @@
  */
 namespace Qobo\Survey\Model\Entity;
 
-use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
-use Qobo\Survey\Model\Entity\SurveyEntryQuestion;
 use Webmozart\Assert\Assert;
 
 /**

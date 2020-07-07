@@ -13,7 +13,6 @@ namespace Qobo\Survey\Controller;
 
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\TableRegistry;
-use Qobo\Survey\Controller\AppController;
 use Webmozart\Assert\Assert;
 
 /**
@@ -38,7 +37,7 @@ class SurveyAnswersController extends AppController
         /**
          * @var \Qobo\Survey\Model\Table\SurveysTable $table
          */
-        $table = TableRegistry::get('Qobo/Survey.Surveys');
+        $table = TableRegistry::getTableLocator()->get('Qobo/Survey.Surveys');
         $this->Surveys = $table;
     }
 

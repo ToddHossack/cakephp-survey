@@ -3,7 +3,6 @@ namespace Qobo\Survey\Controller;
 
 use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
-use Qobo\Survey\Controller\AppController;
 
 /**
  * SurveyEntries Controller
