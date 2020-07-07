@@ -1,7 +1,6 @@
 <?php
 namespace Qobo\Survey\Controller;
 
-
 /**
  * SurveyResults Controller
  *
