@@ -1,5 +1,5 @@
 <?php
-namespace Qobo\Survey\View;
+namespace Qobo\Survey\View\Helper;
 
 use Cake\View\View;
 
